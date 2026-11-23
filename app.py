@@ -8,7 +8,7 @@ def show_html(content: str) -> None:
 
 
 st.set_page_config(
-    page_title="LoadedBitesGLA — Bath Food Truck",
+    page_title="LoadedBitesGLA — Bath Food Vend",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -195,11 +195,11 @@ show_html(
 show_html(
     """
     <div class="ft-hero">
-      <div class="ft-tag">Bath food truck</div>
+      <div class="ft-tag">Bath food vend</div>
       <p class="ft-brand">LoadedBitesGLA</p>
       <p class="ft-sub">
         Big flavour. Proper portions. Street food worth queuing for —
-        cooked fresh on the truck and served with a smile across Bath.
+        cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
     """
@@ -210,14 +210,14 @@ show_html('<p class="ft-section">Hungry in Bath?</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA is a Bath food truck built for people who want more than a rushed sandwich.
+      LoadedBitesGLA is a Bath food vend built for people who want more than a rushed sandwich.
       We load every order with bold seasoning, generous toppings, and the kind of comfort food
       that turns a quick stop into the best part of your day.
     </p>
     <p class="ft-body">
       Whether you catch us at lunch, after work, or on a weekend wander, the mission stays the same:
       honest food, cooked to order, packed with flavour, and ready when you are.
-      No fancy dining room — just a truck, a grill, and bites that hit every time.
+      No fancy dining room — just a food vend, a grill, and bites that hit every time.
     </p>
     """
 )
@@ -238,7 +238,7 @@ with left:
         <div class="ft-card">
           <h3>Cooked fresh</h3>
           <p>
-            Your order starts when you ask for it. Hot off the truck, not sitting under a lamp
+            Your order starts when you ask for it. Hot from the vend, not sitting under a lamp
             waiting for someone else to change their mind.
           </p>
         </div>
@@ -330,12 +330,12 @@ show_html(
 )
 
 # --- Where ---
-show_html('<p class="ft-section">Find the truck</p>')
+show_html('<p class="ft-section">Find the food vend</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA rolls around Bath — city centre lunch runs, local spots, events,
-      and weekend stops. We post where we’re parked so you can plan the detour.
+      LoadedBitesGLA sets up around Bath — city centre lunch runs, local spots, events,
+      and weekend stops. We post where the food vend is so you can plan the detour.
     </p>
     <p class="ft-body">
       Typical hours lean lunch through early evening, with later finishes when the crowd is out.
@@ -384,13 +384,13 @@ show_html('<p class="ft-section">Come get loaded</p>')
 show_html(
     """
     <p class="ft-lead">
-      Looking for the truck, booking us for a private stop, or just want today’s specials?
+      Looking for the food vend, booking us for a private stop, or just want today’s specials?
       Reach out — we love feeding Bath.
     </p>
     <p class="ft-body">
       Message us on Instagram or WhatsApp for location updates, catering enquiries,
       and custom orders for events. If you’ve got a birthday, office lunch, or market day,
-      LoadedBitesGLA can roll up and feed the crowd.
+      LoadedBitesGLA can set up and feed the crowd.
     </p>
     """
 )
@@ -404,7 +404,7 @@ with col_a:
     )
 with col_b:
     st.link_button(
-        "WhatsApp the truck",
+        "WhatsApp the food vend",
         "https://wa.me/",
         use_container_width=True,
     )
@@ -412,7 +412,7 @@ with col_b:
 show_html(
     """
     <div class="ft-footer">
-      LoadedBitesGLA · Bath street food<br>
+      LoadedBitesGLA · Bath food vend<br>
       Fresh · Loaded · Worth the queue
     </div>
     """
