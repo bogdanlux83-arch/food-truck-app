@@ -8,7 +8,7 @@ def show_html(content: str) -> None:
 
 
 st.set_page_config(
-    page_title="LoadedBitesGLA — Bath Food Vend",
+    page_title="LoadedBites GLA",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -18,11 +18,11 @@ show_html(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        --ft-display: "Fraunces", Georgia, serif;
-        --ft-sans: "Sora", sans-serif;
+        --ft-display: "Space Grotesk", sans-serif;
+        --ft-sans: "Outfit", sans-serif;
       }
 
       html, body, .stApp, [data-testid="stAppViewContainer"],
@@ -81,10 +81,10 @@ show_html(
       .ft-brand {
         font-family: var(--ft-display) !important;
         font-size: clamp(3.2rem, 7vw, 5rem);
-        font-weight: 800;
+        font-weight: 700;
         margin: 0 0 0.75rem 0;
         line-height: 0.96;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.05em;
         color: #fff1f2;
       }
       .ft-sub {
@@ -103,7 +103,7 @@ show_html(
         font-weight: 700;
         margin: 2.4rem 0 1.1rem;
         color: #be123c;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.045em;
         line-height: 1.1;
       }
       .ft-lead {
@@ -196,7 +196,7 @@ show_html(
     """
     <div class="ft-hero">
       <div class="ft-tag">Bath food vend</div>
-      <p class="ft-brand">LoadedBitesGLA</p>
+      <p class="ft-brand">LoadedBites GLA</p>
       <p class="ft-sub">
         Big flavour. Proper portions. Street food worth queuing for —
         cooked fresh at the vend and served with a smile across Bath.
@@ -210,7 +210,7 @@ show_html('<p class="ft-section">Hungry in Bath?</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA is a Bath food vend built for people who want more than a rushed sandwich.
+      LoadedBites GLA is a Bath food vend built for people who want more than a rushed sandwich.
       We load every order with bold seasoning, generous toppings, and the kind of comfort food
       that turns a quick stop into the best part of your day.
     </p>
@@ -223,7 +223,7 @@ show_html(
 )
 
 # --- Why us ---
-show_html('<p class="ft-section">Why LoadedBitesGLA</p>')
+show_html('<p class="ft-section">Why LoadedBites GLA</p>')
 left, right = st.columns(2, gap="large")
 with left:
     show_html(
@@ -269,7 +269,7 @@ show_html('<p class="ft-section">What we cook</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA is all about big, bold comfort food — the kind you can smell before you
+      LoadedBites GLA is all about big, bold comfort food — the kind you can smell before you
       see the queue. Think crispy bases, rich fillings, melted cheese, house sauces, and toppings
       piled high until the tray actually feels loaded.
     </p>
@@ -291,7 +291,7 @@ show_html('<p class="ft-section">Find the food vend</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA sets up around Bath — city centre lunch runs, local spots, events,
+      LoadedBites GLA sets up around Bath — city centre lunch runs, local spots, events,
       and weekend stops. We post where the food vend is so you can plan the detour.
     </p>
     <p class="ft-body">
@@ -347,7 +347,7 @@ show_html(
     <p class="ft-body">
       Message us on Instagram or WhatsApp for location updates, catering enquiries,
       and custom orders for events. If you’ve got a birthday, office lunch, or market day,
-      LoadedBitesGLA can set up and feed the crowd.
+      LoadedBites GLA can set up and feed the crowd.
     </p>
     """
 )
@@ -369,7 +369,7 @@ with col_b:
 show_html(
     """
     <div class="ft-footer">
-      LoadedBitesGLA · Bath food vend<br>
+      LoadedBites GLA · Bath food vend<br>
       Fresh · Loaded · Worth the queue
     </div>
     """
