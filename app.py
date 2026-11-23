@@ -8,7 +8,7 @@ def show_html(content: str) -> None:
 
 
 st.set_page_config(
-    page_title="Uncle's Food Truck",
+    page_title="Food Truck",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -127,7 +127,7 @@ show_html(
 show_html(
     """
     <div class="ft-hero">
-      <p class="ft-brand">Uncle's Food Truck</p>
+      <p class="ft-brand">Food Truck</p>
       <p class="ft-sub">
         Fresh street food, made to order. Menu, stop times, and contact — coming together here.
       </p>
@@ -142,4 +142,4 @@ show_html('<p class="ft-section">Find the truck</p>')
 show_html('<p class="ft-body">Location and hours can go here.</p>')
 
 show_html('<p class="ft-section">Contact</p>')
-show_html('<p class="ft-body">Phone / WhatsApp / Instagram for your uncle can go here.</p>')
+show_html('<p class="ft-body">Phone / WhatsApp / Instagram can go here.</p>')
