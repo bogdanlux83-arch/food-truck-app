@@ -34,8 +34,8 @@ show_html(
       }
 
       html, body, .stApp {
-        font-size: 22px;
-        line-height: 1.65;
+        font-size: 18px;
+        line-height: 1.4;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
         color: #1c1917;
@@ -50,135 +50,137 @@ show_html(
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        padding-left: 2.2rem !important;
-        padding-right: 2.2rem !important;
-        max-width: 1240px;
+        padding-top: 1.5rem;
+        padding-bottom: 2.2rem;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        max-width: 1100px;
       }
 
       .ft-hero {
         background: linear-gradient(125deg, #be123c 0%, #e11d48 32%, #fb7185 62%, #fde047 100%);
-        border-radius: 28px;
-        padding: 3.4rem 2.6rem 3rem;
-        margin-bottom: 2rem;
+        border-radius: 24px;
+        padding: 2.4rem 2rem 2.1rem;
+        margin-bottom: 1.35rem;
         color: #1c1917;
         box-shadow: 0 18px 40px rgba(225, 29, 72, 0.28);
       }
       .ft-tag {
         display: inline-block;
         font-family: var(--ft-sans) !important;
-        font-size: 0.85rem;
+        font-size: 0.72rem;
         font-weight: 700;
-        letter-spacing: 0.16em;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
         background: #881337;
         color: #fef08a;
-        padding: 0.5rem 0.95rem;
+        padding: 0.4rem 0.8rem;
         border-radius: 999px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.7rem;
       }
       .ft-brand {
         font-family: var(--ft-display) !important;
-        font-size: clamp(3.2rem, 7vw, 5rem);
+        font-size: clamp(2.5rem, 5.5vw, 3.6rem);
         font-weight: 700;
-        margin: 0 0 0.75rem 0;
-        line-height: 0.96;
-        letter-spacing: -0.05em;
+        margin: 0 0 0.45rem 0;
+        line-height: 0.95;
+        letter-spacing: -0.055em;
         color: #fff1f2;
       }
       .ft-sub {
         font-family: var(--ft-sans) !important;
         margin: 0;
-        font-size: 1.5rem;
-        max-width: 42rem;
-        line-height: 1.65;
+        font-size: 1.15rem;
+        max-width: 40rem;
+        line-height: 1.4;
         color: #ffe4e6;
         font-weight: 500;
-        letter-spacing: -0.015em;
+        letter-spacing: -0.02em;
       }
       .ft-section {
         font-family: var(--ft-display) !important;
-        font-size: clamp(2.2rem, 4vw, 2.85rem);
+        font-size: clamp(1.7rem, 3vw, 2.1rem);
         font-weight: 700;
-        margin: 2.4rem 0 1.1rem;
+        margin: 1.55rem 0 0.65rem;
         color: #be123c;
-        letter-spacing: -0.045em;
-        line-height: 1.1;
+        letter-spacing: -0.05em;
+        line-height: 1.05;
       }
       .ft-lead {
         font-family: var(--ft-sans) !important;
-        font-size: 1.28rem;
-        line-height: 1.7;
+        font-size: 1.05rem;
+        line-height: 1.4;
         color: #44403c;
         font-weight: 400;
-        letter-spacing: -0.01em;
-        max-width: 46rem;
-        margin: 0 0 1.1rem 0;
+        letter-spacing: -0.02em;
+        max-width: 44rem;
+        margin: 0 0 0.65rem 0;
       }
       .ft-body {
         font-family: var(--ft-sans) !important;
-        font-size: 1.2rem;
-        line-height: 1.7;
+        font-size: 1rem;
+        line-height: 1.4;
         color: #57534e;
         font-weight: 400;
-        letter-spacing: -0.01em;
-        max-width: 46rem;
-        margin: 0 0 0.9rem 0;
+        letter-spacing: -0.02em;
+        max-width: 44rem;
+        margin: 0 0 0.55rem 0;
       }
       .ft-card {
         background: rgba(255, 255, 255, 0.78);
         border: 2px solid rgba(251, 113, 133, 0.55);
-        border-radius: 20px;
-        padding: 1.45rem 1.4rem 1.2rem;
-        margin-bottom: 1rem;
+        border-radius: 16px;
+        padding: 1.05rem 1.1rem 0.9rem;
+        margin-bottom: 0.7rem;
         box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
       }
       .ft-card h3 {
         font-family: var(--ft-display) !important;
-        font-size: 1.55rem;
+        font-size: 1.2rem;
         font-weight: 700;
-        margin: 0 0 0.45rem 0;
+        margin: 0 0 0.3rem 0;
         color: #9f1239;
-        letter-spacing: -0.03em;
+        letter-spacing: -0.04em;
       }
       .ft-card p {
         font-family: var(--ft-sans) !important;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        font-size: 0.95rem;
+        line-height: 1.4;
         color: #57534e;
         margin: 0;
+        letter-spacing: -0.02em;
       }
       .ft-price {
         font-family: var(--ft-display) !important;
         color: #e11d48;
         font-weight: 800;
-        font-size: 1.25rem;
+        font-size: 1.05rem;
       }
       .ft-footer {
         text-align: center;
         color: #9f1239;
         font-family: var(--ft-sans) !important;
-        font-size: 1.05rem;
-        margin-top: 3rem;
-        padding-top: 1.5rem;
+        font-size: 0.92rem;
+        margin-top: 2rem;
+        padding-top: 1.1rem;
         border-top: 2px solid rgba(251, 113, 133, 0.45);
         font-weight: 500;
-        line-height: 1.6;
+        line-height: 1.4;
       }
 
       [data-testid="stAlert"] p,
       [data-testid="stMarkdownContainer"] p {
         font-family: var(--ft-sans) !important;
-        font-size: 1.22rem !important;
-        letter-spacing: -0.01em;
+        font-size: 1rem !important;
+        letter-spacing: -0.02em;
+        line-height: 1.4 !important;
       }
       div[data-testid="stButton"] button {
-        border-radius: 16px !important;
+        border-radius: 14px !important;
         font-weight: 700 !important;
-        font-size: 1.2rem !important;
-        padding: 0.85rem 1.45rem !important;
-        letter-spacing: -0.015em !important;
+        font-size: 1.02rem !important;
+        padding: 0.65rem 1.15rem !important;
+        letter-spacing: -0.02em !important;
         background: rgba(255, 228, 230, 0.7) !important;
         color: #9f1239 !important;
         border: 2px solid rgba(244, 63, 94, 0.75) !important;
