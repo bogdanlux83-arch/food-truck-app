@@ -264,67 +264,24 @@ with right:
         """
     )
 
-# --- Menu highlights ---
-show_html('<p class="ft-section">Crowd favourites</p>')
+# --- Food description ---
+show_html('<p class="ft-section">What we cook</p>')
 show_html(
     """
     <p class="ft-lead">
-      Here’s a taste of what keeps people coming back. Menu swaps with the day and the spot —
-      follow us for today’s full board.
+      LoadedBitesGLA is all about big, bold comfort food — the kind you can smell before you
+      see the queue. Think crispy bases, rich fillings, melted cheese, house sauces, and toppings
+      piled high until the tray actually feels loaded.
     </p>
-    """
-)
-
-menu = [
-    {
-        "name": "The Fully Loaded Box",
-        "price": "£9.50",
-        "desc": (
-            "Our signature hit: crispy base, rich filling, melted cheese, and house sauce "
-            "piled high. One box. Zero regrets."
-        ),
-    },
-    {
-        "name": "Spicy Street Wrap",
-        "price": "£8.00",
-        "desc": (
-            "Warm wrap packed with seasoned protein, fresh crunch, and a kick of heat. "
-            "Built for walking, talking, and finishing every bite."
-        ),
-    },
-    {
-        "name": "Cheesy Bite Stack",
-        "price": "£7.50",
-        "desc": (
-            "Comfort food done loud — toasted, cheesy, saucy, and messy in the best way. "
-            "Napkins recommended. Sharing optional."
-        ),
-    },
-    {
-        "name": "Sweet Finish Cup",
-        "price": "£4.50",
-        "desc": (
-            "A small dessert hit for after the main event. Soft, sweet, and perfect when "
-            "you swore you were full… then weren’t."
-        ),
-    },
-]
-
-for item in menu:
-    show_html(
-        f"""
-        <div class="ft-card">
-          <h3>{item['name']} <span class="ft-price">{item['price']}</span></h3>
-          <p>{item['desc']}</p>
-        </div>
-        """
-    )
-
-show_html(
-    """
     <p class="ft-body">
-      Got a craving we haven’t listed? Ask at the window. If we can make it loaded, we will.
-      Specials change — sometimes spicy, sometimes smoky, always worth a look at the board.
+      We lean into warm wraps with seasoned protein and fresh crunch, cheesy stacks that get
+      messy in the best way, and spicy options when you want a kick. Everything is cooked to
+      order at the food vend, so it lands hot, fresh, and ready to eat on the go.
+    </p>
+    <p class="ft-body">
+      Some days we’re smoky. Some days we’re sweet. Specials rotate with the spot and the mood,
+      but the idea never changes: generous portions, strong flavour, and food that turns a quick
+      stop into something you talk about later. Ask at the window — if we can make it loaded, we will.
     </p>
     """
 )
