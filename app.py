@@ -8,7 +8,7 @@ def show_html(content: str) -> None:
 
 
 st.set_page_config(
-    page_title="Food Truck",
+    page_title="LoadedBitesGLA",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -34,8 +34,8 @@ show_html(
       }
 
       html, body, .stApp {
-        font-size: 20px;
-        line-height: 1.6;
+        font-size: 22px;
+        line-height: 1.65;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
         color: #1c1917;
@@ -50,33 +50,35 @@ show_html(
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
-        padding-top: 1.6rem;
-        padding-bottom: 2.5rem;
-        max-width: 1100px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+        padding-left: 2.2rem !important;
+        padding-right: 2.2rem !important;
+        max-width: 1240px;
       }
 
       .ft-hero {
         background: linear-gradient(125deg, #ea580c 0%, #f59e0b 40%, #fbbf24 75%, #fde68a 100%);
-        border-radius: 24px;
-        padding: 2.8rem 2.2rem 2.4rem;
-        margin-bottom: 1.6rem;
+        border-radius: 28px;
+        padding: 3.4rem 2.6rem 3rem;
+        margin-bottom: 2rem;
         color: #1c1917;
         box-shadow: 0 18px 40px rgba(245, 158, 11, 0.28);
       }
       .ft-brand {
         font-family: var(--ft-display) !important;
-        font-size: clamp(2.8rem, 6vw, 4.2rem);
+        font-size: clamp(3.2rem, 7vw, 5rem);
         font-weight: 800;
-        margin: 0 0 0.6rem 0;
-        line-height: 0.98;
+        margin: 0 0 0.75rem 0;
+        line-height: 0.96;
         letter-spacing: -0.04em;
         color: #431407;
       }
       .ft-sub {
         font-family: var(--ft-sans) !important;
         margin: 0;
-        font-size: 1.35rem;
-        max-width: 38rem;
+        font-size: 1.5rem;
+        max-width: 42rem;
         line-height: 1.65;
         color: #7c2d12;
         font-weight: 500;
@@ -84,17 +86,17 @@ show_html(
       }
       .ft-section {
         font-family: var(--ft-display) !important;
-        font-size: clamp(1.9rem, 3.5vw, 2.4rem);
+        font-size: clamp(2.2rem, 4vw, 2.85rem);
         font-weight: 700;
-        margin: 1.8rem 0 0.9rem;
+        margin: 2.2rem 0 1.1rem;
         color: #c2410c;
         letter-spacing: -0.035em;
         line-height: 1.1;
       }
       .ft-body {
         font-family: var(--ft-sans) !important;
-        font-size: 1.15rem;
-        line-height: 1.6;
+        font-size: 1.28rem;
+        line-height: 1.65;
         color: #57534e;
         font-weight: 400;
         letter-spacing: -0.01em;
@@ -103,14 +105,14 @@ show_html(
       [data-testid="stAlert"] p,
       [data-testid="stMarkdownContainer"] p {
         font-family: var(--ft-sans) !important;
-        font-size: 1.12rem !important;
+        font-size: 1.22rem !important;
         letter-spacing: -0.01em;
       }
       div[data-testid="stButton"] button {
-        border-radius: 14px !important;
+        border-radius: 16px !important;
         font-weight: 700 !important;
-        font-size: 1.1rem !important;
-        padding: 0.7rem 1.25rem !important;
+        font-size: 1.2rem !important;
+        padding: 0.85rem 1.45rem !important;
         letter-spacing: -0.015em !important;
         background: rgba(254, 243, 199, 0.65) !important;
         color: #9a3412 !important;
@@ -127,7 +129,7 @@ show_html(
 show_html(
     """
     <div class="ft-hero">
-      <p class="ft-brand">Food Truck</p>
+      <p class="ft-brand">LoadedBitesGLA</p>
       <p class="ft-sub">
         Fresh street food, made to order. Menu, stop times, and contact — coming together here.
       </p>
