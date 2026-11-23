@@ -43,9 +43,10 @@ show_html(
 
       .stApp {
         background:
-          radial-gradient(900px 480px at 10% -10%, #fde68a 0%, transparent 55%),
-          radial-gradient(700px 420px at 95% 0%, #fb923c 0%, transparent 45%),
-          #fff7ed;
+          radial-gradient(1000px 520px at 8% -8%, #fef08a 0%, transparent 55%),
+          radial-gradient(820px 460px at 92% 5%, #fdba74 0%, transparent 48%),
+          radial-gradient(700px 400px at 50% 110%, #fde68a 0%, transparent 50%),
+          #fffbeb;
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
@@ -55,12 +56,12 @@ show_html(
       }
 
       .ft-hero {
-        background: linear-gradient(125deg, #9a3412 0%, #c2410c 45%, #ea580c 100%);
+        background: linear-gradient(125deg, #ea580c 0%, #f59e0b 40%, #fbbf24 75%, #fde68a 100%);
         border-radius: 24px;
         padding: 2.8rem 2.2rem 2.4rem;
         margin-bottom: 1.6rem;
-        color: #fff7ed;
-        box-shadow: 0 18px 40px rgba(194, 65, 12, 0.25);
+        color: #1c1917;
+        box-shadow: 0 18px 40px rgba(245, 158, 11, 0.28);
       }
       .ft-brand {
         font-family: var(--ft-display) !important;
@@ -69,7 +70,7 @@ show_html(
         margin: 0 0 0.6rem 0;
         line-height: 0.98;
         letter-spacing: -0.04em;
-        color: #fff7ed;
+        color: #431407;
       }
       .ft-sub {
         font-family: var(--ft-sans) !important;
@@ -77,8 +78,8 @@ show_html(
         font-size: 1.35rem;
         max-width: 38rem;
         line-height: 1.65;
-        color: #ffedd5;
-        font-weight: 400;
+        color: #7c2d12;
+        font-weight: 500;
         letter-spacing: -0.015em;
       }
       .ft-section {
@@ -86,7 +87,7 @@ show_html(
         font-size: clamp(1.9rem, 3.5vw, 2.4rem);
         font-weight: 700;
         margin: 1.8rem 0 0.9rem;
-        color: #9a3412;
+        color: #c2410c;
         letter-spacing: -0.035em;
         line-height: 1.1;
       }
@@ -94,7 +95,7 @@ show_html(
         font-family: var(--ft-sans) !important;
         font-size: 1.15rem;
         line-height: 1.6;
-        color: #44403c;
+        color: #57534e;
         font-weight: 400;
         letter-spacing: -0.01em;
       }
@@ -111,9 +112,13 @@ show_html(
         font-size: 1.1rem !important;
         padding: 0.7rem 1.25rem !important;
         letter-spacing: -0.015em !important;
-        background: rgba(255, 247, 237, 0.55) !important;
-        color: #7c2d12 !important;
-        border: 2px solid rgba(194, 65, 12, 0.75) !important;
+        background: rgba(254, 243, 199, 0.65) !important;
+        color: #9a3412 !important;
+        border: 2px solid rgba(245, 158, 11, 0.8) !important;
+      }
+      div[data-testid="stButton"] button:hover {
+        background: rgba(253, 230, 138, 0.85) !important;
+        border-color: #ea580c !important;
       }
     </style>
     """
