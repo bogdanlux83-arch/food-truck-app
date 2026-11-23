@@ -44,9 +44,9 @@ show_html(
       .stApp {
         background:
           radial-gradient(1000px 520px at 8% -8%, #fef08a 0%, transparent 55%),
-          radial-gradient(820px 460px at 92% 5%, #fdba74 0%, transparent 48%),
-          radial-gradient(700px 400px at 50% 110%, #fde68a 0%, transparent 50%),
-          #fffbeb;
+          radial-gradient(820px 460px at 92% 5%, #f9a8d4 0%, transparent 48%),
+          radial-gradient(700px 400px at 50% 110%, #fecdd3 0%, transparent 50%),
+          #fff1f2;
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
@@ -58,12 +58,12 @@ show_html(
       }
 
       .ft-hero {
-        background: linear-gradient(125deg, #ea580c 0%, #f59e0b 40%, #fbbf24 75%, #fde68a 100%);
+        background: linear-gradient(125deg, #be123c 0%, #e11d48 32%, #fb7185 62%, #fde047 100%);
         border-radius: 28px;
         padding: 3.4rem 2.6rem 3rem;
         margin-bottom: 2rem;
         color: #1c1917;
-        box-shadow: 0 18px 40px rgba(245, 158, 11, 0.28);
+        box-shadow: 0 18px 40px rgba(225, 29, 72, 0.28);
       }
       .ft-tag {
         display: inline-block;
@@ -72,8 +72,8 @@ show_html(
         font-weight: 700;
         letter-spacing: 0.16em;
         text-transform: uppercase;
-        background: #431407;
-        color: #fde68a;
+        background: #881337;
+        color: #fef08a;
         padding: 0.5rem 0.95rem;
         border-radius: 999px;
         margin-bottom: 1rem;
@@ -85,7 +85,7 @@ show_html(
         margin: 0 0 0.75rem 0;
         line-height: 0.96;
         letter-spacing: -0.04em;
-        color: #431407;
+        color: #fff1f2;
       }
       .ft-sub {
         font-family: var(--ft-sans) !important;
@@ -93,7 +93,7 @@ show_html(
         font-size: 1.5rem;
         max-width: 42rem;
         line-height: 1.65;
-        color: #7c2d12;
+        color: #ffe4e6;
         font-weight: 500;
         letter-spacing: -0.015em;
       }
@@ -102,7 +102,7 @@ show_html(
         font-size: clamp(2.2rem, 4vw, 2.85rem);
         font-weight: 700;
         margin: 2.4rem 0 1.1rem;
-        color: #c2410c;
+        color: #be123c;
         letter-spacing: -0.035em;
         line-height: 1.1;
       }
@@ -127,19 +127,19 @@ show_html(
         margin: 0 0 0.9rem 0;
       }
       .ft-card {
-        background: rgba(255, 255, 255, 0.72);
-        border: 2px solid rgba(245, 158, 11, 0.55);
+        background: rgba(255, 255, 255, 0.78);
+        border: 2px solid rgba(251, 113, 133, 0.55);
         border-radius: 20px;
         padding: 1.45rem 1.4rem 1.2rem;
         margin-bottom: 1rem;
-        box-shadow: 0 10px 28px rgba(245, 158, 11, 0.12);
+        box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
       }
       .ft-card h3 {
         font-family: var(--ft-display) !important;
         font-size: 1.55rem;
         font-weight: 700;
         margin: 0 0 0.45rem 0;
-        color: #9a3412;
+        color: #9f1239;
         letter-spacing: -0.03em;
       }
       .ft-card p {
@@ -151,18 +151,18 @@ show_html(
       }
       .ft-price {
         font-family: var(--ft-display) !important;
-        color: #ea580c;
+        color: #e11d48;
         font-weight: 800;
         font-size: 1.25rem;
       }
       .ft-footer {
         text-align: center;
-        color: #9a3412;
+        color: #9f1239;
         font-family: var(--ft-sans) !important;
         font-size: 1.05rem;
         margin-top: 3rem;
         padding-top: 1.5rem;
-        border-top: 2px solid rgba(245, 158, 11, 0.45);
+        border-top: 2px solid rgba(251, 113, 133, 0.45);
         font-weight: 500;
         line-height: 1.6;
       }
@@ -179,13 +179,13 @@ show_html(
         font-size: 1.2rem !important;
         padding: 0.85rem 1.45rem !important;
         letter-spacing: -0.015em !important;
-        background: rgba(254, 243, 199, 0.65) !important;
-        color: #9a3412 !important;
-        border: 2px solid rgba(245, 158, 11, 0.8) !important;
+        background: rgba(255, 228, 230, 0.7) !important;
+        color: #9f1239 !important;
+        border: 2px solid rgba(244, 63, 94, 0.75) !important;
       }
       div[data-testid="stButton"] button:hover {
-        background: rgba(253, 230, 138, 0.85) !important;
-        border-color: #ea580c !important;
+        background: rgba(254, 240, 138, 0.85) !important;
+        border-color: #e11d48 !important;
       }
     </style>
     """
