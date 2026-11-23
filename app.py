@@ -8,7 +8,7 @@ def show_html(content: str) -> None:
 
 
 st.set_page_config(
-    page_title="LoadedBitesGLA — Glasgow Food Truck",
+    page_title="LoadedBitesGLA — Bath Food Truck",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -195,22 +195,22 @@ show_html(
 show_html(
     """
     <div class="ft-hero">
-      <div class="ft-tag">Glasgow food truck</div>
+      <div class="ft-tag">Bath food truck</div>
       <p class="ft-brand">LoadedBitesGLA</p>
       <p class="ft-sub">
         Big flavour. Proper portions. Street food worth queuing for —
-        cooked fresh on the truck and served with a smile across Glasgow.
+        cooked fresh on the truck and served with a smile across Bath.
       </p>
     </div>
     """
 )
 
 # --- Intro ---
-show_html('<p class="ft-section">Hungry in Glasgow?</p>')
+show_html('<p class="ft-section">Hungry in Bath?</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA is a Glasgow food truck built for people who want more than a rushed sandwich.
+      LoadedBitesGLA is a Bath food truck built for people who want more than a rushed sandwich.
       We load every order with bold seasoning, generous toppings, and the kind of comfort food
       that turns a quick stop into the best part of your day.
     </p>
@@ -248,7 +248,7 @@ with right:
     show_html(
         """
         <div class="ft-card">
-          <h3>Glasgow energy</h3>
+          <h3>Bath energy</h3>
           <p>
             Made for this city — quick enough for a lunch break, good enough for a night out,
             friendly enough that you’ll want to come back with mates.
@@ -334,7 +334,7 @@ show_html('<p class="ft-section">Find the truck</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBitesGLA rolls around Glasgow — city centre lunch runs, local spots, events,
+      LoadedBitesGLA rolls around Bath — city centre lunch runs, local spots, events,
       and weekend stops. We post where we’re parked so you can plan the detour.
     </p>
     <p class="ft-body">
@@ -385,7 +385,7 @@ show_html(
     """
     <p class="ft-lead">
       Looking for the truck, booking us for a private stop, or just want today’s specials?
-      Reach out — we love feeding Glasgow.
+      Reach out — we love feeding Bath.
     </p>
     <p class="ft-body">
       Message us on Instagram or WhatsApp for location updates, catering enquiries,
@@ -412,7 +412,7 @@ with col_b:
 show_html(
     """
     <div class="ft-footer">
-      LoadedBitesGLA · Glasgow street food<br>
+      LoadedBitesGLA · Bath street food<br>
       Fresh · Loaded · Worth the queue
     </div>
     """
