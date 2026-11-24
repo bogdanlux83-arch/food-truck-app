@@ -58,7 +58,7 @@ show_html(
         z-index: 0;
         pointer-events: none;
         background:
-          url("https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=2400&q=80")
+          url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=2400&q=80")
           center center / cover no-repeat;
         transform: scale(1.08);
         filter: blur(var(--ft-sky-blur, 2px)) saturate(1.15) brightness(0.78);
