@@ -1,11 +1,21 @@
+import base64
+from pathlib import Path
 from textwrap import dedent
 
 import streamlit as st
 import streamlit.components.v1 as components
 
+ASSETS = Path(__file__).resolve().parent / "assets"
+
 
 def show_html(content: str) -> None:
     st.html(dedent(content).strip())
+
+
+def truck_bit_html() -> str:
+    template = (ASSETS / "truck_bit.html").read_text(encoding="utf-8")
+    glb_b64 = base64.b64encode((ASSETS / "food_truck.glb").read_bytes()).decode("ascii")
+    return template.replace("{{GLB_B64}}", glb_b64)
 
 
 st.set_page_config(
@@ -726,6 +736,21 @@ components.html(
     </script>
     """,
     height=260,
+    scrolling=False,
+)
+
+# --- Hover-interactive food truck (scrolls into view) ---
+show_html(
+    """
+    <p class="ft-section">Meet the truck</p>
+    <p class="ft-lead">
+      Our Bath food vendor — hover over the truck to orbit and inspect the vehicle.
+    </p>
+    """
+)
+components.html(
+    truck_bit_html(),
+    height=420,
     scrolling=False,
 )
 
