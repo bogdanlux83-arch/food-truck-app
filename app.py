@@ -542,14 +542,14 @@ components.html(
       .bit-2 .bit-inner {
         background:
           linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
-          url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=70")
-          center / cover no-repeat;
+          url("https://images.pexels.com/photos/14494034/pexels-photo-14494034.jpeg?auto=compress&cs=tinysrgb&w=1200")
+          center 40% / cover no-repeat;
       }
       .bit-3 .bit-inner {
         background:
           linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
-          url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=70")
-          center / cover no-repeat;
+          url("https://images.pexels.com/photos/14494033/pexels-photo-14494033.jpeg?auto=compress&cs=tinysrgb&w=1200")
+          center 35% / cover no-repeat;
       }
       .bit-inner::before {
         content: "";
