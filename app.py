@@ -9,7 +9,7 @@ def show_html(content: str) -> None:
 
 
 def bite_show_html() -> str:
-    return r'''<!DOCTYPE html>
+    return '''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -32,20 +32,17 @@ def bite_show_html() -> str:
       overflow: hidden;
       border: 1px solid rgba(232, 106, 23, 0.22);
       background:
-        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(232,106,23,0.22), transparent 55%),
-        linear-gradient(160deg, #fff6e4 0%, #ffe2b0 45%, #f5c56a 100%);
-      box-shadow: 0 20px 50px rgba(120, 55, 10, 0.12);
+        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(0,0,0,0.35), transparent 60%),
+        linear-gradient(160deg, #1a120c 0%, #2a1a12 45%, #3d2414 100%);
+      box-shadow: 0 20px 50px rgba(40, 20, 8, 0.25);
       cursor: grab;
       transform: translateY(48px) scale(0.94);
       opacity: 0;
       transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
     }
-    #stage.in {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    #stage.in { opacity: 1; transform: translateY(0) scale(1); }
     #stage:active { cursor: grabbing; }
-    #stage.hot { box-shadow: 0 28px 60px rgba(232,106,23,0.28); }
+    #stage.hot { box-shadow: 0 28px 64px rgba(232,106,23,0.35); }
 
     .label {
       position: absolute;
@@ -53,13 +50,14 @@ def bite_show_html() -> str:
       top: 1.15rem;
       z-index: 5;
       pointer-events: none;
+      color: #fff8e8;
     }
     .label .kicker {
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(28,20,14,0.55);
+      color: rgba(255,230,170,0.75);
     }
     .label .title {
       margin: 0.2rem 0 0;
@@ -69,7 +67,6 @@ def bite_show_html() -> str:
       letter-spacing: -0.04em;
       text-transform: uppercase;
       line-height: 0.95;
-      color: #1c140e;
     }
     .hint {
       position: absolute;
@@ -80,248 +77,247 @@ def bite_show_html() -> str:
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(28,20,14,0.4);
+      color: rgba(255,230,170,0.45);
       pointer-events: none;
-      transition: color 0.3s ease;
     }
-    #stage.hot .hint { color: rgba(28,20,14,0.7); }
+    #stage.hot .hint { color: rgba(255,230,170,0.85); }
 
     .world {
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      perspective: 900px;
+      perspective: 1100px;
       transform-style: preserve-3d;
-    }
-    .bite {
-      position: relative;
-      width: min(280px, 58vw);
-      height: 220px;
-      transform-style: preserve-3d;
-      transform: rotateX(18deg) rotateY(-18deg);
-      transition: transform 0.15s ease-out;
     }
 
-    .layer {
+    .rig {
+      position: relative;
+      width: min(440px, 82vw);
+      height: min(310px, 60vw);
+      transform-style: preserve-3d;
+      transform: rotateX(12deg) rotateY(-16deg);
+    }
+
+    .plate {
       position: absolute;
       left: 50%;
-      width: 100%;
-      border-radius: 999px;
-      transform: translateX(-50%) translateY(var(--y)) translateZ(var(--z)) scale(0.3);
+      bottom: 4%;
+      width: 82%;
+      height: 20%;
+      transform: translateX(-50%) rotateX(72deg);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2), rgba(255,255,255,0.03) 55%, transparent 70%);
+      box-shadow: 0 30px 40px rgba(0,0,0,0.45);
       opacity: 0;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
-      transform-origin: center;
     }
-    #stage.in .layer {
-      animation: dropIn 0.85s cubic-bezier(0.22, 1.4, 0.36, 1) forwards;
-      animation-delay: var(--d);
-    }
-    @keyframes dropIn {
-      0% { opacity: 0; transform: translateX(-50%) translateY(calc(var(--y) - 90px)) translateZ(var(--z)) scale(0.4) rotateX(-25deg); filter: blur(6px); }
-      70% { opacity: 1; filter: blur(0); }
-      100% { opacity: 1; transform: translateX(-50%) translateY(var(--y)) translateZ(var(--z)) scale(1); }
+    #stage.in .plate {
+      animation: fadeUp 0.8s 0.15s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    .bun-top {
-      height: 54px;
-      background: linear-gradient(180deg, #f0b429 0%, #e08612 55%, #c96b0c 100%);
-      border-radius: 90px 90px 40px 40px / 70px 70px 28px 28px;
-      --y: 18px; --z: 70px; --d: 0.55s;
+    .panini {
+      position: absolute;
+      inset: 10% 8% 20%;
+      border-radius: 18px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      box-shadow:
+        0 28px 50px rgba(0,0,0,0.55),
+        0 2px 0 rgba(255,200,120,0.15) inset;
+      opacity: 0;
+      transform: translateY(40px) scale(0.86) rotateX(-8deg);
+      background:
+        #111
+        url("https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1400&q=85")
+        center 42% / cover no-repeat;
     }
-    .bun-top::after {
+    #stage.in .panini {
+      animation: paniniIn 1s 0.2s cubic-bezier(0.22, 1.15, 0.36, 1) forwards;
+    }
+    @keyframes paniniIn {
+      0% { opacity: 0; transform: translateY(48px) scale(0.84) rotateX(-12deg); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) rotateX(72deg) scale(0.8); }
+      to { opacity: 1; transform: translateX(-50%) rotateX(72deg) scale(1); }
+    }
+
+    .panini::before {
       content: "";
       position: absolute;
-      inset: 10px 18% auto;
-      height: 8px;
+      inset: 0;
       background:
-        radial-gradient(circle, #8b5a1a 0 2px, transparent 3px) 0 0 / 14px 8px,
-        radial-gradient(circle, #8b5a1a 0 1.5px, transparent 2.5px) 7px 4px / 14px 8px;
-      opacity: 0.55;
+        linear-gradient(180deg, rgba(255,200,120,0.1), transparent 28%),
+        linear-gradient(120deg, transparent 40%, rgba(255,140,40,0.1), transparent 70%);
+      pointer-events: none;
+      mix-blend-mode: soft-light;
     }
-    .lettuce {
-      height: 22px;
-      background: linear-gradient(90deg, #6fbf3b, #8fd84e, #5aa82f, #9ae05a, #6fbf3b);
-      clip-path: polygon(0 40%, 8% 10%, 16% 45%, 24% 5%, 32% 48%, 40% 8%, 48% 50%, 56% 6%, 64% 46%, 72% 10%, 80% 48%, 88% 8%, 100% 42%, 100% 100%, 0 100%);
-      --y: 48px; --z: 52px; --d: 0.45s;
-      box-shadow: 0 6px 12px rgba(40,100,20,0.25);
+    .panini::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 48%, transparent 58%);
+      transform: translateX(-120%);
+      animation: sheen 3.8s 1.2s ease-in-out infinite;
+      pointer-events: none;
     }
-    .cheese {
-      height: 16px;
-      background: linear-gradient(180deg, #ffd54a, #f0a800);
-      border-radius: 8px;
-      width: 92%;
-      --y: 62px; --z: 40px; --d: 0.35s;
-      clip-path: polygon(0 0, 100% 0, 100% 55%, 88% 100%, 72% 60%, 55% 100%, 40% 58%, 22% 100%, 10% 62%, 0 90%);
+    @keyframes sheen {
+      0%, 100% { transform: translateX(-120%); }
+      45%, 55% { transform: translateX(120%); }
     }
-    .patty {
-      height: 28px;
+
+    .slice {
+      position: absolute;
+      width: 36%;
+      aspect-ratio: 1 / 1.05;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.45);
       background:
-        radial-gradient(circle at 30% 40%, rgba(255,180,100,0.35), transparent 40%),
-        linear-gradient(180deg, #7a3b1a, #4a2210 55%, #3a180c);
-      border-radius: 40px;
-      --y: 82px; --z: 28px; --d: 0.25s;
+        url("https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=900&q=85")
+        center / cover no-repeat;
+      opacity: 0;
+      z-index: 3;
     }
-    .sauce {
-      height: 12px;
-      background: linear-gradient(90deg, #e86a17, #ff3b3b, #e86a17);
-      width: 78%;
-      border-radius: 20px;
-      --y: 100px; --z: 18px; --d: 0.18s;
-      filter: saturate(1.2);
+    .slice-a {
+      left: -4%;
+      top: 12%;
+      --rest: rotate(-10deg) translateY(0) translateZ(28px);
+      transform: rotate(-10deg) translateY(36px);
     }
-    .bun-bot {
-      height: 36px;
-      background: linear-gradient(180deg, #efb03a 0%, #d4891a 40%, #b86b10 100%);
-      border-radius: 30px 30px 70px 70px / 20px 20px 50px 50px;
-      --y: 118px; --z: 8px; --d: 0.08s;
+    .slice-b {
+      right: -4%;
+      top: 22%;
+      --rest: rotate(9deg) translateY(0) translateZ(18px);
+      transform: rotate(9deg) translateY(44px);
+      background-position: 65% center;
+    }
+    #stage.in .slice-a {
+      animation: sliceIn 0.95s 0.5s cubic-bezier(0.22,1.2,0.36,1) forwards;
+    }
+    #stage.in .slice-b {
+      animation: sliceIn 0.95s 0.62s cubic-bezier(0.22,1.2,0.36,1) forwards;
+    }
+    @keyframes sliceIn {
+      0% { opacity: 0; filter: blur(6px); }
+      100% { opacity: 1; filter: blur(0); transform: var(--rest); }
     }
 
     .steam {
       position: absolute;
       left: 50%;
-      top: 8%;
-      width: 120px;
-      height: 90px;
+      top: 2%;
+      width: 160px;
+      height: 100px;
       transform: translateX(-50%);
       pointer-events: none;
       opacity: 0;
+      z-index: 4;
     }
     #stage.in .steam { opacity: 1; }
     .steam span {
       position: absolute;
       bottom: 0;
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.55);
-      filter: blur(6px);
-      animation: steamUp 2.4s ease-in-out infinite;
+      background: rgba(255,240,210,0.45);
+      filter: blur(8px);
+      animation: steamUp 2.6s ease-in-out infinite;
     }
-    .steam span:nth-child(1) { left: 20%; animation-delay: 0s; }
-    .steam span:nth-child(2) { left: 45%; width: 24px; height: 24px; animation-delay: 0.4s; }
-    .steam span:nth-child(3) { left: 68%; animation-delay: 0.8s; }
+    .steam span:nth-child(1) { left: 18%; }
+    .steam span:nth-child(2) { left: 42%; width: 28px; height: 28px; animation-delay: 0.45s; }
+    .steam span:nth-child(3) { left: 66%; animation-delay: 0.9s; }
     @keyframes steamUp {
-      0% { transform: translateY(20px) scale(0.6); opacity: 0; }
-      30% { opacity: 0.7; }
-      100% { transform: translateY(-70px) scale(1.4); opacity: 0; }
+      0% { transform: translateY(16px) scale(0.5); opacity: 0; }
+      30% { opacity: 0.65; }
+      100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
     }
 
-    .crumb {
+    .glow {
       position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
-      background: #e08612;
+      inset: 18% 14% 20%;
+      border-radius: 40%;
+      background: radial-gradient(circle, rgba(255,160,60,0.35), transparent 65%);
+      filter: blur(18px);
       opacity: 0;
       pointer-events: none;
-    }
-    #stage.in .crumb {
-      animation: crumbFall 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
-      animation-delay: var(--d);
-    }
-    @keyframes crumbFall {
-      0% { opacity: 0; transform: translate(0,-40px) rotate(0deg); }
-      20% { opacity: 1; }
-      100% { opacity: 0.85; transform: translate(var(--tx), var(--ty)) rotate(220deg); }
-    }
-
-    .burst {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      background:
-        radial-gradient(circle at 50% 48%, rgba(255,200,80,0.55), transparent 28%),
-        radial-gradient(circle at 50% 48%, rgba(232,106,23,0.25), transparent 48%);
+      z-index: 0;
       transition: opacity 0.35s ease;
     }
-    #stage.hot .burst { opacity: 1; animation: pulse 1.2s ease-in-out infinite; }
+    #stage.hot .glow { opacity: 1; animation: pulse 1.3s ease-in-out infinite; }
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.7; }
-      50% { transform: scale(1.06); opacity: 1; }
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.08); opacity: 0.9; }
     }
 
-    .floaters {
+    .chip {
       position: absolute;
-      inset: 0;
+      bottom: 1.1rem;
+      left: 1.25rem;
+      z-index: 5;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,230,170,0.7);
       pointer-events: none;
-      overflow: hidden;
     }
-    .floater {
-      position: absolute;
-      font-size: 1.4rem;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
-      animation: floaty 5s ease-in-out infinite;
-      opacity: 0.85;
-    }
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0) rotate(-6deg); }
-      50% { transform: translateY(-16px) rotate(8deg); }
+
+    @media (max-width: 560px) {
+      .slice { display: none; }
+      .panini { inset: 14% 8% 22%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .layer, .steam span, .crumb, .floater, .burst { animation: none !important; }
-      #stage.in .layer { opacity: 1; transform: translateX(-50%) translateY(var(--y)) translateZ(var(--z)) scale(1); }
+      .panini, .slice, .plate, .steam span, .panini::after, .glow { animation: none !important; }
+      #stage.in .panini, #stage.in .slice, #stage.in .plate { opacity: 1; filter: none; }
+      .slice-a { transform: rotate(-10deg); }
+      .slice-b { transform: rotate(9deg); }
+      .panini { transform: none; }
     }
   </style>
 </head>
 <body>
   <div id="stage">
-    <div class="burst" aria-hidden="true"></div>
     <div class="label">
-      <div class="kicker">Watch it build</div>
-      <p class="title">Properly<br>loaded</p>
+      <div class="kicker">Fresh off the press</div>
+      <p class="title">Loaded<br>panini</p>
     </div>
     <div class="hint" id="hint">Hover to tilt</div>
-    <div class="floaters" aria-hidden="true">
-      <span class="floater" style="left:8%; top:28%; animation-delay:0s">🔥</span>
-      <span class="floater" style="left:86%; top:34%; animation-delay:0.6s">🧀</span>
-      <span class="floater" style="left:12%; top:68%; animation-delay:1.1s">🌶️</span>
-      <span class="floater" style="left:82%; top:72%; animation-delay:1.7s">✨</span>
-    </div>
+    <div class="chip">Real grill marks · melted fill · click to rebuild</div>
     <div class="world">
-      <div class="bite" id="bite">
+      <div class="rig" id="rig">
+        <div class="glow" aria-hidden="true"></div>
         <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="layer bun-top"></div>
-        <div class="layer lettuce"></div>
-        <div class="layer cheese"></div>
-        <div class="layer patty"></div>
-        <div class="layer sauce"></div>
-        <div class="layer bun-bot"></div>
-        <div class="crumb" style="left:22%; top:30%; --tx:-40px; --ty:70px; --d:0.7s"></div>
-        <div class="crumb" style="left:70%; top:24%; --tx:50px; --ty:80px; --d:0.85s; background:#f0b429"></div>
-        <div class="crumb" style="left:48%; top:18%; --tx:10px; --ty:95px; --d:1s; background:#fff"></div>
+        <div class="plate" aria-hidden="true"></div>
+        <div class="slice slice-a" aria-hidden="true"></div>
+        <div class="slice slice-b" aria-hidden="true"></div>
+        <div class="panini" role="img" aria-label="Realistic grilled panini"></div>
       </div>
     </div>
   </div>
-
   <script>
     (() => {
       const stage = document.getElementById("stage");
-      const bite = document.getElementById("bite");
+      const rig = document.getElementById("rig");
       const hint = document.getElementById("hint");
-      let hover = false;
-      let mx = 0, my = 0;
+      let hover = false, mx = 0, my = 0;
 
       const fit = () => {
         try {
           if (window.frameElement) {
-            window.frameElement.style.height = Math.max(380, stage.clientHeight) + "px";
+            window.frameElement.style.height = Math.max(400, stage.clientHeight) + "px";
           }
         } catch (_) {}
       };
       new ResizeObserver(fit).observe(stage);
       fit();
 
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) stage.classList.add("in");
-          });
-        },
-        { threshold: 0.28 }
-      ).observe(stage);
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) stage.classList.add("in"); });
+      }, { threshold: 0.25 }).observe(stage);
 
       stage.addEventListener("pointerenter", () => {
         hover = true;
@@ -339,8 +335,6 @@ def bite_show_html() -> str:
         mx = ((e.clientX - r.left) / r.width) * 2 - 1;
         my = ((e.clientY - r.top) / r.height) * 2 - 1;
       });
-
-      // Click = rebuild burst
       stage.addEventListener("click", () => {
         stage.classList.remove("in");
         void stage.offsetWidth;
@@ -350,12 +344,13 @@ def bite_show_html() -> str:
       let t = 0;
       const tick = () => {
         t += 0.016;
-        const idleY = Math.sin(t * 0.9) * 4;
-        const idleX = Math.cos(t * 0.7) * 3;
-        const rx = 18 + (hover ? my * -18 : idleY * 0.3);
-        const ry = -18 + (hover ? mx * 28 : idleX * 0.4);
-        const rz = hover ? mx * -6 : 0;
-        bite.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${hover ? my * -8 : idleY}px)`;
+        const idleY = Math.sin(t * 0.85) * 3;
+        const idleX = Math.cos(t * 0.65) * 2.5;
+        const rx = 12 + (hover ? my * -16 : idleY * 0.25);
+        const ry = -16 + (hover ? mx * 26 : idleX * 0.35);
+        const rz = hover ? mx * -5 : 0;
+        const ty = hover ? my * -6 : idleY;
+        rig.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${ty}px)`;
         requestAnimationFrame(tick);
       };
       tick();
@@ -364,8 +359,6 @@ def bite_show_html() -> str:
 </body>
 </html>
 '''
-
-
 
 st.set_page_config(
     page_title="LoadedBites GLA",
@@ -1198,9 +1191,9 @@ components.html(
 # --- TikTok-style loaded bite build (hover tilt, scroll assemble) ---
 show_html(
     """
-    <p class="ft-section">The loaded drop</p>
+    <p class="ft-section">The loaded panini</p>
     <p class="ft-lead">
-      Scroll in and watch a properly loaded bite assemble — hover to tilt it in 3D, click to rebuild.
+      Scroll in for a pressed panini with real grill marks — hover to tilt it in 3D, click to rebuild.
     </p>
     """
 )
