@@ -332,6 +332,25 @@ show_html(
         margin: 0 0 0.75rem 0;
       }
 
+      .ft-serve {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+        align-items: start;
+        margin: 0.2rem 0 0.5rem;
+      }
+      .ft-serve .ft-card {
+        height: 100%;
+        margin: 0;
+      }
+      .ft-serve .ft-card h3 {
+        min-height: 2.6rem;
+        line-height: 1.15;
+      }
+      @media (max-width: 800px) {
+        .ft-serve { grid-template-columns: 1fr; }
+        .ft-serve .ft-card h3 { min-height: 0; }
+      }
       .ft-card {
         position: relative;
         overflow: hidden;
@@ -835,34 +854,24 @@ show_html(
 )
 
 show_html('<p class="ft-section">Who we serve</p>')
-c1, c2, c3 = st.columns(3, gap="medium")
-with c1:
-    show_html(
-        """
-        <div class="ft-card">
-          <h3>Business lunch</h3>
-          <p>Efficient service for a limited break, without sacrificing quality.</p>
-        </div>
-        """
-    )
-with c2:
-    show_html(
-        """
-        <div class="ft-card">
-          <h3>Evening dining</h3>
-          <p>A substantial, well-prepared option before or after your evening plans.</p>
-        </div>
-        """
-    )
-with c3:
-    show_html(
-        """
-        <div class="ft-card">
-          <h3>Groups &amp; families</h3>
-          <p>Straightforward ordering for shared meals, with options to suit a range of tastes.</p>
-        </div>
-        """
-    )
+show_html(
+    """
+    <div class="ft-serve">
+      <div class="ft-card">
+        <h3>Business lunch</h3>
+        <p>Efficient service for a limited break, without sacrificing quality.</p>
+      </div>
+      <div class="ft-card">
+        <h3>Evening dining</h3>
+        <p>A substantial, well-prepared option before or after your evening plans.</p>
+      </div>
+      <div class="ft-card">
+        <h3>Groups &amp; families</h3>
+        <p>Straightforward ordering for shared meals, with options to suit a range of tastes.</p>
+      </div>
+    </div>
+    """
+)
 
 show_html('<p class="ft-section">Get in touch</p>')
 show_html(
