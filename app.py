@@ -532,6 +532,47 @@ show_html(
         letter-spacing: -0.02em;
         color: var(--ft-orange);
         margin: 0;
+        display: inline-block;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
+        cursor: default;
+      }
+      .ft-logo:hover { transform: scale(1.08); }
+
+      .ft-section,
+      .ft-lead,
+      .ft-body,
+      .ft-card h3,
+      .ft-card p,
+      .ft-headline-aside,
+      .ft-brand,
+      .ft-sub,
+      .ft-tag,
+      .ft-footer,
+      .ft-points span {
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
+      }
+      .ft-section:hover,
+      .ft-lead:hover,
+      .ft-body:hover,
+      .ft-card h3:hover,
+      .ft-card p:hover,
+      .ft-headline-aside:hover,
+      .ft-brand:hover,
+      .ft-sub:hover,
+      .ft-tag:hover,
+      .ft-footer:hover,
+      .ft-points span:hover {
+        transform: scale(1.045);
+      }
+      .ft-headline .ft-word > span {
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left bottom;
+        cursor: default;
+      }
+      .ft-headline .ft-word > span:hover {
+        transform: scale(1.06);
       }
       .ft-nav {
         display: flex;
@@ -776,7 +817,7 @@ show_html(
       }
       .ft-card::before { display: none; }
       .ft-card:hover {
-        transform: translateX(4px);
+        transform: translateX(4px) scale(1.02);
         box-shadow: none;
       }
       .ft-card h3 {
@@ -876,6 +917,11 @@ show_html(
       @media (prefers-reduced-motion: reduce) {
         .ft-reveal:not(.ft-in) { opacity: 1; }
         .ft-in, .ft-arrow, .ft-hero-glass::before, .ft-marquee-track, .ft-headline .ft-word > span, .ft-headline { animation: none; }
+        .ft-section:hover, .ft-lead:hover, .ft-body:hover, .ft-card h3:hover, .ft-card p:hover,
+        .ft-headline-aside:hover, .ft-brand:hover, .ft-sub:hover, .ft-tag:hover, .ft-footer:hover,
+        .ft-points span:hover, .ft-logo:hover, .ft-headline .ft-word > span:hover {
+          transform: none;
+        }
       }
       @media (max-width: 800px) {
         .ft-headline-row { grid-template-columns: 1fr; }
@@ -1034,7 +1080,11 @@ components.html(
         letter-spacing: 0.16em;
         text-transform: uppercase;
         color: rgba(255, 230, 170, 0.92);
+        display: inline-block;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
       }
+      .bit-inner:hover .bit-kicker { transform: scale(1.05); }
       .bit-words {
         font-family: "Syne", sans-serif;
         font-size: clamp(1.35rem, 2vw, 1.75rem);
@@ -1044,7 +1094,11 @@ components.html(
         text-transform: uppercase;
         color: #ffffff;
         margin: 0;
+        display: inline-block;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
       }
+      .bit-inner:hover .bit-words { transform: scale(1.06); }
       .bit-sub {
         margin: 0;
         font-size: 0.9rem;
@@ -1052,7 +1106,10 @@ components.html(
         color: rgba(255, 255, 255, 0.85);
         letter-spacing: -0.01em;
         max-width: 22rem;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: left center;
       }
+      .bit-inner:hover .bit-sub { transform: scale(1.04); }
       .bit:not(.in) .bit-inner { opacity: 0; }
       .bit.in .bit-inner { animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
       .bit-2.in .bit-inner { animation-delay: 0.08s; }
