@@ -117,6 +117,15 @@ show_html(
         letter-spacing: -0.05em;
         line-height: 1.05;
       }
+      .ft-lead {
+        font-size: 1.05rem;
+        line-height: 1.4;
+        color: #44403c;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        max-width: 44rem;
+        margin: 0 0 0.65rem 0;
+      }
       .ft-body {
         font-size: 1rem;
         line-height: 1.4;
@@ -124,6 +133,29 @@ show_html(
         letter-spacing: -0.02em;
         max-width: 44rem;
         margin: 0 0 0.55rem 0;
+      }
+      .ft-card {
+        background: rgba(255, 255, 255, 0.78);
+        border: 2px solid rgba(251, 113, 133, 0.55);
+        border-radius: 16px;
+        padding: 1.05rem 1.1rem 0.9rem;
+        margin-bottom: 0.7rem;
+        box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
+      }
+      .ft-card h3 {
+        font-family: var(--ft-display) !important;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 0.3rem 0;
+        color: #9f1239;
+        letter-spacing: -0.04em;
+      }
+      .ft-card p {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        color: #57534e;
+        margin: 0;
+        letter-spacing: -0.02em;
       }
       .ft-footer {
         text-align: center;
@@ -162,7 +194,8 @@ show_html(
       <div class="ft-tag">Bath food vend</div>
       <p class="ft-brand">LoadedBites GLA</p>
       <p class="ft-sub">
-        Big flavour. Proper portions. Scroll down for a taste of what we do.
+        Big flavour. Proper portions. Street food worth queuing for —
+        cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
     <p class="ft-scroll-hint">↓ Scroll for three bites about the vend</p>
@@ -289,12 +322,145 @@ components.html(
     scrolling=False,
 )
 
+# --- Full writing ---
+show_html('<p class="ft-section">Hungry in Bath?</p>')
+show_html(
+    """
+    <p class="ft-lead">
+      LoadedBites GLA is a Bath food vend built for people who want more than a rushed sandwich.
+      We load every order with bold seasoning, generous toppings, and the kind of comfort food
+      that turns a quick stop into the best part of your day.
+    </p>
+    <p class="ft-body">
+      Whether you catch us at lunch, after work, or on a weekend wander, the mission stays the same:
+      honest food, cooked to order, packed with flavour, and ready when you are.
+      No fancy dining room — just a food vend, a grill, and bites that hit every time.
+    </p>
+    """
+)
+
+show_html('<p class="ft-section">Why LoadedBites GLA</p>')
+left, right = st.columns(2, gap="large")
+with left:
+    show_html(
+        """
+        <div class="ft-card">
+          <h3>Loaded for real</h3>
+          <p>
+            We don’t do sad, half-filled trays. Every bite is stacked with flavour —
+            sauces, toppings, and extras chosen to make the meal feel special.
+          </p>
+        </div>
+        <div class="ft-card">
+          <h3>Cooked fresh</h3>
+          <p>
+            Your order starts when you ask for it. Hot from the vend, not sitting under a lamp
+            waiting for someone else to change their mind.
+          </p>
+        </div>
+        """
+    )
+with right:
+    show_html(
+        """
+        <div class="ft-card">
+          <h3>Bath energy</h3>
+          <p>
+            Made for this city — quick enough for a lunch break, good enough for a night out,
+            friendly enough that you’ll want to come back with mates.
+          </p>
+        </div>
+        <div class="ft-card">
+          <h3>Fair prices</h3>
+          <p>
+            Street food should feel worth it. Big portions, strong taste, and prices that make
+            sense when you’re feeding yourself or the whole crew.
+          </p>
+        </div>
+        """
+    )
+
+show_html('<p class="ft-section">What we cook</p>')
+show_html(
+    """
+    <p class="ft-lead">
+      LoadedBites GLA is all about big, bold comfort food — the kind you can smell before you
+      see the queue. Think crispy bases, rich fillings, melted cheese, house sauces, and toppings
+      piled high until the tray actually feels loaded.
+    </p>
+    <p class="ft-body">
+      We lean into warm wraps with seasoned protein and fresh crunch, cheesy stacks that get
+      messy in the best way, and spicy options when you want a kick. Everything is cooked to
+      order at the food vend, so it lands hot, fresh, and ready to eat on the go.
+    </p>
+    <p class="ft-body">
+      Some days we’re smoky. Some days we’re sweet. Specials rotate with the spot and the mood,
+      but the idea never changes: generous portions, strong flavour, and food that turns a quick
+      stop into something you talk about later. Ask at the window — if we can make it loaded, we will.
+    </p>
+    """
+)
+
+show_html('<p class="ft-section">Find the food vend</p>')
+show_html(
+    """
+    <p class="ft-lead">
+      LoadedBites GLA sets up around Bath — city centre lunch runs, local spots, events,
+      and weekend stops. We post where the food vend is so you can plan the detour.
+    </p>
+    <p class="ft-body">
+      Typical hours lean lunch through early evening, with later finishes when the crowd is out.
+      Weather happens. Traffic happens. Flavour still shows up.
+    </p>
+    <p class="ft-body">
+      <strong>Tip:</strong> check our Instagram story before you travel — that’s the fastest way
+      to see today’s pin, opening time, and sold-out warnings.
+    </p>
+    """
+)
+
+show_html('<p class="ft-section">Made for your kind of hunger</p>')
+c1, c2, c3 = st.columns(3, gap="medium")
+with c1:
+    show_html(
+        """
+        <div class="ft-card">
+          <h3>Office lunch</h3>
+          <p>Fast enough for your break. Good enough that you won’t miss the cafeteria.</p>
+        </div>
+        """
+    )
+with c2:
+    show_html(
+        """
+        <div class="ft-card">
+          <h3>Night out fuel</h3>
+          <p>After the gig, before the next plan — grab something hot and properly filling.</p>
+        </div>
+        """
+    )
+with c3:
+    show_html(
+        """
+        <div class="ft-card">
+          <h3>Family &amp; friends</h3>
+          <p>Easy to order for a group. Mix the menu, share sauces, argue about favourites.</p>
+        </div>
+        """
+    )
+
 # --- CTA ---
 show_html('<p class="ft-section">Come get loaded</p>')
 show_html(
     """
+    <p class="ft-lead">
+      Looking for the food vend, booking us for a private stop, or just want today’s specials?
+      Reach out — we love feeding Bath.
+    </p>
     <p class="ft-body">
-      Message us for today’s spot, catering, or event bookings. We love feeding Bath.
+      Message us on Instagram or WhatsApp for location updates, catering enquiries,
+      and custom orders for events. If you’ve got a birthday, office lunch, or market day,
+      LoadedBites GLA can set up and feed the crowd.
     </p>
     """
 )
