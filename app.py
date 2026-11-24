@@ -68,6 +68,11 @@ show_html(
         margin-bottom: 0.8rem;
         box-shadow: 0 18px 40px rgba(225, 29, 72, 0.28);
         animation: ftHeroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .ft-hero:hover {
+        transform: scale(1.015);
+        box-shadow: 0 22px 48px rgba(225, 29, 72, 0.34);
       }
       .ft-tag {
         display: inline-block;
@@ -80,7 +85,9 @@ show_html(
         padding: 0.4rem 0.8rem;
         border-radius: 999px;
         margin-bottom: 0.7rem;
+        transition: transform 0.25s ease;
       }
+      .ft-tag:hover { transform: scale(1.12); }
       .ft-brand {
         font-family: var(--ft-display) !important;
         font-size: clamp(2.5rem, 5.5vw, 3.6rem);
@@ -89,7 +96,10 @@ show_html(
         line-height: 0.95;
         letter-spacing: -0.055em;
         color: #fff1f2;
+        display: inline-block;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
       }
+      .ft-brand:hover { transform: scale(1.08); }
       .ft-sub {
         margin: 0;
         font-size: 1.15rem;
@@ -98,7 +108,10 @@ show_html(
         color: #ffe4e6;
         font-weight: 500;
         letter-spacing: -0.02em;
+        transition: transform 0.28s ease;
+        transform-origin: left center;
       }
+      .ft-sub:hover { transform: scale(1.05); }
       .ft-scroll-hint {
         text-align: center;
         color: #9f1239;
@@ -107,6 +120,11 @@ show_html(
         letter-spacing: -0.02em;
         margin: 0.4rem 0 0.2rem;
         opacity: 0.85;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+      .ft-scroll-hint:hover {
+        transform: scale(1.1);
+        opacity: 1;
       }
       .ft-section {
         font-family: var(--ft-display) !important;
@@ -116,7 +134,10 @@ show_html(
         color: #be123c;
         letter-spacing: -0.05em;
         line-height: 1.05;
+        display: inline-block;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
       }
+      .ft-section:hover { transform: scale(1.08); }
       .ft-lead {
         font-size: 1.05rem;
         line-height: 1.4;
@@ -125,7 +146,10 @@ show_html(
         letter-spacing: -0.02em;
         max-width: 44rem;
         margin: 0 0 0.65rem 0;
+        transition: transform 0.28s ease;
+        transform-origin: left top;
       }
+      .ft-lead:hover { transform: scale(1.045); }
       .ft-body {
         font-size: 1rem;
         line-height: 1.4;
@@ -133,7 +157,10 @@ show_html(
         letter-spacing: -0.02em;
         max-width: 44rem;
         margin: 0 0 0.55rem 0;
+        transition: transform 0.28s ease;
+        transform-origin: left top;
       }
+      .ft-body:hover { transform: scale(1.045); }
       .ft-card {
         background: rgba(255, 255, 255, 0.78);
         border: 2px solid rgba(251, 113, 133, 0.55);
@@ -141,6 +168,11 @@ show_html(
         padding: 1.05rem 1.1rem 0.9rem;
         margin-bottom: 0.7rem;
         box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      }
+      .ft-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 16px 36px rgba(225, 29, 72, 0.2);
       }
       .ft-card h3 {
         font-family: var(--ft-display) !important;
@@ -166,7 +198,9 @@ show_html(
         border-top: 2px solid rgba(251, 113, 133, 0.45);
         font-weight: 500;
         line-height: 1.4;
+        transition: transform 0.25s ease;
       }
+      .ft-footer:hover { transform: scale(1.06); }
       div[data-testid="stButton"] button,
       .stLinkButton a {
         border-radius: 14px !important;
@@ -177,11 +211,13 @@ show_html(
         background: rgba(255, 228, 230, 0.7) !important;
         color: #9f1239 !important;
         border: 2px solid rgba(244, 63, 94, 0.75) !important;
+        transition: transform 0.25s ease, background 0.25s ease !important;
       }
       div[data-testid="stButton"] button:hover,
       .stLinkButton a:hover {
         background: rgba(254, 240, 138, 0.85) !important;
         border-color: #e11d48 !important;
+        transform: scale(1.06) !important;
       }
     </style>
     """
@@ -221,85 +257,113 @@ components.html(
       }
       .bit {
         max-width: 34rem;
+        opacity: 0;
+        filter: blur(10px);
+        will-change: transform, opacity, filter;
+      }
+      .bit-1 { align-self: flex-start; transform: translateX(-80px) rotate(-3deg); }
+      .bit-2 { align-self: flex-end; transform: translateX(80px) rotate(3deg); }
+      .bit-3 { align-self: center; transform: translateY(60px) scale(0.8); }
+
+      .bit-inner {
         padding: 1.35rem 1.4rem 1.25rem;
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.82);
+        background: rgba(255, 255, 255, 0.88);
         border: 2px solid rgba(251, 113, 133, 0.55);
         box-shadow: 0 14px 34px rgba(225, 29, 72, 0.14);
-        opacity: 0;
-        will-change: transform, opacity;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                    box-shadow 0.35s ease,
+                    border-color 0.35s ease;
+        cursor: default;
       }
-      .bit h3 {
+      .bit-inner:hover {
+        transform: scale(1.1);
+        box-shadow: 0 22px 48px rgba(225, 29, 72, 0.28);
+        border-color: #e11d48;
+      }
+      .bit-inner h3 {
         font-family: "Space Grotesk", sans-serif;
         font-size: 1.35rem;
         margin: 0 0 0.45rem;
         letter-spacing: -0.04em;
         color: #9f1239;
+        transition: transform 0.3s ease, letter-spacing 0.3s ease;
+        transform-origin: left center;
       }
-      .bit p {
+      .bit-inner p {
         margin: 0;
         font-size: 1.02rem;
         line-height: 1.45;
         letter-spacing: -0.02em;
         color: #57534e;
+        transition: transform 0.3s ease, font-size 0.3s ease;
+        transform-origin: left top;
       }
-      .bit-1 { align-self: flex-start; transform: translateX(-70px) rotate(-2deg); }
-      .bit-2 { align-self: flex-end; transform: translateX(70px) rotate(2deg); }
-      .bit-3 {
-        align-self: center;
-        transform: translateY(50px) scale(0.86);
+      .bit-inner:hover h3 {
+        transform: scale(1.08);
+        letter-spacing: -0.03em;
+      }
+      .bit-inner:hover p {
+        transform: scale(1.05);
       }
 
       .bit-1.in {
-        animation: slideInLeft 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: wowLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       }
       .bit-2.in {
-        animation: slideInRight 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: wowRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       }
       .bit-3.in {
-        animation: popIn 0.8s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+        animation: wowPop 0.95s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
       }
 
-      @keyframes slideInLeft {
-        0% { opacity: 0; transform: translateX(-70px) rotate(-2deg); }
-        70% { opacity: 1; transform: translateX(8px) rotate(0.5deg); }
-        100% { opacity: 1; transform: translateX(0) rotate(0deg); }
+      @keyframes wowLeft {
+        0% { opacity: 0; filter: blur(12px); transform: translateX(-80px) rotate(-4deg); }
+        60% { opacity: 1; filter: blur(0); transform: translateX(14px) rotate(1deg); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
       }
-      @keyframes slideInRight {
-        0% { opacity: 0; transform: translateX(70px) rotate(2deg); }
-        70% { opacity: 1; transform: translateX(-8px) rotate(-0.5deg); }
-        100% { opacity: 1; transform: translateX(0) rotate(0deg); }
+      @keyframes wowRight {
+        0% { opacity: 0; filter: blur(12px); transform: translateX(80px) rotate(4deg); }
+        60% { opacity: 1; filter: blur(0); transform: translateX(-14px) rotate(-1deg); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
       }
-      @keyframes popIn {
-        0% { opacity: 0; transform: translateY(50px) scale(0.86); }
-        60% { opacity: 1; transform: translateY(-8px) scale(1.04); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
+      @keyframes wowPop {
+        0% { opacity: 0; filter: blur(14px); transform: translateY(60px) scale(0.75); }
+        55% { opacity: 1; filter: blur(0); transform: translateY(-12px) scale(1.08); }
+        75% { transform: translateY(4px) scale(0.98); }
+        100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
       }
     </style>
 
     <div class="track">
       <div class="bit bit-1">
-        <h3>Hot off the vend</h3>
-        <p>
-          LoadedBites GLA cooks to order — crispy, cheesy, saucy bites that land hot
-          in your hands. No sad waiting-lamp food. Just fresh street energy in Bath.
-        </p>
+        <div class="bit-inner">
+          <h3>Hot off the vend</h3>
+          <p>
+            LoadedBites GLA cooks to order — crispy, cheesy, saucy bites that land hot
+            in your hands. No sad waiting-lamp food. Just fresh street energy in Bath.
+          </p>
+        </div>
       </div>
 
       <div class="bit bit-2">
-        <h3>Properly loaded</h3>
-        <p>
-          We stack flavour on flavour: bold seasoning, house sauces, and toppings piled high.
-          Big portions, messy in the best way, made for lunch breaks and late-night cravings.
-        </p>
+        <div class="bit-inner">
+          <h3>Properly loaded</h3>
+          <p>
+            We stack flavour on flavour: bold seasoning, house sauces, and toppings piled high.
+            Big portions, messy in the best way, made for lunch breaks and late-night cravings.
+          </p>
+        </div>
       </div>
 
       <div class="bit bit-3">
-        <h3>Find us &amp; get stuck in</h3>
-        <p>
-          Catch the food vend around Bath — city spots, events, weekend stops.
-          Follow the stories for today’s pin, then come get loaded.
-        </p>
+        <div class="bit-inner">
+          <h3>Find us &amp; get stuck in</h3>
+          <p>
+            Catch the food vend around Bath — city spots, events, weekend stops.
+            Follow the stories for today’s pin, then come get loaded.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -313,7 +377,7 @@ components.html(
             }
           });
         },
-        { threshold: 0.4 }
+        { threshold: 0.35 }
       );
       bits.forEach((bit) => io.observe(bit));
     </script>
