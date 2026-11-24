@@ -1,7 +1,10 @@
+from pathlib import Path
 from textwrap import dedent
 
 import streamlit as st
 import streamlit.components.v1 as components
+
+ASSETS = Path(__file__).resolve().parent / "assets"
 
 
 def show_html(content: str) -> None:
@@ -104,6 +107,64 @@ show_html(
       @keyframes ftBob {
         0%, 100% { transform: translateY(-2px); }
         50% { transform: translateY(5px); }
+      }
+      @keyframes ftMarquee {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      @keyframes ftWordIn {
+        from { opacity: 0; transform: translateY(110%) rotateX(-40deg); filter: blur(8px); }
+        to { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+      }
+      @keyframes ftGlowPulse {
+        0%, 100% { text-shadow: 0 0 0 transparent; }
+        50% { text-shadow: 0 0 28px rgba(232,106,23,0.35); }
+      }
+
+      .ft-marquee {
+        position: relative;
+        overflow: hidden;
+        margin: 0.4rem 0 1.4rem;
+        border-block: 1px solid rgba(232,106,23,0.2);
+        background: linear-gradient(90deg, rgba(240,180,41,0.18), rgba(232,106,23,0.12), rgba(240,180,41,0.18));
+        padding: 0.85rem 0;
+        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      }
+      .ft-marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 0;
+        animation: ftMarquee 22s linear infinite;
+      }
+      .ft-marquee-track span {
+        font-family: var(--ft-display);
+        font-weight: 800;
+        font-size: clamp(1rem, 2.2vw, 1.35rem);
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        padding: 0 1.4rem;
+        color: var(--ft-ink);
+      }
+      .ft-marquee-track span i {
+        font-style: normal;
+        color: var(--ft-orange);
+        margin: 0 0.85rem;
+      }
+
+      .ft-headline .ft-word {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+        perspective: 600px;
+      }
+      .ft-headline .ft-word > span {
+        display: inline-block;
+        animation: ftWordIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: var(--d, 0s);
+      }
+      .ft-headline {
+        animation: ftGlowPulse 3.5s ease-in-out 1.2s infinite;
       }
 
       .ft-top {
@@ -447,21 +508,25 @@ show_html(
       }
 
       .ft-reveal:not(.ft-in) { opacity: 0; }
-      .ft-in { animation: ftRise 0.75s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+      .ft-in { animation: ftRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
       .ft-section.ft-in { animation-name: ftSlideIn; }
       .ft-card.ft-in { animation-name: ftPop; }
+      .ft-lead.ft-in, .ft-body.ft-in { animation-name: ftBlurIn; }
       @keyframes ftRise {
-        from { opacity: 0; transform: translateY(28px); }
+        from { opacity: 0; transform: translateY(36px) scale(0.98); }
       }
       @keyframes ftSlideIn {
-        from { opacity: 0; transform: translateY(24px); }
+        from { opacity: 0; transform: translateX(-28px) skewX(-4deg); filter: blur(6px); }
       }
       @keyframes ftPop {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(28px) scale(0.92); filter: blur(4px); }
+      }
+      @keyframes ftBlurIn {
+        from { opacity: 0; filter: blur(10px); transform: translateY(18px); }
       }
       @media (prefers-reduced-motion: reduce) {
         .ft-reveal:not(.ft-in) { opacity: 1; }
-        .ft-in, .ft-arrow, .ft-hero-glass::before { animation: none; }
+        .ft-in, .ft-arrow, .ft-hero-glass::before, .ft-marquee-track, .ft-headline .ft-word > span, .ft-headline { animation: none; }
       }
       @media (max-width: 800px) {
         .ft-headline-row { grid-template-columns: 1fr; }
@@ -487,7 +552,12 @@ show_html(
       </div>
     </div>
     <div class="ft-headline-row">
-      <h1 class="ft-headline">Future of<br>street<br>dining</h1>
+      <h1 class="ft-headline">
+        <span class="ft-word"><span style="--d:0.05s">Future</span></span><br>
+        <span class="ft-word"><span style="--d:0.18s">of</span></span><br>
+        <span class="ft-word"><span style="--d:0.3s">street</span></span><br>
+        <span class="ft-word"><span style="--d:0.42s">dining</span></span>
+      </h1>
       <p class="ft-headline-aside">
         We craft generous, carefully prepared bites that bring lively energy to Bath’s streets.
       </p>
@@ -507,6 +577,12 @@ show_html(
       </div>
     </div>
     <p class="ft-scroll-hint"><span class="ft-arrow">↓</span> Explore</p>
+    <div class="ft-marquee" aria-hidden="true">
+      <div class="ft-marquee-track">
+        <span>Loaded bites <i>•</i> Hot sauce <i>•</i> Melted cheese <i>•</i> Bath streets <i>•</i> Cooked to order <i>•</i> Properly loaded <i>•</i></span>
+        <span>Loaded bites <i>•</i> Hot sauce <i>•</i> Melted cheese <i>•</i> Bath streets <i>•</i> Cooked to order <i>•</i> Properly loaded <i>•</i></span>
+      </div>
+    </div>
     """
 )
 
@@ -592,8 +668,16 @@ components.html(
       .bit-2 .bit-inner::after { content: "02"; }
       .bit-3 .bit-inner::after { content: "03"; }
       .bit-inner:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transform: translateY(-10px) scale(1.02) rotate(-0.4deg);
+        box-shadow: 0 28px 56px rgba(120, 55, 10, 0.22), inset 0 1px 0 rgba(255, 240, 200, 0.85);
+      }
+      .bit.in .bit-words {
+        animation: bitTitle 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: inherit;
+      }
+      @keyframes bitTitle {
+        from { opacity: 0; letter-spacing: 0.2em; transform: translateY(18px); filter: blur(8px); }
+        to { opacity: 1; letter-spacing: -0.04em; transform: translateY(0); filter: blur(0); }
       }
       .bit-kicker {
         font-size: 0.68rem;
@@ -752,6 +836,21 @@ components.html(
     </script>
     """,
     height=260,
+    scrolling=False,
+)
+
+# --- TikTok-style loaded bite build (hover tilt, scroll assemble) ---
+show_html(
+    """
+    <p class="ft-section">The loaded drop</p>
+    <p class="ft-lead">
+      Scroll in and watch a properly loaded bite assemble — hover to tilt it in 3D, click to rebuild.
+    </p>
+    """
+)
+components.html(
+    (ASSETS / "bite_show.html").read_text(encoding="utf-8"),
+    height=400,
     scrolling=False,
 )
 
