@@ -49,11 +49,11 @@ show_html(
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
-        padding-top: 1.5rem;
+        padding-top: 1.2rem;
         padding-bottom: 2.2rem;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        max-width: 1100px;
+        padding-left: 1.4rem !important;
+        padding-right: 1.4rem !important;
+        max-width: 1400px;
       }
 
       @keyframes ftHeroIn {
@@ -63,12 +63,13 @@ show_html(
 
       .ft-hero {
         background: linear-gradient(125deg, #be123c 0%, #e11d48 32%, #fb7185 62%, #fde047 100%);
-        border-radius: 24px;
-        padding: 2.4rem 2rem 2.1rem;
+        border-radius: 28px;
+        padding: 3.2rem 2.8rem 2.8rem;
         margin-bottom: 0.8rem;
         box-shadow: 0 18px 40px rgba(225, 29, 72, 0.28);
         animation: ftHeroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
       }
       .ft-hero:hover {
         transform: scale(1.015);
@@ -139,23 +140,23 @@ show_html(
       }
       .ft-section:hover { transform: scale(1.08); }
       .ft-lead {
-        font-size: 1.05rem;
+        font-size: 1.12rem;
         line-height: 1.4;
         color: #44403c;
         font-weight: 400;
         letter-spacing: -0.02em;
-        max-width: 44rem;
+        max-width: 56rem;
         margin: 0 0 0.65rem 0;
         transition: transform 0.28s ease;
         transform-origin: left top;
       }
       .ft-lead:hover { transform: scale(1.045); }
       .ft-body {
-        font-size: 1rem;
+        font-size: 1.05rem;
         line-height: 1.4;
         color: #57534e;
         letter-spacing: -0.02em;
-        max-width: 44rem;
+        max-width: 56rem;
         margin: 0 0 0.55rem 0;
         transition: transform 0.28s ease;
         transform-origin: left top;
@@ -234,136 +235,111 @@ show_html(
         cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Scroll for three bites about the vend</p>
+    <p class="ft-scroll-hint">↓ Scroll — three words at a time</p>
     """
 )
 
-# --- Scroll-triggered story bits ---
+# --- Scroll-triggered word bubbles ---
 components.html(
     """
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <style>
       html, body {
         margin: 0;
         background: transparent;
         font-family: "Outfit", sans-serif;
         color: #1c1917;
+        width: 100%;
       }
       .track {
         display: flex;
         flex-direction: column;
-        gap: 7.5rem;
-        padding: 2.5rem 0.4rem 3rem;
+        align-items: center;
+        gap: 5.5rem;
+        padding: 2rem 1rem 2.5rem;
+        width: 100%;
+        box-sizing: border-box;
       }
       .bit {
-        max-width: 34rem;
         opacity: 0;
-        filter: blur(10px);
+        filter: blur(12px);
         will-change: transform, opacity, filter;
       }
-      .bit-1 { align-self: flex-start; transform: translateX(-80px) rotate(-3deg); }
-      .bit-2 { align-self: flex-end; transform: translateX(80px) rotate(3deg); }
-      .bit-3 { align-self: center; transform: translateY(60px) scale(0.8); }
+      .bit-1 { align-self: flex-start; margin-left: 4%; transform: translateX(-90px) rotate(-180deg) scale(0.6); }
+      .bit-2 { align-self: flex-end; margin-right: 4%; transform: translateX(90px) rotate(180deg) scale(0.6); }
+      .bit-3 { align-self: center; transform: translateY(80px) rotate(-220deg) scale(0.5); }
 
       .bit-inner {
-        padding: 1.35rem 1.4rem 1.25rem;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.88);
-        border: 2px solid rgba(251, 113, 133, 0.55);
-        box-shadow: 0 14px 34px rgba(225, 29, 72, 0.14);
+        width: min(78vw, 420px);
+        height: min(78vw, 420px);
+        max-width: 420px;
+        max-height: 420px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        box-sizing: border-box;
+        background: radial-gradient(circle at 30% 25%, #fff7ed 0%, #fecdd3 45%, #fb7185 100%);
+        border: 3px solid rgba(190, 18, 60, 0.45);
+        box-shadow:
+          0 18px 40px rgba(225, 29, 72, 0.22),
+          inset 0 0 40px rgba(253, 224, 71, 0.25);
         transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-                    box-shadow 0.35s ease,
-                    border-color 0.35s ease;
+                    box-shadow 0.35s ease;
         cursor: default;
       }
       .bit-inner:hover {
-        transform: scale(1.1);
-        box-shadow: 0 22px 48px rgba(225, 29, 72, 0.28);
-        border-color: #e11d48;
+        transform: scale(1.12);
+        box-shadow:
+          0 26px 55px rgba(225, 29, 72, 0.32),
+          inset 0 0 50px rgba(253, 224, 71, 0.35);
       }
-      .bit-inner h3 {
+      .bit-inner span {
         font-family: "Space Grotesk", sans-serif;
-        font-size: 1.35rem;
-        margin: 0 0 0.45rem;
-        letter-spacing: -0.04em;
-        color: #9f1239;
-        transition: transform 0.3s ease, letter-spacing 0.3s ease;
-        transform-origin: left center;
+        font-size: clamp(1.6rem, 4.2vw, 2.35rem);
+        font-weight: 700;
+        letter-spacing: -0.05em;
+        line-height: 1.15;
+        color: #881337;
+        transition: transform 0.3s ease;
       }
-      .bit-inner p {
-        margin: 0;
-        font-size: 1.02rem;
-        line-height: 1.45;
-        letter-spacing: -0.02em;
-        color: #57534e;
-        transition: transform 0.3s ease, font-size 0.3s ease;
-        transform-origin: left top;
-      }
-      .bit-inner:hover h3 {
-        transform: scale(1.08);
-        letter-spacing: -0.03em;
-      }
-      .bit-inner:hover p {
-        transform: scale(1.05);
+      .bit-inner:hover span {
+        transform: scale(1.1);
       }
 
-      .bit-1.in {
-        animation: wowLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      }
-      .bit-2.in {
-        animation: wowRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      }
-      .bit-3.in {
-        animation: wowPop 0.95s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
-      }
+      .bit-1.in { animation: spinInLeft 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      .bit-2.in { animation: spinInRight 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      .bit-3.in { animation: spinInPop 1.15s cubic-bezier(0.34, 1.35, 0.64, 1) forwards; }
 
-      @keyframes wowLeft {
-        0% { opacity: 0; filter: blur(12px); transform: translateX(-80px) rotate(-4deg); }
-        60% { opacity: 1; filter: blur(0); transform: translateX(14px) rotate(1deg); }
-        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
+      @keyframes spinInLeft {
+        0% { opacity: 0; filter: blur(14px); transform: translateX(-100px) rotate(-220deg) scale(0.55); }
+        65% { opacity: 1; filter: blur(0); transform: translateX(18px) rotate(18deg) scale(1.06); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0deg) scale(1); }
       }
-      @keyframes wowRight {
-        0% { opacity: 0; filter: blur(12px); transform: translateX(80px) rotate(4deg); }
-        60% { opacity: 1; filter: blur(0); transform: translateX(-14px) rotate(-1deg); }
-        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
+      @keyframes spinInRight {
+        0% { opacity: 0; filter: blur(14px); transform: translateX(100px) rotate(220deg) scale(0.55); }
+        65% { opacity: 1; filter: blur(0); transform: translateX(-18px) rotate(-18deg) scale(1.06); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0deg) scale(1); }
       }
-      @keyframes wowPop {
-        0% { opacity: 0; filter: blur(14px); transform: translateY(60px) scale(0.75); }
-        55% { opacity: 1; filter: blur(0); transform: translateY(-12px) scale(1.08); }
-        75% { transform: translateY(4px) scale(0.98); }
-        100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+      @keyframes spinInPop {
+        0% { opacity: 0; filter: blur(16px); transform: translateY(90px) rotate(-260deg) scale(0.45); }
+        55% { opacity: 1; filter: blur(0); transform: translateY(-16px) rotate(24deg) scale(1.1); }
+        78% { transform: translateY(6px) rotate(-8deg) scale(0.97); }
+        100% { opacity: 1; filter: blur(0); transform: translateY(0) rotate(0deg) scale(1); }
       }
     </style>
 
     <div class="track">
       <div class="bit bit-1">
-        <div class="bit-inner">
-          <h3>Hot off the vend</h3>
-          <p>
-            LoadedBites GLA cooks to order — crispy, cheesy, saucy bites that land hot
-            in your hands. No sad waiting-lamp food. Just fresh street energy in Bath.
-          </p>
-        </div>
+        <div class="bit-inner"><span>Fresh Hot Bites</span></div>
       </div>
-
       <div class="bit bit-2">
-        <div class="bit-inner">
-          <h3>Properly loaded</h3>
-          <p>
-            We stack flavour on flavour: bold seasoning, house sauces, and toppings piled high.
-            Big portions, messy in the best way, made for lunch breaks and late-night cravings.
-          </p>
-        </div>
+        <div class="bit-inner"><span>Properly Loaded Food</span></div>
       </div>
-
       <div class="bit bit-3">
-        <div class="bit-inner">
-          <h3>Find us &amp; get stuck in</h3>
-          <p>
-            Catch the food vend around Bath — city spots, events, weekend stops.
-            Follow the stories for today’s pin, then come get loaded.
-          </p>
-        </div>
+        <div class="bit-inner"><span>Bath Food Vend</span></div>
       </div>
     </div>
 
@@ -377,12 +353,12 @@ components.html(
             }
           });
         },
-        { threshold: 0.35 }
+        { threshold: 0.3 }
       );
       bits.forEach((bit) => io.observe(bit));
     </script>
     """,
-    height=980,
+    height=1180,
     scrolling=False,
 )
 
