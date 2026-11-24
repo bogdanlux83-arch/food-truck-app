@@ -235,14 +235,14 @@ show_html(
         cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Scroll — Largest Bites</p>
+    <p class="ft-scroll-hint">↓ Scroll the advert</p>
     """
 )
 
-# --- Scroll-triggered word bubbles ---
+# --- Scroll-triggered advert panels ---
 components.html(
     """
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <style>
       html, body {
         margin: 0;
@@ -254,92 +254,134 @@ components.html(
       .track {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 5.5rem;
-        padding: 2rem 1rem 2.5rem;
+        gap: 4.5rem;
+        padding: 1.5rem 0.2rem 2rem;
         width: 100%;
         box-sizing: border-box;
       }
       .bit {
+        width: 100%;
         opacity: 0;
-        filter: blur(12px);
+        filter: blur(10px);
         will-change: transform, opacity, filter;
       }
-      .bit-1 { align-self: flex-start; margin-left: 4%; transform: translateX(-90px) rotate(-180deg) scale(0.6); }
-      .bit-2 { align-self: flex-end; margin-right: 4%; transform: translateX(90px) rotate(180deg) scale(0.6); }
-      .bit-3 { align-self: center; transform: translateY(80px) rotate(-220deg) scale(0.5); }
+      .bit-1 { transform: translateX(-110%) rotate(-8deg); }
+      .bit-2 { transform: translateX(110%) rotate(8deg); }
+      .bit-3 { transform: translateY(80px) scale(0.88) rotate(-4deg); }
 
       .bit-inner {
-        width: min(78vw, 420px);
-        height: min(78vw, 420px);
-        max-width: 420px;
-        max-height: 420px;
-        border-radius: 999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 2rem;
+        width: 100%;
         box-sizing: border-box;
-        background: radial-gradient(circle at 30% 25%, #fff7ed 0%, #fecdd3 45%, #fb7185 100%);
-        border: 3px solid rgba(190, 18, 60, 0.45);
-        box-shadow:
-          0 18px 40px rgba(225, 29, 72, 0.22),
-          inset 0 0 40px rgba(253, 224, 71, 0.25);
+        border-radius: 18px;
+        padding: 2.1rem 2rem 1.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        justify-content: center;
+        min-height: 150px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 18px 42px rgba(136, 19, 55, 0.22);
         transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
                     box-shadow 0.35s ease;
         cursor: default;
+        position: relative;
+        overflow: hidden;
+      }
+      .bit-inner::after {
+        content: "AD";
+        position: absolute;
+        top: 0.85rem;
+        right: 1rem;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .bit-1 .bit-inner {
+        background: linear-gradient(115deg, #be123c 0%, #e11d48 55%, #fb7185 100%);
+      }
+      .bit-2 .bit-inner {
+        background: linear-gradient(115deg, #9f1239 0%, #f43f5e 50%, #fde047 100%);
+      }
+      .bit-3 .bit-inner {
+        background: linear-gradient(115deg, #881337 0%, #fb7185 45%, #fef08a 100%);
       }
       .bit-inner:hover {
-        transform: scale(1.12);
-        box-shadow:
-          0 26px 55px rgba(225, 29, 72, 0.32),
-          inset 0 0 50px rgba(253, 224, 71, 0.35);
+        transform: scale(1.035);
+        box-shadow: 0 24px 50px rgba(136, 19, 55, 0.3);
       }
-      .bit-inner span {
+      .bit-kicker {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 241, 242, 0.85);
+      }
+      .bit-words {
         font-family: "Space Grotesk", sans-serif;
-        font-size: clamp(1.6rem, 4.2vw, 2.35rem);
+        font-size: clamp(2rem, 5vw, 3.1rem);
         font-weight: 700;
         letter-spacing: -0.05em;
-        line-height: 1.15;
-        color: #881337;
+        line-height: 1.05;
+        color: #fff1f2;
+        margin: 0;
         transition: transform 0.3s ease;
+        transform-origin: left center;
       }
-      .bit-inner:hover span {
-        transform: scale(1.1);
+      .bit-inner:hover .bit-words {
+        transform: scale(1.08);
+      }
+      .bit-sub {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: rgba(255, 241, 242, 0.9);
+        letter-spacing: -0.02em;
+        max-width: 36rem;
       }
 
-      .bit-1.in { animation: spinInLeft 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-      .bit-2.in { animation: spinInRight 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-      .bit-3.in { animation: spinInPop 1.15s cubic-bezier(0.34, 1.35, 0.64, 1) forwards; }
+      .bit-1.in { animation: adSweepLeft 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      .bit-2.in { animation: adSweepRight 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      .bit-3.in { animation: adDropSpin 1.05s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
 
-      @keyframes spinInLeft {
-        0% { opacity: 0; filter: blur(14px); transform: translateX(-100px) rotate(-220deg) scale(0.55); }
-        65% { opacity: 1; filter: blur(0); transform: translateX(18px) rotate(18deg) scale(1.06); }
-        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0deg) scale(1); }
+      @keyframes adSweepLeft {
+        0% { opacity: 0; filter: blur(12px); transform: translateX(-110%) rotate(-10deg); }
+        70% { opacity: 1; filter: blur(0); transform: translateX(2%) rotate(2deg); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
       }
-      @keyframes spinInRight {
-        0% { opacity: 0; filter: blur(14px); transform: translateX(100px) rotate(220deg) scale(0.55); }
-        65% { opacity: 1; filter: blur(0); transform: translateX(-18px) rotate(-18deg) scale(1.06); }
-        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0deg) scale(1); }
+      @keyframes adSweepRight {
+        0% { opacity: 0; filter: blur(12px); transform: translateX(110%) rotate(10deg); }
+        70% { opacity: 1; filter: blur(0); transform: translateX(-2%) rotate(-2deg); }
+        100% { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
       }
-      @keyframes spinInPop {
-        0% { opacity: 0; filter: blur(16px); transform: translateY(90px) rotate(-260deg) scale(0.45); }
-        55% { opacity: 1; filter: blur(0); transform: translateY(-16px) rotate(24deg) scale(1.1); }
-        78% { transform: translateY(6px) rotate(-8deg) scale(0.97); }
-        100% { opacity: 1; filter: blur(0); transform: translateY(0) rotate(0deg) scale(1); }
+      @keyframes adDropSpin {
+        0% { opacity: 0; filter: blur(14px); transform: translateY(90px) scale(0.9) rotate(-12deg); }
+        60% { opacity: 1; filter: blur(0); transform: translateY(-10px) scale(1.03) rotate(3deg); }
+        100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1) rotate(0); }
       }
     </style>
 
     <div class="track">
       <div class="bit bit-1">
-        <div class="bit-inner"><span>Fresh Hot Bites</span></div>
+        <div class="bit-inner">
+          <div class="bit-kicker">LoadedBites GLA</div>
+          <p class="bit-words">Fresh Hot Bites</p>
+          <p class="bit-sub">Cooked to order at the food vend.</p>
+        </div>
       </div>
       <div class="bit bit-2">
-        <div class="bit-inner"><span>Properly Loaded Food</span></div>
+        <div class="bit-inner">
+          <div class="bit-kicker">Now serving Bath</div>
+          <p class="bit-words">Properly Loaded Food</p>
+          <p class="bit-sub">Big portions. Bold flavour. Worth the queue.</p>
+        </div>
       </div>
       <div class="bit bit-3">
-        <div class="bit-inner"><span>Bath Food Vend</span></div>
+        <div class="bit-inner">
+          <div class="bit-kicker">Catch the vend</div>
+          <p class="bit-words">Bath Food Vend</p>
+          <p class="bit-sub">Follow for today’s spot — then come get loaded.</p>
+        </div>
       </div>
     </div>
 
@@ -358,7 +400,7 @@ components.html(
       bits.forEach((bit) => io.observe(bit));
     </script>
     """,
-    height=1180,
+    height=920,
     scrolling=False,
 )
 
