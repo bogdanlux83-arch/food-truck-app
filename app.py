@@ -37,7 +37,7 @@ show_html(
         font-size: 18px;
         line-height: 1.4;
         -webkit-font-smoothing: antialiased;
-        color: #1c1917;
+        color: #ffffff;
       }
 
       .stApp {
@@ -111,7 +111,7 @@ show_html(
       .ft-sub:hover { transform: scale(1.05); }
       .ft-scroll-hint {
         text-align: center;
-        color: #9f1239;
+        color: #ffffff;
         font-size: 0.9rem;
         font-weight: 600;
         letter-spacing: -0.02em;
@@ -128,7 +128,7 @@ show_html(
         font-size: clamp(1.7rem, 3vw, 2.1rem);
         font-weight: 700;
         margin: 1.55rem 0 0.65rem;
-        color: #be123c;
+        color: #ffffff;
         letter-spacing: -0.05em;
         line-height: 1.05;
         display: inline-block;
@@ -138,7 +138,7 @@ show_html(
       .ft-lead {
         font-size: 1.12rem;
         line-height: 1.4;
-        color: #44403c;
+        color: #ffffff;
         font-weight: 400;
         letter-spacing: -0.02em;
         max-width: 56rem;
@@ -150,7 +150,7 @@ show_html(
       .ft-body {
         font-size: 1.05rem;
         line-height: 1.4;
-        color: #57534e;
+        color: #ffffff;
         letter-spacing: -0.02em;
         max-width: 56rem;
         margin: 0 0 0.55rem 0;
@@ -159,12 +159,12 @@ show_html(
       }
       .ft-body:hover { transform: scale(1.045); }
       .ft-card {
-        background: rgba(255, 255, 255, 0.78);
-        border: 2px solid rgba(251, 113, 133, 0.55);
+        background: #881337;
+        border: 2px solid rgba(255, 255, 255, 0.35);
         border-radius: 16px;
         padding: 1.05rem 1.1rem 0.9rem;
         margin-bottom: 0.7rem;
-        box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
       }
       .ft-card:hover {
@@ -176,23 +176,23 @@ show_html(
         font-size: 1.2rem;
         font-weight: 700;
         margin: 0 0 0.3rem 0;
-        color: #9f1239;
+        color: #ffffff;
         letter-spacing: -0.04em;
       }
       .ft-card p {
         font-size: 0.95rem;
         line-height: 1.4;
-        color: #57534e;
+        color: #ffffff;
         margin: 0;
         letter-spacing: -0.02em;
       }
       .ft-footer {
         text-align: center;
-        color: #9f1239;
+        color: #ffffff;
         font-size: 0.92rem;
         margin-top: 2rem;
         padding-top: 1.1rem;
-        border-top: 2px solid rgba(251, 113, 133, 0.45);
+        border-top: 2px solid rgba(255, 255, 255, 0.35);
         font-weight: 500;
         line-height: 1.4;
         transition: transform 0.25s ease;
