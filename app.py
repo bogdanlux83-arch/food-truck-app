@@ -57,6 +57,27 @@ show_html(
         max-width: 1100px;
       }
 
+      @keyframes ftFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes ftHeroIn {
+        from {
+          opacity: 0;
+          transform: translateY(28px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
       .ft-hero {
         background: linear-gradient(125deg, #be123c 0%, #e11d48 32%, #fb7185 62%, #fde047 100%);
         border-radius: 24px;
@@ -64,6 +85,7 @@ show_html(
         margin-bottom: 1.35rem;
         color: #1c1917;
         box-shadow: 0 18px 40px rgba(225, 29, 72, 0.28);
+        animation: ftHeroIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       .ft-tag {
         display: inline-block;
@@ -77,6 +99,7 @@ show_html(
         padding: 0.4rem 0.8rem;
         border-radius: 999px;
         margin-bottom: 0.7rem;
+        animation: ftFadeUp 0.55s ease-out 0.15s both;
       }
       .ft-brand {
         font-family: var(--ft-display) !important;
@@ -86,6 +109,7 @@ show_html(
         line-height: 0.95;
         letter-spacing: -0.055em;
         color: #fff1f2;
+        animation: ftFadeUp 0.6s ease-out 0.28s both;
       }
       .ft-sub {
         font-family: var(--ft-sans) !important;
@@ -96,6 +120,7 @@ show_html(
         color: #ffe4e6;
         font-weight: 500;
         letter-spacing: -0.02em;
+        animation: ftFadeUp 0.6s ease-out 0.4s both;
       }
       .ft-section {
         font-family: var(--ft-display) !important;
@@ -105,6 +130,7 @@ show_html(
         color: #be123c;
         letter-spacing: -0.05em;
         line-height: 1.05;
+        animation: ftFadeUp 0.55s ease-out 0.5s both;
       }
       .ft-lead {
         font-family: var(--ft-sans) !important;
@@ -115,6 +141,7 @@ show_html(
         letter-spacing: -0.02em;
         max-width: 44rem;
         margin: 0 0 0.65rem 0;
+        animation: ftFadeUp 0.55s ease-out 0.58s both;
       }
       .ft-body {
         font-family: var(--ft-sans) !important;
@@ -125,6 +152,7 @@ show_html(
         letter-spacing: -0.02em;
         max-width: 44rem;
         margin: 0 0 0.55rem 0;
+        animation: ftFadeUp 0.55s ease-out 0.64s both;
       }
       .ft-card {
         background: rgba(255, 255, 255, 0.78);
@@ -133,6 +161,7 @@ show_html(
         padding: 1.05rem 1.1rem 0.9rem;
         margin-bottom: 0.7rem;
         box-shadow: 0 10px 28px rgba(225, 29, 72, 0.12);
+        animation: ftFadeUp 0.55s ease-out 0.7s both;
       }
       .ft-card h3 {
         font-family: var(--ft-display) !important;
@@ -166,6 +195,11 @@ show_html(
         border-top: 2px solid rgba(251, 113, 133, 0.45);
         font-weight: 500;
         line-height: 1.4;
+        animation: ftFadeUp 0.55s ease-out 0.8s both;
+      }
+      div[data-testid="stButton"],
+      .stLinkButton {
+        animation: ftFadeUp 0.55s ease-out 0.75s both;
       }
 
       [data-testid="stAlert"] p,
