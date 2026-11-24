@@ -123,6 +123,35 @@ show_html(
         transform: scale(1.1);
         opacity: 1;
       }
+      .ft-arrow {
+        display: inline-block;
+        animation: ftBob 1.4s ease-in-out infinite;
+      }
+      @keyframes ftBob {
+        0%, 100% { transform: translateY(-3px); }
+        50% { transform: translateY(5px); }
+      }
+
+      /* Scroll reveal: the script in the advert block adds .ft-reveal to each
+         section, then .ft-in once it scrolls into view. The keyframes only set
+         a starting state, so hover effects still work afterwards. */
+      .ft-reveal:not(.ft-in) { opacity: 0; }
+      .ft-in { animation: ftRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+      .ft-section.ft-in { animation-name: ftSlideIn; }
+      .ft-card.ft-in { animation-name: ftPop; }
+      @keyframes ftRise {
+        from { opacity: 0; transform: translateY(38px); filter: blur(6px); }
+      }
+      @keyframes ftSlideIn {
+        from { opacity: 0; transform: translateX(-70px); }
+      }
+      @keyframes ftPop {
+        from { opacity: 0; transform: translateY(54px) scale(0.9); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ft-reveal:not(.ft-in) { opacity: 1; }
+        .ft-in, .ft-arrow { animation: none; }
+      }
       .ft-section {
         font-family: var(--ft-display) !important;
         font-size: clamp(1.7rem, 3vw, 2.1rem);
@@ -231,7 +260,7 @@ show_html(
         and fresh service from our food vendor throughout the city.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Explore the showcase below</p>
+    <p class="ft-scroll-hint"><span class="ft-arrow">↓</span> Explore the showcase below</p>
     """
 )
 
@@ -392,6 +421,45 @@ components.html(
         { threshold: 0.3 }
       );
       bits.forEach((bit) => io.observe(bit));
+
+      // Scroll reveal for the rest of the page, which lives outside this frame.
+      try {
+        const page = window.parent;
+        const doc = page.document;
+        const targets = ".ft-section, .ft-lead, .ft-body, .ft-card, .ft-footer, .stLinkButton";
+
+        if (page.__ftReveal) page.__ftReveal.forEach((o) => o.disconnect());
+
+        const reveal = new page.IntersectionObserver(
+          (entries) => {
+            let order = 0;
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.style.animationDelay = order * 110 + "ms";
+              entry.target.classList.add("ft-in");
+              reveal.unobserve(entry.target);
+              order += 1;
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
+        );
+
+        const tag = () => {
+          doc.querySelectorAll(targets).forEach((el) => {
+            if (el.classList.contains("ft-in")) return;
+            el.classList.add("ft-reveal");
+            reveal.observe(el);
+          });
+        };
+
+        // Streamlit adds sections as the script runs, so keep watching for new ones.
+        const watcher = new page.MutationObserver(tag);
+        watcher.observe(doc.body, { childList: true, subtree: true });
+        page.__ftReveal = [reveal, watcher];
+        tag();
+      } catch (err) {
+        console.warn("Scroll reveal unavailable:", err);
+      }
     </script>
     """,
     height=620,
