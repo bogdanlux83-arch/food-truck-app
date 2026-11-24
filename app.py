@@ -228,14 +228,14 @@ show_html(
 show_html(
     """
     <div class="ft-hero">
-      <div class="ft-tag">Bath food vend</div>
+      <div class="ft-tag">Bath food vendor</div>
       <p class="ft-brand">LoadedBites GLA</p>
       <p class="ft-sub">
-        Big flavour. Proper portions. Street food worth queuing for —
-        cooked fresh at the vend and served with a smile across Bath.
+        Refined street dining in Bath — generous portions, carefully prepared dishes,
+        and fresh service from our food vendor throughout the city.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Drive the truck · scroll the advert</p>
+    <p class="ft-scroll-hint">↓ Explore the showcase below</p>
     """
 )
 
@@ -379,10 +379,13 @@ components.html(
         position: absolute;
         top: -8px;
         left: 10px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #fff1f2;
         opacity: 0;
         transform: translateY(4px);
         pointer-events: none;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.35);
       }
       .truck.beep .honk {
         animation: honkPop 0.7s ease forwards;
@@ -458,13 +461,13 @@ components.html(
         overflow: hidden;
       }
       .bit-inner::after {
-        content: "AD";
+        content: "FEATURED";
         position: absolute;
         top: 0.85rem;
         right: 1rem;
-        font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 0.16em;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
         color: rgba(255, 255, 255, 0.75);
       }
       .bit-1 .bit-inner {
@@ -532,12 +535,12 @@ components.html(
     </style>
 
     <div class="truck-zone">
-      <p class="truck-hint">Click the truck to drive · drag it along the road · honk for fun</p>
+      <p class="truck-hint">Interactive vendor unit — select Drive to move, or drag to reposition</p>
       <div class="road" id="road">
         <div class="road-line"></div>
-        <div class="truck" id="truck" title="Click to drive">
+        <div class="truck" id="truck" title="Select to drive">
           <div class="truck-flip" id="truckFlip">
-            <div class="honk">🔊 beep!</div>
+            <div class="honk">Signal</div>
             <div class="cab"><div class="cab-window"></div></div>
             <div class="box">LOADED<br>BITES</div>
             <div class="wheel wheel-f"></div>
@@ -547,8 +550,8 @@ components.html(
       </div>
       <div class="truck-btns">
         <button type="button" id="driveBtn">Drive / Stop</button>
-        <button type="button" id="honkBtn">Honk</button>
-        <button type="button" id="resetBtn">Reset</button>
+        <button type="button" id="honkBtn">Signal</button>
+        <button type="button" id="resetBtn">Reset position</button>
       </div>
     </div>
 
@@ -557,21 +560,21 @@ components.html(
         <div class="bit-inner">
           <div class="bit-kicker">LoadedBites GLA</div>
           <p class="bit-words">Fresh Hot Bites</p>
-          <p class="bit-sub">Cooked to order at the food vend.</p>
+          <p class="bit-sub">Prepared to order by our Bath food vendor.</p>
         </div>
       </div>
       <div class="bit bit-2">
         <div class="bit-inner">
-          <div class="bit-kicker">Now serving Bath</div>
+          <div class="bit-kicker">Serving Bath</div>
           <p class="bit-words">Properly Loaded Food</p>
-          <p class="bit-sub">Big portions. Bold flavour. Worth the queue.</p>
+          <p class="bit-sub">Generous portions, considered seasoning, and consistent quality.</p>
         </div>
       </div>
       <div class="bit bit-3">
         <div class="bit-inner">
-          <div class="bit-kicker">Catch the vend</div>
-          <p class="bit-words">Bath Food Vend</p>
-          <p class="bit-sub">Follow for today’s spot — then come get loaded.</p>
+          <div class="bit-kicker">Find our vendor</div>
+          <p class="bit-words">Bath Food Vendor</p>
+          <p class="bit-sub">Follow our updates for today’s location and service hours.</p>
         </div>
       </div>
     </div>
@@ -681,18 +684,19 @@ components.html(
 )
 
 # --- Full writing ---
-show_html('<p class="ft-section">Hungry in Bath?</p>')
+show_html('<p class="ft-section">Welcome to Bath</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBites GLA is a Bath food vend built for people who want more than a rushed sandwich.
-      We load every order with bold seasoning, generous toppings, and the kind of comfort food
-      that turns a quick stop into the best part of your day.
+      LoadedBites GLA is a Bath food vendor offering thoughtfully prepared street dining for
+      customers who value quality, generosity, and consistency. Each order is seasoned with care,
+      finished with considered toppings, and served with professionalism.
     </p>
     <p class="ft-body">
-      Whether you catch us at lunch, after work, or on a weekend wander, the mission stays the same:
-      honest food, cooked to order, packed with flavour, and ready when you are.
-      No fancy dining room — just a food vend, a grill, and bites that hit every time.
+      Whether you join us at lunch, after work, or over the weekend, our commitment remains the same:
+      honest cooking, made to order, rich in flavour, and ready when you are.
+      We provide an efficient outdoor service — a trusted vendor, a well-run kitchen, and food
+      prepared to a high standard.
     </p>
     """
 )
@@ -703,17 +707,17 @@ with left:
     show_html(
         """
         <div class="ft-card">
-          <h3>Loaded for real</h3>
+          <h3>Generously prepared</h3>
           <p>
-            We don’t do sad, half-filled trays. Every bite is stacked with flavour —
-            sauces, toppings, and extras chosen to make the meal feel special.
+            Every serving is assembled with care — balanced sauces, quality toppings,
+            and portions designed to satisfy without compromise.
           </p>
         </div>
         <div class="ft-card">
-          <h3>Cooked fresh</h3>
+          <h3>Cooked to order</h3>
           <p>
-            Your order starts when you ask for it. Hot from the vend, not sitting under a lamp
-            waiting for someone else to change their mind.
+            Your meal begins when you place your order. Dishes are served hot from our vendor,
+            never held under heat lamps for extended periods.
           </p>
         </div>
         """
@@ -722,69 +726,69 @@ with right:
     show_html(
         """
         <div class="ft-card">
-          <h3>Bath energy</h3>
+          <h3>Rooted in Bath</h3>
           <p>
-            Made for this city — quick enough for a lunch break, good enough for a night out,
-            friendly enough that you’ll want to come back with mates.
+            Built for this city — efficient enough for a lunch appointment,
+            refined enough for an evening out, and welcoming enough for return visits.
           </p>
         </div>
         <div class="ft-card">
-          <h3>Fair prices</h3>
+          <h3>Clear value</h3>
           <p>
-            Street food should feel worth it. Big portions, strong taste, and prices that make
-            sense when you’re feeding yourself or the whole crew.
+            Street dining should feel worthwhile. We offer substantial portions,
+            confident flavour, and pricing suited to individuals and groups alike.
           </p>
         </div>
         """
     )
 
-show_html('<p class="ft-section">What we cook</p>')
+show_html('<p class="ft-section">Our food</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBites GLA is all about big, bold comfort food — the kind you can smell before you
-      see the queue. Think crispy bases, rich fillings, melted cheese, house sauces, and toppings
-      piled high until the tray actually feels loaded.
+      LoadedBites GLA specialises in generous, well-seasoned comfort dishes —
+      crisp bases, rich fillings, melted cheese, house sauces, and carefully chosen toppings
+      finished to a satisfying standard.
     </p>
     <p class="ft-body">
-      We lean into warm wraps with seasoned protein and fresh crunch, cheesy stacks that get
-      messy in the best way, and spicy options when you want a kick. Everything is cooked to
-      order at the food vend, so it lands hot, fresh, and ready to eat on the go.
+      Our offering includes warm wraps with seasoned protein and fresh contrast, cheese-led plates
+      with depth and texture, and gently spiced options for those who prefer more heat.
+      Everything is cooked to order at our food vendor and served ready to enjoy.
     </p>
     <p class="ft-body">
-      Some days we’re smoky. Some days we’re sweet. Specials rotate with the spot and the mood,
-      but the idea never changes: generous portions, strong flavour, and food that turns a quick
-      stop into something you talk about later. Ask at the window — if we can make it loaded, we will.
+      Daily specials may vary by location and season — sometimes smoked, sometimes sweet —
+      while our principles remain constant: generous portions, assured flavour, and a polished
+      takeaway experience. Please speak with our team if you have a particular request.
     </p>
     """
 )
 
-show_html('<p class="ft-section">Find the food vend</p>')
+show_html('<p class="ft-section">Find our food vendor</p>')
 show_html(
     """
     <p class="ft-lead">
-      LoadedBites GLA sets up around Bath — city centre lunch runs, local spots, events,
-      and weekend stops. We post where the food vend is so you can plan the detour.
+      LoadedBites GLA operates across Bath — city-centre lunch service, local venues, events,
+      and selected weekend locations. We publish our position so you can plan your visit with ease.
     </p>
     <p class="ft-body">
-      Typical hours lean lunch through early evening, with later finishes when the crowd is out.
-      Weather happens. Traffic happens. Flavour still shows up.
+      Standard hours focus on lunch through early evening, with extended service when demand requires.
+      We remain committed to reliable quality regardless of weather or schedule.
     </p>
     <p class="ft-body">
-      <strong>Tip:</strong> check our Instagram story before you travel — that’s the fastest way
-      to see today’s pin, opening time, and sold-out warnings.
+      <strong>Recommendation:</strong> review our Instagram updates before travelling for today’s
+      location, opening time, and availability notices.
     </p>
     """
 )
 
-show_html('<p class="ft-section">Made for your kind of hunger</p>')
+show_html('<p class="ft-section">Who we serve</p>')
 c1, c2, c3 = st.columns(3, gap="medium")
 with c1:
     show_html(
         """
         <div class="ft-card">
-          <h3>Office lunch</h3>
-          <p>Fast enough for your break. Good enough that you won’t miss the cafeteria.</p>
+          <h3>Business lunch</h3>
+          <p>Efficient service for a limited break, without sacrificing quality.</p>
         </div>
         """
     )
@@ -792,8 +796,8 @@ with c2:
     show_html(
         """
         <div class="ft-card">
-          <h3>Night out fuel</h3>
-          <p>After the gig, before the next plan — grab something hot and properly filling.</p>
+          <h3>Evening dining</h3>
+          <p>A substantial, well-prepared option before or after your evening plans.</p>
         </div>
         """
     )
@@ -801,24 +805,24 @@ with c3:
     show_html(
         """
         <div class="ft-card">
-          <h3>Family &amp; friends</h3>
-          <p>Easy to order for a group. Mix the menu, share sauces, argue about favourites.</p>
+          <h3>Groups &amp; families</h3>
+          <p>Straightforward ordering for shared meals, with options to suit a range of tastes.</p>
         </div>
         """
     )
 
 # --- CTA ---
-show_html('<p class="ft-section">Come get loaded</p>')
+show_html('<p class="ft-section">Get in touch</p>')
 show_html(
     """
     <p class="ft-lead">
-      Looking for the food vend, booking us for a private stop, or just want today’s specials?
-      Reach out — we love feeding Bath.
+      For today’s location, private bookings, or current specials, please contact us.
+      We are pleased to serve Bath and surrounding guests.
     </p>
     <p class="ft-body">
-      Message us on Instagram or WhatsApp for location updates, catering enquiries,
-      and custom orders for events. If you’ve got a birthday, office lunch, or market day,
-      LoadedBites GLA can set up and feed the crowd.
+      Reach us via Instagram or WhatsApp for location updates, catering enquiries,
+      and event arrangements. For birthdays, workplace lunches, or market days,
+      LoadedBites GLA can provide a dependable on-site food service.
     </p>
     """
 )
@@ -826,13 +830,13 @@ show_html(
 col_a, col_b = st.columns(2, gap="large")
 with col_a:
     st.link_button(
-        "Follow @loadedbitesgla",
+        "Instagram — @loadedbitesgla",
         "https://instagram.com/loadedbitesgla",
         use_container_width=True,
     )
 with col_b:
     st.link_button(
-        "WhatsApp the food vend",
+        "WhatsApp enquiry",
         "https://wa.me/",
         use_container_width=True,
     )
@@ -840,8 +844,8 @@ with col_b:
 show_html(
     """
     <div class="ft-footer">
-      LoadedBites GLA · Bath food vend<br>
-      Fresh · Loaded · Worth the queue
+      LoadedBites GLA · Bath food vendor<br>
+      Freshly prepared · Generously served · Professionally run
     </div>
     """
 )
