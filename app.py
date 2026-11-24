@@ -25,10 +25,13 @@ show_html(
         --ft-serif: "Instrument Serif", Georgia, serif;
         --ft-display: "Syne", sans-serif;
         --ft-sans: "Manrope", sans-serif;
-        --ft-ink: #111111;
-        --ft-muted: #5c5c5c;
-        --ft-line: rgba(17, 17, 17, 0.12);
-        --ft-paper: #f7f6f3;
+        --ft-ink: #1c140e;
+        --ft-muted: #6b5748;
+        --ft-line: rgba(28, 20, 14, 0.12);
+        --ft-paper: #fbf3e4;
+        --ft-orange: #e86a17;
+        --ft-yellow: #f0b429;
+        --ft-amber: #ff9f1c;
       }
 
       html, body, .stApp, [data-testid="stAppViewContainer"],
@@ -61,8 +64,8 @@ show_html(
           url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=2400&q=80")
           center center / cover no-repeat;
         transform: scale(1.1);
-        filter: blur(var(--ft-sky-blur, 18px)) saturate(0.85) brightness(1.05);
-        opacity: 0.22;
+        filter: blur(var(--ft-sky-blur, 18px)) saturate(1.05) brightness(1.08) sepia(0.18) hue-rotate(-8deg);
+        opacity: 0.28;
         will-change: filter, opacity;
       }
       .ft-sky-tint {
@@ -70,10 +73,13 @@ show_html(
         inset: 0;
         z-index: 0;
         pointer-events: none;
-        background: linear-gradient(180deg, rgba(247,246,243,0.72) 0%, rgba(247,246,243,0.92) 55%, #f7f6f3 100%);
+        background:
+          linear-gradient(180deg, rgba(251,243,228,0.7) 0%, rgba(251,243,228,0.9) 55%, #fbf3e4 100%),
+          radial-gradient(900px 480px at 85% 8%, rgba(240,180,41,0.22), transparent 55%),
+          radial-gradient(700px 420px at 10% 40%, rgba(232,106,23,0.12), transparent 50%);
       }
       ::selection {
-        background: #111;
+        background: var(--ft-orange);
         color: #fff;
       }
       #MainMenu, footer, header { visibility: hidden; }
@@ -114,7 +120,7 @@ show_html(
         font-size: 1.55rem;
         font-weight: 400;
         letter-spacing: -0.02em;
-        color: var(--ft-ink);
+        color: var(--ft-orange);
         margin: 0;
       }
       .ft-nav {
@@ -171,11 +177,11 @@ show_html(
         width: 100%;
         box-sizing: border-box;
         background:
-          linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%),
+          linear-gradient(180deg, rgba(232,106,23,0.12) 0%, rgba(28,20,14,0.5) 100%),
           url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=2400&q=80")
           center 40% / cover no-repeat;
         border: 0;
-        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.14);
+        box-shadow: 0 30px 70px rgba(120, 55, 10, 0.16);
         animation: ftHeroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
       }
       .ft-hero-glass {
@@ -184,11 +190,11 @@ show_html(
         max-width: min(100%, 34rem);
         border-radius: 22px;
         padding: 1.35rem 1.4rem 1.3rem;
-        background: linear-gradient(165deg, rgba(255,255,255,0.42), rgba(255,255,255,0.14));
-        border: 1px solid rgba(255, 255, 255, 0.55);
+        background: linear-gradient(165deg, rgba(255,236,190,0.5), rgba(255,180,80,0.16));
+        border: 1px solid rgba(255, 220, 150, 0.55);
         box-shadow:
-          0 18px 40px rgba(0, 0, 0, 0.18),
-          inset 0 1px 0 rgba(255, 255, 255, 0.7);
+          0 18px 40px rgba(120, 55, 10, 0.18),
+          inset 0 1px 0 rgba(255, 245, 210, 0.75);
         backdrop-filter: blur(28px) saturate(1.35);
         -webkit-backdrop-filter: blur(28px) saturate(1.35);
         overflow: hidden;
@@ -199,7 +205,7 @@ show_html(
         inset: -45% auto auto -25%;
         width: 50%;
         height: 150%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,240,180,0.55), transparent);
         animation: ftShine 6.5s ease-in-out infinite;
         pointer-events: none;
       }
@@ -211,7 +217,7 @@ show_html(
         font-weight: 700;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.88);
+        color: rgba(255, 230, 170, 0.95);
         margin-bottom: 0.55rem;
       }
       .ft-brand {
@@ -224,7 +230,7 @@ show_html(
         margin: 0 0 0.45rem 0;
         line-height: 1;
         letter-spacing: -0.02em;
-        color: #ffffff;
+        color: #fff8e8;
       }
       .ft-sub {
         position: relative;
@@ -297,7 +303,7 @@ show_html(
         display: block;
         width: 40px;
         height: 2px;
-        background: var(--ft-ink);
+        background: linear-gradient(90deg, var(--ft-orange), var(--ft-yellow));
         margin-top: 0.7rem;
       }
       .ft-lead, .ft-body {
@@ -394,12 +400,12 @@ show_html(
         padding: 0.85rem 1.45rem !important;
         letter-spacing: 0.06em !important;
         text-transform: uppercase !important;
-        background: #111111 !important;
+        background: linear-gradient(135deg, var(--ft-orange), #f08c2b) !important;
         color: #ffffff !important;
-        border: 1px solid #111111 !important;
-        box-shadow: none !important;
+        border: 1px solid var(--ft-orange) !important;
+        box-shadow: 0 10px 24px rgba(232, 106, 23, 0.28) !important;
         backdrop-filter: none !important;
-        transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease !important;
+        transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease !important;
       }
       div[data-testid="stButton"] button p,
       .stLinkButton a p {
@@ -410,14 +416,15 @@ show_html(
       }
       div[data-testid="stButton"] button:hover,
       .stLinkButton a:hover {
-        background: transparent !important;
-        color: #111111 !important;
-        border-color: #111111 !important;
+        background: var(--ft-yellow) !important;
+        color: #1c140e !important;
+        border-color: var(--ft-yellow) !important;
+        box-shadow: 0 12px 28px rgba(240, 180, 41, 0.35) !important;
         transform: translateY(-2px) !important;
       }
       div[data-testid="stButton"] button:hover p,
       .stLinkButton a:hover p {
-        color: #111111 !important;
+        color: #1c140e !important;
       }
 
       .ft-reveal:not(.ft-in) { opacity: 0; }
@@ -517,14 +524,14 @@ components.html(
         gap: 0.4rem;
         justify-content: flex-end;
         min-height: 200px;
-        border: 1px solid rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(255, 210, 140, 0.55);
         background:
-          linear-gradient(165deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18)),
+          linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
           url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=1200&q=70")
           center / cover no-repeat;
         box-shadow:
-          0 16px 36px rgba(0, 0, 0, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.7);
+          0 16px 36px rgba(120, 55, 10, 0.12),
+          inset 0 1px 0 rgba(255, 240, 200, 0.75);
         backdrop-filter: blur(22px) saturate(1.3);
         -webkit-backdrop-filter: blur(22px) saturate(1.3);
         position: relative;
@@ -534,13 +541,13 @@ components.html(
       }
       .bit-2 .bit-inner {
         background:
-          linear-gradient(165deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18)),
+          linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
           url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=70")
           center / cover no-repeat;
       }
       .bit-3 .bit-inner {
         background:
-          linear-gradient(165deg, rgba(255,255,255,0.55), rgba(255,255,255,0.18)),
+          linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
           url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=70")
           center / cover no-repeat;
       }
@@ -548,7 +555,7 @@ components.html(
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.45));
+        background: linear-gradient(180deg, rgba(232,106,23,0.08), rgba(28,20,14,0.48));
         pointer-events: none;
       }
       .bit-inner > * { position: relative; z-index: 1; }
@@ -574,7 +581,7 @@ components.html(
         font-weight: 700;
         letter-spacing: 0.16em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.8);
+        color: rgba(255, 230, 170, 0.92);
       }
       .bit-words {
         font-family: "Syne", sans-serif;
