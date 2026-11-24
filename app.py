@@ -45,22 +45,33 @@ show_html(
         color: #ffffff;
       }
 
-      .stApp {
-        background:
-          radial-gradient(920px 520px at 12% -8%, rgba(245, 213, 106, 0.18), transparent 55%),
-          radial-gradient(780px 480px at 100% 18%, rgba(251, 113, 133, 0.28), transparent 52%),
-          radial-gradient(700px 420px at 40% 110%, rgba(76, 5, 25, 0.9), transparent 55%),
-          linear-gradient(165deg, #b91c3c 0%, #9f1239 42%, #6b0f2b 100%);
-        background-attachment: fixed;
+      /* Real skyscraper photo sits behind everything; blur rises as you scroll */
+      .stApp,
+      [data-testid="stAppViewContainer"],
+      [data-testid="stHeader"],
+      section.main {
+        background: transparent !important;
       }
-      .stApp::before {
-        content: "";
+      .ft-sky {
+        position: fixed;
+        inset: -4%;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          url("https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=2400&q=80")
+          center center / cover no-repeat;
+        transform: scale(1.08);
+        filter: blur(var(--ft-sky-blur, 2px)) saturate(1.15) brightness(0.78);
+        will-change: filter;
+      }
+      .ft-sky-tint {
         position: fixed;
         inset: 0;
-        pointer-events: none;
         z-index: 0;
-        opacity: 0.07;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        background:
+          linear-gradient(180deg, rgba(42, 6, 18, 0.28) 0%, rgba(159, 18, 57, 0.42) 48%, rgba(42, 6, 18, 0.72) 100%),
+          radial-gradient(900px 500px at 15% 0%, rgba(245, 213, 106, 0.16), transparent 55%);
       }
       ::selection {
         background: var(--ft-gold);
@@ -94,21 +105,21 @@ show_html(
         50% { transform: translateY(-6px); }
       }
 
-      /* Hero */
+      /* Hero — frosted glass over the city */
       .ft-hero {
         position: relative;
         overflow: hidden;
         isolation: isolate;
-        background:
-          linear-gradient(125deg, rgba(255,255,255,0.12), transparent 42%),
-          linear-gradient(135deg, #e11d48 0%, #be123c 38%, #9f1239 68%, #f5d56a 145%);
-        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: linear-gradient(145deg, rgba(255,255,255,0.22), rgba(159,18,57,0.28) 55%, rgba(42,6,18,0.38));
+        border: 1px solid rgba(255, 255, 255, 0.42);
         border-radius: 32px;
         padding: 3.6rem 3.1rem 3.2rem;
         margin-bottom: 0.45rem;
         box-shadow:
-          0 30px 70px rgba(42, 6, 18, 0.45),
-          inset 0 1px 0 rgba(255, 255, 255, 0.28);
+          0 30px 70px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(22px) saturate(1.35);
+        -webkit-backdrop-filter: blur(22px) saturate(1.35);
         animation: ftHeroIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
         width: 100%;
         box-sizing: border-box;
@@ -119,7 +130,7 @@ show_html(
         inset: -40% auto auto -20%;
         width: 55%;
         height: 140%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
         animation: ftShine 4.8s ease-in-out infinite;
         pointer-events: none;
       }
@@ -131,7 +142,7 @@ show_html(
         width: 340px;
         height: 340px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(245, 213, 106, 0.55), transparent 68%);
+        background: radial-gradient(circle, rgba(245, 213, 106, 0.35), transparent 68%);
         pointer-events: none;
         animation: ftFloat 5.5s ease-in-out infinite;
       }
@@ -141,13 +152,14 @@ show_html(
         font-weight: 700;
         letter-spacing: 0.16em;
         text-transform: uppercase;
-        background: rgba(42, 6, 18, 0.55);
+        background: rgba(255, 255, 255, 0.14);
         color: var(--ft-gold);
-        border: 1px solid rgba(245, 213, 106, 0.45);
+        border: 1px solid rgba(245, 213, 106, 0.5);
         padding: 0.48rem 0.9rem;
         border-radius: 999px;
         margin-bottom: 1.1rem;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
       }
       .ft-brand {
         font-family: var(--ft-display) !important;
@@ -180,25 +192,27 @@ show_html(
         letter-spacing: 0.01em;
         padding: 0.45rem 0.95rem;
         border-radius: 999px;
-        background: rgba(42, 6, 18, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.32);
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.38);
         color: #ffffff;
-        backdrop-filter: blur(6px);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
       }
       .ft-points span:hover {
         transform: translateY(-2px) scale(1.04);
-        background: rgba(42, 6, 18, 0.55);
+        background: rgba(255, 255, 255, 0.22);
         border-color: var(--ft-gold);
       }
 
       .ft-scroll-hint {
         text-align: center;
-        color: rgba(255, 255, 255, 0.88);
+        color: rgba(255, 255, 255, 0.92);
         font-size: 0.92rem;
         font-weight: 600;
         letter-spacing: -0.01em;
         margin: 0.55rem 0 0.15rem;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.45);
       }
       .ft-arrow {
         display: inline-block;
@@ -216,6 +230,7 @@ show_html(
         letter-spacing: -0.05em;
         line-height: 1.05;
         display: inline-block;
+        text-shadow: 0 4px 24px rgba(0,0,0,0.35);
       }
       .ft-section::after {
         content: "";
@@ -225,6 +240,15 @@ show_html(
         border-radius: 999px;
         background: linear-gradient(90deg, var(--ft-gold), transparent);
         margin-top: 0.65rem;
+      }
+      .ft-lead, .ft-body {
+        padding: 1rem 1.15rem;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(16px) saturate(1.2);
+        -webkit-backdrop-filter: blur(16px) saturate(1.2);
+        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
       }
       .ft-lead {
         font-size: 1.18rem;
@@ -238,7 +262,7 @@ show_html(
       .ft-body {
         font-size: 1.05rem;
         line-height: 1.65;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(255, 255, 255, 0.92);
         letter-spacing: -0.01em;
         max-width: 48rem;
         margin: 0 0 0.75rem 0;
@@ -248,13 +272,16 @@ show_html(
       .ft-card {
         position: relative;
         overflow: hidden;
-        background: linear-gradient(160deg, rgba(255,255,255,0.14), rgba(42,6,18,0.35));
-        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: linear-gradient(160deg, rgba(255,255,255,0.2), rgba(255,255,255,0.06));
+        border: 1px solid rgba(255, 255, 255, 0.38);
         border-radius: 20px;
         padding: 1.35rem 1.35rem 1.25rem 1.55rem;
         margin-bottom: 0.95rem;
-        box-shadow: 0 16px 40px rgba(42, 6, 18, 0.28);
-        backdrop-filter: blur(14px);
+        box-shadow:
+          0 16px 40px rgba(0, 0, 0, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(18px) saturate(1.3);
+        -webkit-backdrop-filter: blur(18px) saturate(1.3);
         transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
                     box-shadow 0.3s ease, border-color 0.3s ease;
       }
@@ -291,11 +318,15 @@ show_html(
 
       .ft-footer {
         text-align: center;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(255, 255, 255, 0.92);
         font-size: 0.95rem;
         margin-top: 2.6rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.28);
+        padding: 1.4rem 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         font-weight: 500;
         line-height: 1.65;
       }
@@ -314,10 +345,11 @@ show_html(
         font-size: 1rem !important;
         padding: 0.85rem 1.35rem !important;
         letter-spacing: -0.01em !important;
-        background: var(--ft-cream) !important;
+        background: rgba(255, 255, 255, 0.88) !important;
         color: var(--ft-red) !important;
-        border: 2px solid var(--ft-cream) !important;
-        box-shadow: 0 12px 28px rgba(42, 6, 18, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.7) !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28) !important;
+        backdrop-filter: blur(12px) !important;
         transition: transform 0.25s ease, background 0.25s ease,
                     border-color 0.25s ease, box-shadow 0.25s ease !important;
       }
@@ -360,9 +392,11 @@ show_html(
     """
 )
 
-# --- Hero ---
+# --- City sky + glass hero ---
 show_html(
     """
+    <div class="ft-sky" aria-hidden="true"></div>
+    <div class="ft-sky-tint" aria-hidden="true"></div>
     <div class="ft-hero">
       <div class="ft-tag">Bath food vendor</div>
       <p class="ft-brand">LoadedBites GLA</p>
@@ -451,13 +485,19 @@ components.html(
         backdrop-filter: blur(6px);
       }
       .bit-1 .bit-inner {
-        background: linear-gradient(115deg, #be123c 0%, #e11d48 55%, #fb7185 100%);
+        background: linear-gradient(115deg, rgba(190,18,60,0.72), rgba(225,29,72,0.55) 55%, rgba(251,113,133,0.5));
+        backdrop-filter: blur(18px) saturate(1.35);
+        -webkit-backdrop-filter: blur(18px) saturate(1.35);
       }
       .bit-2 .bit-inner {
-        background: linear-gradient(115deg, #881337 0%, #f43f5e 52%, #f5d56a 120%);
+        background: linear-gradient(115deg, rgba(136,19,55,0.72), rgba(244,63,94,0.52) 52%, rgba(245,213,106,0.42));
+        backdrop-filter: blur(18px) saturate(1.35);
+        -webkit-backdrop-filter: blur(18px) saturate(1.35);
       }
       .bit-3 .bit-inner {
-        background: linear-gradient(115deg, #4c0519 0%, #be123c 48%, #fb7185 100%);
+        background: linear-gradient(115deg, rgba(76,5,25,0.75), rgba(190,18,60,0.55) 48%, rgba(251,113,133,0.48));
+        backdrop-filter: blur(18px) saturate(1.35);
+        -webkit-backdrop-filter: blur(18px) saturate(1.35);
       }
       .bit-inner:hover {
         transform: scale(1.02);
@@ -586,8 +626,43 @@ components.html(
         watcher.observe(doc.body, { childList: true, subtree: true });
         page.__ftReveal = [reveal, watcher];
         tag();
+
+        // City background gets blurrier the further you scroll down.
+        const sky = () => doc.querySelector(".ft-sky");
+        const scrollTop = () => {
+          const nodes = [
+            doc.scrollingElement,
+            doc.documentElement,
+            doc.body,
+            doc.querySelector(".stApp"),
+            doc.querySelector('[data-testid="stAppViewContainer"]'),
+            doc.querySelector("section.main"),
+          ].filter(Boolean);
+          let top = 0, max = 1;
+          nodes.forEach((n) => {
+            top = Math.max(top, n.scrollTop || 0);
+            max = Math.max(max, (n.scrollHeight || 0) - (n.clientHeight || 0));
+          });
+          return { top, max: Math.max(1, max) };
+        };
+        const onScroll = () => {
+          const el = sky();
+          if (!el) return;
+          const { top, max } = scrollTop();
+          const t = Math.min(1, Math.max(0, top / max));
+          el.style.setProperty("--ft-sky-blur", (2 + t * 14).toFixed(2) + "px");
+        };
+        if (!page.__ftSkyBlur) {
+          ["scroll", "wheel", "touchmove"].forEach((evt) => {
+            page.addEventListener(evt, onScroll, { passive: true });
+            doc.addEventListener(evt, onScroll, { passive: true });
+          });
+          page.__ftSkyBlur = true;
+          onScroll();
+          setInterval(onScroll, 250);
+        }
       } catch (err) {
-        console.warn("Scroll reveal unavailable:", err);
+        console.warn("Scroll effects unavailable:", err);
       }
     </script>
     """,
