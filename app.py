@@ -235,7 +235,7 @@ show_html(
         cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Scroll — three words at a time</p>
+    <p class="ft-scroll-hint">↓ Scroll — Largest Bites</p>
     """
 )
 
