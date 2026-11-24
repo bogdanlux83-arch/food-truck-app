@@ -14,7 +14,7 @@ def bite_show_html() -> str:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -32,460 +32,585 @@ def bite_show_html() -> str:
       overflow: hidden;
       border: 1px solid rgba(232, 106, 23, 0.28);
       background:
-        radial-gradient(ellipse 80% 55% at 50% 72%, rgba(255,150,50,0.14), transparent 55%),
-        linear-gradient(165deg, #17110c 0%, #2a1b12 48%, #3a2416 100%);
-      cursor: default;
+        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(0,0,0,0.4), transparent 60%),
+        radial-gradient(circle at 20% 20%, rgba(232,106,23,0.18), transparent 40%),
+        linear-gradient(160deg, #140e0a 0%, #27180f 45%, #3d2414 100%);
+      box-shadow: 0 20px 50px rgba(40, 20, 8, 0.28);
+      cursor: grab;
+      transform: translateY(48px) scale(0.94);
+      opacity: 0;
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
     }
-    canvas { display: block; width: 100%; height: 100%; }
-    .hud {
+    #stage.in { opacity: 1; transform: translateY(0) scale(1); }
+    #stage:active { cursor: grabbing; }
+    #stage.hot {
+      box-shadow: 0 32px 70px rgba(232,106,23,0.42), 0 0 0 1px rgba(255,180,80,0.25) inset;
+    }
+
+    canvas#fx {
       position: absolute;
-      left: 1.2rem;
-      top: 1.05rem;
-      z-index: 2;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      color: #fff6e4;
+      z-index: 6;
     }
-    .hud .kicker {
+
+    .label {
+      position: absolute;
+      left: 1.25rem;
+      top: 1.15rem;
+      z-index: 7;
+      pointer-events: none;
+      color: #fff8e8;
+    }
+    .label .kicker {
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(255, 220, 160, 0.75);
+      color: rgba(255,230,170,0.75);
+      opacity: 0;
+      transform: translateY(10px);
     }
-    .hud h2 {
-      margin: 0.2rem 0 0;
+    #stage.in .label .kicker {
+      animation: textPop 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .label .title {
+      margin: 0.25rem 0 0;
       font-family: Syne, sans-serif;
-      font-size: clamp(1.35rem, 3vw, 1.95rem);
+      font-size: clamp(1.45rem, 3.2vw, 2.1rem);
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       text-transform: uppercase;
-      line-height: 0.95;
+      line-height: 0.92;
     }
+    .label .title span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(120%) rotateX(-50deg);
+      filter: blur(8px);
+    }
+    #stage.in .label .title span {
+      animation: wordSlam 0.85s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
+      animation-delay: var(--d);
+    }
+    @keyframes wordSlam {
+      to { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+    }
+    @keyframes textPop {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .hint {
       position: absolute;
-      right: 1.2rem;
-      bottom: 1.05rem;
+      right: 1.25rem;
+      top: 1.25rem;
+      z-index: 7;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,230,170,0.45);
+      pointer-events: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    #stage.hot .hint {
+      color: rgba(255,230,170,0.9);
+      transform: scale(1.06);
+    }
+
+    .world {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+
+    .rig {
+      position: relative;
+      width: min(460px, 84vw);
+      height: min(320px, 62vw);
+      transform-style: preserve-3d;
+      transform: rotateX(12deg) rotateY(-16deg);
+    }
+
+    .shock {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,180,80,0.7);
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    #stage.in .shock,
+    #stage.boom .shock {
+      animation: shockwave 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    #stage.boom .shock { animation-delay: 0s; }
+    @keyframes shockwave {
+      0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(6.5); border-width: 0; }
+    }
+
+    .plate {
+      position: absolute;
+      left: 50%;
+      bottom: 3%;
+      width: 84%;
+      height: 22%;
+      transform: translateX(-50%) rotateX(72deg);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.22), rgba(255,255,255,0.03) 55%, transparent 70%);
+      box-shadow: 0 30px 40px rgba(0,0,0,0.5);
+      opacity: 0;
+    }
+    #stage.in .plate {
+      animation: fadeUp 0.85s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .panini {
+      position: absolute;
+      inset: 12% 9% 22%;
+      border-radius: 18px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      box-shadow:
+        0 28px 50px rgba(0,0,0,0.55),
+        0 2px 0 rgba(255,200,120,0.15) inset;
+      opacity: 0;
+      transform: translateY(-120%) rotate(-8deg) scale(0.7);
+      background:
+        #111
+        url("https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1400&q=85")
+        center 42% / cover no-repeat;
       z-index: 2;
+    }
+    #stage.in .panini {
+      animation: paniniSlam 1.15s 0.25s cubic-bezier(0.18, 1.4, 0.3, 1) forwards;
+    }
+    #stage.hot .panini {
+      filter: saturate(1.12) contrast(1.05) brightness(1.05);
+      box-shadow:
+        0 32px 60px rgba(0,0,0,0.6),
+        0 0 40px rgba(255,140,40,0.25),
+        0 2px 0 rgba(255,200,120,0.2) inset;
+    }
+    @keyframes paniniSlam {
+      0% { opacity: 0; transform: translateY(-130%) rotate(-12deg) scale(0.65); filter: blur(10px); }
+      55% { opacity: 1; filter: blur(0); transform: translateY(8%) rotate(2deg) scale(1.04); }
+      75% { transform: translateY(-3%) rotate(-1deg) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); filter: blur(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) rotateX(72deg) scale(0.75); }
+      to { opacity: 1; transform: translateX(-50%) rotateX(72deg) scale(1); }
+    }
+
+    .panini::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,200,120,0.14), transparent 30%),
+        linear-gradient(120deg, transparent 40%, rgba(255,140,40,0.14), transparent 70%);
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+    .panini::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.28) 48%, transparent 62%);
+      transform: translateX(-130%);
+      animation: sheen 2.8s 1.1s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sheen {
+      0%, 100% { transform: translateX(-130%); }
+      40%, 55% { transform: translateX(130%); }
+    }
+
+    .drip {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      background: linear-gradient(180deg, #f0b429, #e86a17);
+      left: 58%;
+      top: 68%;
+      opacity: 0;
+      z-index: 3;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+    }
+    #stage.in .drip {
+      animation: sauceDrip 2.2s 1.1s ease-in infinite;
+    }
+    .drip:nth-child(2) { left: 46%; animation-delay: 1.45s !important; width: 8px; height: 8px; }
+    .drip:nth-child(3) { left: 63%; animation-delay: 1.8s !important; width: 7px; height: 7px; }
+    @keyframes sauceDrip {
+      0% { opacity: 0; transform: translateY(0) scaleY(0.6); }
+      15% { opacity: 1; }
+      70% { opacity: 0.9; transform: translateY(42px) scaleY(1.6); }
+      100% { opacity: 0; transform: translateY(70px) scaleY(0.4); }
+    }
+
+    .slice {
+      position: absolute;
+      width: 34%;
+      aspect-ratio: 1 / 1.05;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.45);
+      background:
+        url("https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=900&q=85")
+        center / cover no-repeat;
+      opacity: 0;
+      z-index: 3;
+    }
+    .slice-a {
+      left: -6%;
+      top: 10%;
+      --rest: rotate(-12deg) translateY(0) translateZ(36px) scale(1);
+      transform: rotate(-28deg) translate(-40px, 60px) scale(0.7);
+    }
+    .slice-b {
+      right: -6%;
+      top: 20%;
+      --rest: rotate(11deg) translateY(0) translateZ(24px) scale(1);
+      transform: rotate(28deg) translate(40px, 70px) scale(0.7);
+      background-position: 65% center;
+    }
+    #stage.in .slice-a {
+      animation: sliceFly 1.05s 0.55s cubic-bezier(0.22,1.25,0.36,1) forwards;
+    }
+    #stage.in .slice-b {
+      animation: sliceFly 1.05s 0.7s cubic-bezier(0.22,1.25,0.36,1) forwards;
+    }
+    @keyframes sliceFly {
+      0% { opacity: 0; filter: blur(8px); }
+      100% { opacity: 1; filter: blur(0); transform: var(--rest); }
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+    }
+    .orb {
+      position: absolute;
+      font-size: 1.55rem;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.35));
+      opacity: 0;
+      offset-path: path("M 80,160 C 40,40 420,40 380,160 C 420,280 40,280 80,160");
+      offset-rotate: 0deg;
+    }
+    #stage.in .orb {
+      animation: orbitSpin 8s linear infinite, orbIn 0.6s ease forwards;
+      animation-delay: var(--d), var(--d);
+    }
+    @keyframes orbIn { to { opacity: 0.95; } }
+    @keyframes orbitSpin {
+      from { offset-distance: 0%; }
+      to { offset-distance: 100%; }
+    }
+    @supports not (offset-path: path("M0,0")) {
+      .orb { left: var(--x); top: var(--y); animation: floaty 4.5s ease-in-out infinite, orbIn 0.6s ease forwards !important; }
+      @keyframes floaty {
+        0%, 100% { transform: translateY(0) rotate(-8deg) scale(1); }
+        50% { transform: translateY(-18px) rotate(10deg) scale(1.08); }
+      }
+    }
+
+    .steam {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 180px;
+      height: 110px;
+      transform: translateX(-50%);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 4;
+    }
+    #stage.in .steam { opacity: 1; }
+    .steam span {
+      position: absolute;
+      bottom: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,240,210,0.5);
+      filter: blur(9px);
+      animation: steamUp 2.2s ease-in-out infinite;
+    }
+    .steam span:nth-child(1) { left: 14%; }
+    .steam span:nth-child(2) { left: 38%; width: 32px; height: 32px; animation-delay: 0.35s; }
+    .steam span:nth-child(3) { left: 58%; animation-delay: 0.7s; }
+    .steam span:nth-child(4) { left: 74%; width: 20px; height: 20px; animation-delay: 1s; }
+    @keyframes steamUp {
+      0% { transform: translateY(16px) scale(0.5); opacity: 0; }
+      25% { opacity: 0.75; }
+      100% { transform: translateY(-90px) scale(1.7); opacity: 0; }
+    }
+
+    .haze {
+      position: absolute;
+      inset: 8% 12% 18%;
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 3;
+      background: linear-gradient(180deg, transparent, rgba(255,180,80,0.08), transparent);
+      mix-blend-mode: screen;
+      opacity: 0;
+    }
+    #stage.in .haze {
+      opacity: 1;
+      animation: hazeWave 3s ease-in-out infinite;
+    }
+    @keyframes hazeWave {
+      0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.35; }
+      50% { transform: translateY(-8px) scaleY(1.08); opacity: 0.7; }
+    }
+
+    .glow {
+      position: absolute;
+      inset: 16% 12% 18%;
+      border-radius: 40%;
+      background: radial-gradient(circle, rgba(255,160,60,0.4), transparent 65%);
+      filter: blur(20px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.35s ease;
+    }
+    #stage.hot .glow { opacity: 1; animation: pulse 1.15s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    .chip {
+      position: absolute;
+      bottom: 1.1rem;
+      left: 1.25rem;
+      z-index: 7;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255, 220, 160, 0.75);
+      color: rgba(255,230,170,0.7);
       pointer-events: none;
+      opacity: 0;
+    }
+    #stage.in .chip {
+      animation: textPop 0.7s 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @media (max-width: 560px) {
+      .slice { display: none; }
+      .panini { inset: 14% 8% 24%; }
+      .orb { font-size: 1.2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panini, .slice, .plate, .steam span, .panini::after, .glow, .shock, .drip, .orb, .haze,
+      .label .title span, .label .kicker, .chip { animation: none !important; }
+      #stage.in .panini, #stage.in .slice, #stage.in .plate, #stage.in .label .title span,
+      #stage.in .label .kicker, #stage.in .chip, #stage.in .orb { opacity: 1; filter: none; transform: none; }
     }
   </style>
 </head>
 <body>
   <div id="stage">
-    <canvas id="c"></canvas>
-    <div class="hud">
-      <div class="kicker">Tap the glowing spots</div>
-      <h2>Bite the<br>panini</h2>
+    <canvas id="fx"></canvas>
+    <div class="label">
+      <div class="kicker">Fresh off the press</div>
+      <p class="title">
+        <span style="--d:0.2s">Loaded</span><br>
+        <span style="--d:0.38s">panini</span>
+      </p>
     </div>
-    <div class="hint" id="hint">4 bites left</div>
+    <div class="hint" id="hint">Hover to tilt</div>
+    <div class="chip">Slam-in · steam · sparks · click to rebuild</div>
+    <div class="world">
+      <div class="rig" id="rig">
+        <div class="glow" aria-hidden="true"></div>
+        <div class="shock" aria-hidden="true"></div>
+        <div class="steam" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <div class="haze" aria-hidden="true"></div>
+        <div class="plate" aria-hidden="true"></div>
+        <div class="orbit" aria-hidden="true">
+          <span class="orb" style="--d:0.8s; --x:10%; --y:30%">🔥</span>
+          <span class="orb" style="--d:1.0s; --x:86%; --y:28%">🧀</span>
+          <span class="orb" style="--d:1.15s; --x:12%; --y:70%">🌶️</span>
+          <span class="orb" style="--d:1.3s; --x:84%; --y:68%">✨</span>
+          <span class="orb" style="--d:1.4s; --x:48%; --y:8%">🧈</span>
+        </div>
+        <div class="slice slice-a" aria-hidden="true"></div>
+        <div class="slice slice-b" aria-hidden="true"></div>
+        <div class="panini" role="img" aria-label="Realistic grilled panini">
+          <i class="drip"></i><i class="drip"></i><i class="drip"></i>
+        </div>
+      </div>
+    </div>
   </div>
   <script>
     (() => {
       const stage = document.getElementById("stage");
-      const canvas = document.getElementById("c");
-      const ctx = canvas.getContext("2d");
+      const rig = document.getElementById("rig");
       const hint = document.getElementById("hint");
+      const canvas = document.getElementById("fx");
+      const ctx = canvas.getContext("2d");
+      let hover = false, mx = 0, my = 0;
+      let particles = [];
+      let w = 0, h = 0;
 
-      // Four fixed bite spots in panini-local coords (-0.5..0.5)
-      const SPOTS = [
-        { u: -0.28, v: -0.18, r: 0.145 },
-        { u: 0.24, v: -0.12, r: 0.15 },
-        { u: -0.16, v: 0.22, r: 0.14 },
-        { u: 0.26, v: 0.2, r: 0.148 },
-      ];
-
-      let w = 0, h = 0, dpr = 1, t = 0;
-      let eaten = [false, false, false, false];
-      let grow = [0, 0, 0, 0];
-      let crumbs = [];
-      let steam = [];
-      let hoverSpot = -1;
-      let respawning = false;
-      let paniniScale = 1;
-      let paniniAlpha = 1;
-      let slam = 0;
-
-      const rand = (a, b) => a + Math.random() * (b - a);
-      const leftCount = () => eaten.filter((x) => !x).length;
-
-      function setHint() {
-        if (respawning) {
-          hint.textContent = "Fresh panini incoming…";
-          return;
-        }
-        const n = leftCount();
-        hint.textContent = n === 0 ? "Respawning…" : n + (n === 1 ? " bite left" : " bites left");
-      }
-
-      function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = stage.clientWidth || 640;
-        h = stage.clientHeight || 440;
+      const resize = () => {
+        w = stage.clientWidth;
+        h = stage.clientHeight;
+        const dpr = window.devicePixelRatio || 1;
         canvas.width = Math.floor(w * dpr);
         canvas.height = Math.floor(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         try {
-          if (window.frameElement) window.frameElement.style.height = Math.max(440, Math.round(h)) + "px";
+          if (window.frameElement) {
+            window.frameElement.style.height = Math.max(420, h) + "px";
+          }
         } catch (_) {}
-      }
+      };
       new ResizeObserver(resize).observe(stage);
       resize();
 
-      function layout() {
-        const pw = Math.min(w * 0.64, 480);
-        const ph = pw * 0.56;
-        return { cx: w * 0.5, cy: h * 0.55, pw, ph, r: ph * 0.36 };
-      }
-
-      function spotWorld(i, L) {
-        const s = SPOTS[i];
-        return {
-          x: L.cx + s.u * L.pw,
-          y: L.cy + s.v * L.ph,
-          r: s.r * L.pw,
-        };
-      }
-
-      function paniniPath(x, y, pw, ph, r) {
-        ctx.beginPath();
-        ctx.roundRect(x - pw / 2, y - ph / 2, pw, ph, r);
-      }
-
-      function noiseSpecks(x, y, pw, ph, count, color, s0, s1) {
-        ctx.fillStyle = color;
+      const burst = (count = 48, power = 1) => {
+        const cx = w * 0.5;
+        const cy = h * 0.52;
         for (let i = 0; i < count; i++) {
-          const sx = x - pw / 2 + ((i * 97) % 1000) / 1000 * pw;
-          const sy = y - ph / 2 + ((i * 57) % 1000) / 1000 * ph * 0.72;
-          ctx.beginPath();
-          ctx.ellipse(sx, sy, s0, s1, (i % 7) * 0.4, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      function drawBiteHole(L, i) {
-        const g = grow[i];
-        if (g <= 0.01) return;
-        const s = spotWorld(i, L);
-        const r = s.r * Math.min(1, g);
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
-        ctx.clip();
-
-        const fill = ctx.createRadialGradient(s.x - r * 0.2, s.y - r * 0.25, r * 0.05, s.x, s.y, r);
-        fill.addColorStop(0, "#1a0c08");
-        fill.addColorStop(0.38, "#3a1c10");
-        fill.addColorStop(0.55, "#6b2e18");
-        fill.addColorStop(0.66, "#e2b23a");
-        fill.addColorStop(0.74, "#c4452d");
-        fill.addColorStop(0.82, "#7d9a45");
-        fill.addColorStop(0.9, "#f0d7a2");
-        fill.addColorStop(1, "#c9842e");
-        ctx.fillStyle = fill;
-        ctx.fillRect(s.x - r, s.y - r, r * 2, r * 2);
-
-        ctx.fillStyle = "rgba(70,30,12,0.35)";
-        for (let k = 0; k < 8; k++) {
-          const a = (k / 8) * Math.PI * 2 + i;
-          ctx.beginPath();
-          ctx.ellipse(
-            s.x + Math.cos(a) * r * 0.28,
-            s.y + Math.sin(a) * r * 0.28,
-            r * 0.07,
-            r * 0.05,
-            a,
-            0,
-            Math.PI * 2
-          );
-          ctx.fill();
-        }
-
-        ctx.strokeStyle = "rgba(0,0,0,0.4)";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, r * 0.97, 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.strokeStyle = "rgba(255,220,160,0.28)";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(s.x - r * 0.18, s.y - r * 0.2, r * 0.65, Math.PI * 1.1, Math.PI * 1.75);
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      function drawPanini(L) {
-        const { cx, cy, pw, ph, r } = L;
-        const bob = Math.sin(t * 1.25) * 2.5 + slam;
-
-        ctx.save();
-        ctx.globalAlpha = paniniAlpha;
-        ctx.translate(cx, cy + bob);
-        ctx.scale(paniniScale, paniniScale);
-        ctx.translate(-cx, -cy);
-
-        ctx.fillStyle = "rgba(0,0,0,0.38)";
-        ctx.beginPath();
-        ctx.ellipse(cx, cy + ph * 0.42, pw * 0.42, ph * 0.12, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        paniniPath(cx, cy + 11, pw, ph, r);
-        const side = ctx.createLinearGradient(cx, cy - ph / 2, cx, cy + ph / 2 + 12);
-        side.addColorStop(0, "#a86b28");
-        side.addColorStop(0.55, "#6a3a18");
-        side.addColorStop(1, "#3d2112");
-        ctx.fillStyle = side;
-        ctx.fill();
-
-        ctx.save();
-        paniniPath(cx, cy + 11, pw * 0.96, ph * 0.92, r * 0.9);
-        ctx.clip();
-        [
-          ["#f4e0b0", 0.78],
-          ["#6f9a3c", 0.84],
-          ["#f0c14b", 0.89],
-          ["#c44732", 0.935],
-          ["#8a4a28", 0.99],
-        ].forEach(([color, at]) => {
-          ctx.fillStyle = color;
-          ctx.fillRect(cx - pw / 2, cy - ph / 2 + ph * at, pw, ph * 0.08);
-        });
-        ctx.restore();
-
-        paniniPath(cx, cy, pw, ph, r);
-        const top = ctx.createLinearGradient(cx - pw / 2, cy - ph / 2, cx + pw / 2, cy + ph / 2);
-        top.addColorStop(0, "#f6c56a");
-        top.addColorStop(0.35, "#e39a3a");
-        top.addColorStop(0.7, "#d4842c");
-        top.addColorStop(1, "#b86a22");
-        ctx.fillStyle = top;
-        ctx.fill();
-
-        ctx.save();
-        paniniPath(cx, cy, pw, ph, r);
-        ctx.clip();
-
-        ctx.strokeStyle = "rgba(90, 40, 12, 0.55)";
-        ctx.lineWidth = Math.max(7, pw * 0.028);
-        ctx.lineCap = "round";
-        const gap = pw * 0.11;
-        for (let x = cx - pw * 0.55; x < cx + pw * 0.7; x += gap) {
-          ctx.beginPath();
-          ctx.moveTo(x, cy - ph * 0.7);
-          ctx.lineTo(x + ph * 0.55, cy + ph * 0.7);
-          ctx.stroke();
-        }
-        ctx.strokeStyle = "rgba(255, 210, 140, 0.18)";
-        ctx.lineWidth = Math.max(2, pw * 0.008);
-        for (let x = cx - pw * 0.5; x < cx + pw * 0.65; x += gap) {
-          ctx.beginPath();
-          ctx.moveTo(x + 3, cy - ph * 0.7);
-          ctx.lineTo(x + ph * 0.55 + 3, cy + ph * 0.7);
-          ctx.stroke();
-        }
-
-        noiseSpecks(cx, cy, pw, ph, 80, "rgba(120,60,20,0.18)", 1.2, 0.7);
-        noiseSpecks(cx, cy, pw, ph, 26, "rgba(255,236,190,0.35)", 1.6, 0.9);
-
-        const shine = ctx.createLinearGradient(cx - pw * 0.2, cy - ph * 0.45, cx + pw * 0.15, cy);
-        shine.addColorStop(0, "rgba(255,255,255,0.28)");
-        shine.addColorStop(0.45, "rgba(255,255,255,0.05)");
-        shine.addColorStop(1, "rgba(255,255,255,0)");
-        ctx.fillStyle = shine;
-        ctx.fillRect(cx - pw / 2, cy - ph / 2, pw, ph * 0.55);
-
-        for (let i = 0; i < 4; i++) if (eaten[i]) drawBiteHole(L, i);
-        ctx.restore();
-
-        ctx.save();
-        paniniPath(cx, cy, pw, ph, r);
-        ctx.clip();
-        ctx.strokeStyle = "rgba(90,42,14,0.55)";
-        ctx.lineWidth = 10;
-        ctx.stroke();
-        ctx.restore();
-
-        // Bite targets (only uneaten)
-        for (let i = 0; i < 4; i++) {
-          if (eaten[i] || respawning) continue;
-          const s = spotWorld(i, L);
-          const pulse = 0.55 + Math.sin(t * 3.2 + i) * 0.25;
-          const hot = hoverSpot === i;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r * (hot ? 0.42 : 0.34), 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 190, 80, ${hot ? 0.35 : 0.18 * pulse})`;
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r * (hot ? 0.2 : 0.14), 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 230, 170, ${hot ? 0.95 : 0.55 + pulse * 0.3})`;
-          ctx.fill();
-          ctx.strokeStyle = `rgba(255, 160, 40, ${hot ? 0.9 : 0.45})`;
-          ctx.lineWidth = hot ? 2.5 : 1.5;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r * (hot ? 0.48 : 0.4), 0, Math.PI * 2);
-          ctx.stroke();
-        }
-
-        ctx.restore();
-      }
-
-      function burst(x, y) {
-        for (let i = 0; i < 26; i++) {
-          const a = rand(0, Math.PI * 2);
-          const sp = rand(1.4, 5.2);
-          crumbs.push({
-            x, y,
+          const a = Math.random() * Math.PI * 2;
+          const sp = (2.2 + Math.random() * 5.5) * power;
+          particles.push({
+            x: cx + (Math.random() - 0.5) * 40,
+            y: cy + (Math.random() - 0.5) * 20,
             vx: Math.cos(a) * sp,
-            vy: Math.sin(a) * sp - 1.6,
+            vy: Math.sin(a) * sp - 1.5,
             life: 1,
-            decay: rand(0.012, 0.03),
-            size: rand(1.6, 3.8),
-            color: Math.random() > 0.5 ? "#e7b15a" : "#f4e2bc",
+            decay: 0.012 + Math.random() * 0.02,
+            size: 2 + Math.random() * 4,
+            color: Math.random() > 0.45
+              ? `hsla(${28 + Math.random() * 28}, 95%, ${55 + Math.random() * 20}%, `
+              : `hsla(${45 + Math.random() * 15}, 90%, ${65 + Math.random() * 15}%, `,
+            spin: (Math.random() - 0.5) * 0.4,
+            rot: Math.random() * Math.PI,
           });
         }
-      }
+      };
 
-      function drawCrumbs() {
-        crumbs.forEach((p) => {
+      const crumbRain = () => {
+        for (let i = 0; i < 18; i++) {
+          particles.push({
+            x: w * (0.25 + Math.random() * 0.5),
+            y: h * 0.15,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: 1 + Math.random() * 2.5,
+            life: 1,
+            decay: 0.008 + Math.random() * 0.01,
+            size: 2 + Math.random() * 3,
+            color: `hsla(${30 + Math.random() * 20}, 80%, ${50 + Math.random() * 20}%, `,
+            spin: (Math.random() - 0.5) * 0.3,
+            rot: 0,
+          });
+        }
+      };
+
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            stage.classList.add("in");
+            setTimeout(() => burst(56, 1.15), 700);
+            setTimeout(crumbRain, 900);
+          }
+        });
+      }, { threshold: 0.25 }).observe(stage);
+
+      stage.addEventListener("pointerenter", () => {
+        hover = true;
+        stage.classList.add("hot");
+        hint.textContent = "Move to orbit";
+        burst(14, 0.55);
+      });
+      stage.addEventListener("pointerleave", () => {
+        hover = false;
+        stage.classList.remove("hot");
+        hint.textContent = "Hover to tilt";
+        mx = 0; my = 0;
+      });
+      stage.addEventListener("pointermove", (e) => {
+        const r = stage.getBoundingClientRect();
+        mx = ((e.clientX - r.left) / r.width) * 2 - 1;
+        my = ((e.clientY - r.top) / r.height) * 2 - 1;
+        if (Math.random() > 0.82) {
+          particles.push({
+            x: e.clientX - r.left,
+            y: e.clientY - r.top,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: -1 - Math.random(),
+            life: 1,
+            decay: 0.03,
+            size: 1.5 + Math.random() * 2,
+            color: `hsla(${35 + Math.random() * 25}, 95%, 60%, `,
+            spin: 0.2,
+            rot: 0,
+          });
+        }
+      });
+      stage.addEventListener("click", () => {
+        stage.classList.remove("in", "boom");
+        void stage.offsetWidth;
+        stage.classList.add("in", "boom");
+        burst(72, 1.35);
+        setTimeout(crumbRain, 200);
+        setTimeout(() => stage.classList.remove("boom"), 900);
+      });
+
+      let t = 0;
+      const tick = () => {
+        t += 0.016;
+        const idleY = Math.sin(t * 0.9) * 3.5;
+        const idleX = Math.cos(t * 0.7) * 2.8;
+        const rx = 12 + (hover ? my * -18 : idleY * 0.3);
+        const ry = -16 + (hover ? mx * 30 : idleX * 0.4);
+        const rz = hover ? mx * -6 : Math.sin(t * 0.5) * 0.8;
+        const ty = hover ? my * -8 : idleY;
+        const sc = hover ? 1.03 : 1;
+        rig.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${ty}px) scale(${sc})`;
+
+        ctx.clearRect(0, 0, w, h);
+        particles = particles.filter((p) => p.life > 0);
+        for (const p of particles) {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.12;
+          p.vy += 0.08;
+          p.vx *= 0.99;
+          p.rot += p.spin;
           p.life -= p.decay;
-          ctx.globalAlpha = Math.max(0, p.life);
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.ellipse(p.x, p.y, p.size, p.size * 0.65, 0.4, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        });
-        for (let i = crumbs.length - 1; i >= 0; i--) if (crumbs[i].life <= 0) crumbs.splice(i, 1);
-      }
-
-      function drawSteam() {
-        if (!respawning && steam.length < 16 && Math.random() > 0.5) {
-          const L = layout();
-          steam.push({
-            x: L.cx + rand(-L.pw * 0.22, L.pw * 0.22),
-            y: L.cy - L.ph * 0.34,
-            r: rand(6, 14),
-            vy: rand(0.35, 0.85),
-            life: 1,
-          });
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color + Math.max(p.life, 0).toFixed(3) + ")";
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+          ctx.restore();
         }
-        steam.forEach((s) => {
-          s.y -= s.vy;
-          s.life -= 0.008;
-          s.r += 0.08;
-          ctx.fillStyle = "rgba(255,236,210," + (0.18 * Math.max(s.life, 0)).toFixed(3) + ")";
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        for (let i = steam.length - 1; i >= 0; i--) if (steam[i].life <= 0) steam.splice(i, 1);
-      }
-
-      function respawn() {
-        respawning = true;
-        setHint();
-        // Shrink out
-        const out = () => {
-          paniniScale += (0.7 - paniniScale) * 0.12;
-          paniniAlpha += (0 - paniniAlpha) * 0.12;
-          slam += (-18 - slam) * 0.1;
-          if (paniniAlpha > 0.05) {
-            requestAnimationFrame(out);
-            return;
-          }
-          eaten = [false, false, false, false];
-          grow = [0, 0, 0, 0];
-          paniniScale = 0.55;
-          paniniAlpha = 0;
-          slam = -40;
-          // Slam back in
-          const inn = () => {
-            paniniScale += (1 - paniniScale) * 0.14;
-            paniniAlpha += (1 - paniniAlpha) * 0.14;
-            slam += (0 - slam) * 0.16;
-            if (Math.abs(1 - paniniScale) > 0.01 || paniniAlpha < 0.98) {
-              requestAnimationFrame(inn);
-              return;
-            }
-            paniniScale = 1;
-            paniniAlpha = 1;
-            slam = 0;
-            respawning = false;
-            setHint();
-            const L = layout();
-            burst(L.cx, L.cy);
-          };
-          requestAnimationFrame(inn);
-        };
-        requestAnimationFrame(out);
-      }
-
-      function hitSpot(x, y) {
-        const L = layout();
-        const bob = Math.sin(t * 1.25) * 2.5 + slam;
-        for (let i = 0; i < 4; i++) {
-          if (eaten[i]) continue;
-          const s = spotWorld(i, L);
-          const dx = x - s.x;
-          const dy = y - (s.y + bob);
-          if (dx * dx + dy * dy <= (s.r * 0.55) * (s.r * 0.55)) return i;
-        }
-        return -1;
-      }
-
-      function frame() {
-        t += 0.016;
-        for (let i = 0; i < 4; i++) {
-          if (eaten[i] && grow[i] < 1) grow[i] += (1 - grow[i]) * 0.22;
-        }
-        ctx.clearRect(0, 0, w, h);
-        drawSteam();
-        drawPanini(layout());
-        drawCrumbs();
-
-        // Cursor
-        stage.style.cursor = hoverSpot >= 0 && !respawning ? "pointer" : "default";
-        requestAnimationFrame(frame);
-      }
-      frame();
-      setHint();
-
-      canvas.addEventListener("pointermove", (e) => {
-        if (respawning) {
-          hoverSpot = -1;
-          return;
-        }
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (w / rect.width);
-        const y = (e.clientY - rect.top) * (h / rect.height);
-        hoverSpot = hitSpot(x, y);
-      });
-      canvas.addEventListener("pointerleave", () => { hoverSpot = -1; });
-      canvas.addEventListener("pointerdown", (e) => {
-        if (respawning) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (w / rect.width);
-        const y = (e.clientY - rect.top) * (h / rect.height);
-        const i = hitSpot(x, y);
-        if (i < 0) return;
-        eaten[i] = true;
-        grow[i] = 0.12;
-        const L = layout();
-        const s = spotWorld(i, L);
-        burst(s.x, s.y);
-        setHint();
-        hoverSpot = -1;
-        if (leftCount() === 0) setTimeout(respawn, 650);
-      });
+        requestAnimationFrame(tick);
+      };
+      tick();
     })();
   </script>
 </body>
@@ -1382,13 +1507,13 @@ show_html(
     """
     <p class="ft-section">The loaded panini</p>
     <p class="ft-lead">
-      Tap the glowing spots to take bites — four spots, then a fresh panini slams back in.
+      Scroll in for the slam — steam, sparks, sauce drips, and orbiting toppings. Hover to tilt, click to rebuild the drop.
     </p>
     """
 )
 components.html(
     bite_show_html(),
-    height=460,
+    height=440,
     scrolling=False,
 )
 
