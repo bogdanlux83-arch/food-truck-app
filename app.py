@@ -30,25 +30,37 @@ def bite_show_html() -> str:
       height: 100%;
       border-radius: 28px;
       overflow: hidden;
-      border: 1px solid rgba(232, 106, 23, 0.22);
+      border: 1px solid rgba(232, 106, 23, 0.28);
       background:
-        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(0,0,0,0.35), transparent 60%),
-        linear-gradient(160deg, #1a120c 0%, #2a1a12 45%, #3d2414 100%);
-      box-shadow: 0 20px 50px rgba(40, 20, 8, 0.25);
+        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(0,0,0,0.4), transparent 60%),
+        radial-gradient(circle at 20% 20%, rgba(232,106,23,0.18), transparent 40%),
+        linear-gradient(160deg, #140e0a 0%, #27180f 45%, #3d2414 100%);
+      box-shadow: 0 20px 50px rgba(40, 20, 8, 0.28);
       cursor: grab;
       transform: translateY(48px) scale(0.94);
       opacity: 0;
-      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
     }
     #stage.in { opacity: 1; transform: translateY(0) scale(1); }
     #stage:active { cursor: grabbing; }
-    #stage.hot { box-shadow: 0 28px 64px rgba(232,106,23,0.35); }
+    #stage.hot {
+      box-shadow: 0 32px 70px rgba(232,106,23,0.42), 0 0 0 1px rgba(255,180,80,0.25) inset;
+    }
+
+    canvas#fx {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 6;
+    }
 
     .label {
       position: absolute;
       left: 1.25rem;
       top: 1.15rem;
-      z-index: 5;
+      z-index: 7;
       pointer-events: none;
       color: #fff8e8;
     }
@@ -58,66 +70,115 @@ def bite_show_html() -> str:
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: rgba(255,230,170,0.75);
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    #stage.in .label .kicker {
+      animation: textPop 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) forwards;
     }
     .label .title {
-      margin: 0.2rem 0 0;
+      margin: 0.25rem 0 0;
       font-family: Syne, sans-serif;
-      font-size: clamp(1.35rem, 3vw, 1.9rem);
+      font-size: clamp(1.45rem, 3.2vw, 2.1rem);
       font-weight: 800;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.045em;
       text-transform: uppercase;
-      line-height: 0.95;
+      line-height: 0.92;
     }
+    .label .title span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(120%) rotateX(-50deg);
+      filter: blur(8px);
+    }
+    #stage.in .label .title span {
+      animation: wordSlam 0.85s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
+      animation-delay: var(--d);
+    }
+    @keyframes wordSlam {
+      to { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+    }
+    @keyframes textPop {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .hint {
       position: absolute;
       right: 1.25rem;
       top: 1.25rem;
-      z-index: 5;
+      z-index: 7;
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255,230,170,0.45);
       pointer-events: none;
+      transition: color 0.3s ease, transform 0.3s ease;
     }
-    #stage.hot .hint { color: rgba(255,230,170,0.85); }
+    #stage.hot .hint {
+      color: rgba(255,230,170,0.9);
+      transform: scale(1.06);
+    }
 
     .world {
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      perspective: 1100px;
+      perspective: 1200px;
       transform-style: preserve-3d;
     }
 
     .rig {
       position: relative;
-      width: min(440px, 82vw);
-      height: min(310px, 60vw);
+      width: min(460px, 84vw);
+      height: min(320px, 62vw);
       transform-style: preserve-3d;
       transform: rotateX(12deg) rotateY(-16deg);
+    }
+
+    .shock {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,180,80,0.7);
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    #stage.in .shock,
+    #stage.boom .shock {
+      animation: shockwave 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    #stage.boom .shock { animation-delay: 0s; }
+    @keyframes shockwave {
+      0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(6.5); border-width: 0; }
     }
 
     .plate {
       position: absolute;
       left: 50%;
-      bottom: 4%;
-      width: 82%;
-      height: 20%;
+      bottom: 3%;
+      width: 84%;
+      height: 22%;
       transform: translateX(-50%) rotateX(72deg);
       border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2), rgba(255,255,255,0.03) 55%, transparent 70%);
-      box-shadow: 0 30px 40px rgba(0,0,0,0.45);
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.22), rgba(255,255,255,0.03) 55%, transparent 70%);
+      box-shadow: 0 30px 40px rgba(0,0,0,0.5);
       opacity: 0;
     }
     #stage.in .plate {
-      animation: fadeUp 0.8s 0.15s cubic-bezier(0.22,1,0.36,1) forwards;
+      animation: fadeUp 0.85s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
     .panini {
       position: absolute;
-      inset: 10% 8% 20%;
+      inset: 12% 9% 22%;
       border-radius: 18px;
       overflow: hidden;
       transform-style: preserve-3d;
@@ -125,21 +186,31 @@ def bite_show_html() -> str:
         0 28px 50px rgba(0,0,0,0.55),
         0 2px 0 rgba(255,200,120,0.15) inset;
       opacity: 0;
-      transform: translateY(40px) scale(0.86) rotateX(-8deg);
+      transform: translateY(-120%) rotate(-8deg) scale(0.7);
       background:
         #111
         url("https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1400&q=85")
         center 42% / cover no-repeat;
+      z-index: 2;
     }
     #stage.in .panini {
-      animation: paniniIn 1s 0.2s cubic-bezier(0.22, 1.15, 0.36, 1) forwards;
+      animation: paniniSlam 1.15s 0.25s cubic-bezier(0.18, 1.4, 0.3, 1) forwards;
     }
-    @keyframes paniniIn {
-      0% { opacity: 0; transform: translateY(48px) scale(0.84) rotateX(-12deg); filter: blur(8px); }
-      100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+    #stage.hot .panini {
+      filter: saturate(1.12) contrast(1.05) brightness(1.05);
+      box-shadow:
+        0 32px 60px rgba(0,0,0,0.6),
+        0 0 40px rgba(255,140,40,0.25),
+        0 2px 0 rgba(255,200,120,0.2) inset;
+    }
+    @keyframes paniniSlam {
+      0% { opacity: 0; transform: translateY(-130%) rotate(-12deg) scale(0.65); filter: blur(10px); }
+      55% { opacity: 1; filter: blur(0); transform: translateY(8%) rotate(2deg) scale(1.04); }
+      75% { transform: translateY(-3%) rotate(-1deg) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); filter: blur(0); }
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateX(-50%) rotateX(72deg) scale(0.8); }
+      from { opacity: 0; transform: translateX(-50%) rotateX(72deg) scale(0.75); }
       to { opacity: 1; transform: translateX(-50%) rotateX(72deg) scale(1); }
     }
 
@@ -148,8 +219,8 @@ def bite_show_html() -> str:
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(255,200,120,0.1), transparent 28%),
-        linear-gradient(120deg, transparent 40%, rgba(255,140,40,0.1), transparent 70%);
+        linear-gradient(180deg, rgba(255,200,120,0.14), transparent 30%),
+        linear-gradient(120deg, transparent 40%, rgba(255,140,40,0.14), transparent 70%);
       pointer-events: none;
       mix-blend-mode: soft-light;
     }
@@ -157,19 +228,43 @@ def bite_show_html() -> str:
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 48%, transparent 58%);
-      transform: translateX(-120%);
-      animation: sheen 3.8s 1.2s ease-in-out infinite;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.28) 48%, transparent 62%);
+      transform: translateX(-130%);
+      animation: sheen 2.8s 1.1s ease-in-out infinite;
       pointer-events: none;
     }
     @keyframes sheen {
-      0%, 100% { transform: translateX(-120%); }
-      45%, 55% { transform: translateX(120%); }
+      0%, 100% { transform: translateX(-130%); }
+      40%, 55% { transform: translateX(130%); }
+    }
+
+    .drip {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      background: linear-gradient(180deg, #f0b429, #e86a17);
+      left: 58%;
+      top: 68%;
+      opacity: 0;
+      z-index: 3;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+    }
+    #stage.in .drip {
+      animation: sauceDrip 2.2s 1.1s ease-in infinite;
+    }
+    .drip:nth-child(2) { left: 46%; animation-delay: 1.45s !important; width: 8px; height: 8px; }
+    .drip:nth-child(3) { left: 63%; animation-delay: 1.8s !important; width: 7px; height: 7px; }
+    @keyframes sauceDrip {
+      0% { opacity: 0; transform: translateY(0) scaleY(0.6); }
+      15% { opacity: 1; }
+      70% { opacity: 0.9; transform: translateY(42px) scaleY(1.6); }
+      100% { opacity: 0; transform: translateY(70px) scaleY(0.4); }
     }
 
     .slice {
       position: absolute;
-      width: 36%;
+      width: 34%;
       aspect-ratio: 1 / 1.05;
       border-radius: 14px;
       overflow: hidden;
@@ -181,35 +276,67 @@ def bite_show_html() -> str:
       z-index: 3;
     }
     .slice-a {
-      left: -4%;
-      top: 12%;
-      --rest: rotate(-10deg) translateY(0) translateZ(28px);
-      transform: rotate(-10deg) translateY(36px);
+      left: -6%;
+      top: 10%;
+      --rest: rotate(-12deg) translateY(0) translateZ(36px) scale(1);
+      transform: rotate(-28deg) translate(-40px, 60px) scale(0.7);
     }
     .slice-b {
-      right: -4%;
-      top: 22%;
-      --rest: rotate(9deg) translateY(0) translateZ(18px);
-      transform: rotate(9deg) translateY(44px);
+      right: -6%;
+      top: 20%;
+      --rest: rotate(11deg) translateY(0) translateZ(24px) scale(1);
+      transform: rotate(28deg) translate(40px, 70px) scale(0.7);
       background-position: 65% center;
     }
     #stage.in .slice-a {
-      animation: sliceIn 0.95s 0.5s cubic-bezier(0.22,1.2,0.36,1) forwards;
+      animation: sliceFly 1.05s 0.55s cubic-bezier(0.22,1.25,0.36,1) forwards;
     }
     #stage.in .slice-b {
-      animation: sliceIn 0.95s 0.62s cubic-bezier(0.22,1.2,0.36,1) forwards;
+      animation: sliceFly 1.05s 0.7s cubic-bezier(0.22,1.25,0.36,1) forwards;
     }
-    @keyframes sliceIn {
-      0% { opacity: 0; filter: blur(6px); }
+    @keyframes sliceFly {
+      0% { opacity: 0; filter: blur(8px); }
       100% { opacity: 1; filter: blur(0); transform: var(--rest); }
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+    }
+    .orb {
+      position: absolute;
+      font-size: 1.55rem;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.35));
+      opacity: 0;
+      offset-path: path("M 80,160 C 40,40 420,40 380,160 C 420,280 40,280 80,160");
+      offset-rotate: 0deg;
+    }
+    #stage.in .orb {
+      animation: orbitSpin 8s linear infinite, orbIn 0.6s ease forwards;
+      animation-delay: var(--d), var(--d);
+    }
+    @keyframes orbIn { to { opacity: 0.95; } }
+    @keyframes orbitSpin {
+      from { offset-distance: 0%; }
+      to { offset-distance: 100%; }
+    }
+    /* fallback if offset-path unsupported */
+    @supports not (offset-path: path("M0,0")) {
+      .orb { left: var(--x); top: var(--y); animation: floaty 4.5s ease-in-out infinite, orbIn 0.6s ease forwards !important; }
+      @keyframes floaty {
+        0%, 100% { transform: translateY(0) rotate(-8deg) scale(1); }
+        50% { transform: translateY(-18px) rotate(10deg) scale(1.08); }
+      }
     }
 
     .steam {
       position: absolute;
       left: 50%;
-      top: 2%;
-      width: 160px;
-      height: 100px;
+      top: 0;
+      width: 180px;
+      height: 110px;
       transform: translateX(-50%);
       pointer-events: none;
       opacity: 0;
@@ -219,82 +346,122 @@ def bite_show_html() -> str:
     .steam span {
       position: absolute;
       bottom: 0;
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(255,240,210,0.45);
-      filter: blur(8px);
-      animation: steamUp 2.6s ease-in-out infinite;
+      background: rgba(255,240,210,0.5);
+      filter: blur(9px);
+      animation: steamUp 2.2s ease-in-out infinite;
     }
-    .steam span:nth-child(1) { left: 18%; }
-    .steam span:nth-child(2) { left: 42%; width: 28px; height: 28px; animation-delay: 0.45s; }
-    .steam span:nth-child(3) { left: 66%; animation-delay: 0.9s; }
+    .steam span:nth-child(1) { left: 14%; }
+    .steam span:nth-child(2) { left: 38%; width: 32px; height: 32px; animation-delay: 0.35s; }
+    .steam span:nth-child(3) { left: 58%; animation-delay: 0.7s; }
+    .steam span:nth-child(4) { left: 74%; width: 20px; height: 20px; animation-delay: 1s; }
     @keyframes steamUp {
       0% { transform: translateY(16px) scale(0.5); opacity: 0; }
-      30% { opacity: 0.65; }
-      100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+      25% { opacity: 0.75; }
+      100% { transform: translateY(-90px) scale(1.7); opacity: 0; }
+    }
+
+    .haze {
+      position: absolute;
+      inset: 8% 12% 18%;
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 3;
+      background: linear-gradient(180deg, transparent, rgba(255,180,80,0.08), transparent);
+      mix-blend-mode: screen;
+      opacity: 0;
+      animation: none;
+    }
+    #stage.in .haze {
+      opacity: 1;
+      animation: hazeWave 3s ease-in-out infinite;
+    }
+    @keyframes hazeWave {
+      0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.35; }
+      50% { transform: translateY(-8px) scaleY(1.08); opacity: 0.7; }
     }
 
     .glow {
       position: absolute;
-      inset: 18% 14% 20%;
+      inset: 16% 12% 18%;
       border-radius: 40%;
-      background: radial-gradient(circle, rgba(255,160,60,0.35), transparent 65%);
-      filter: blur(18px);
+      background: radial-gradient(circle, rgba(255,160,60,0.4), transparent 65%);
+      filter: blur(20px);
       opacity: 0;
       pointer-events: none;
       z-index: 0;
       transition: opacity 0.35s ease;
     }
-    #stage.hot .glow { opacity: 1; animation: pulse 1.3s ease-in-out infinite; }
+    #stage.hot .glow { opacity: 1; animation: pulse 1.15s ease-in-out infinite; }
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 0.55; }
-      50% { transform: scale(1.08); opacity: 0.9; }
+      50% { transform: scale(1.12); opacity: 1; }
     }
 
     .chip {
       position: absolute;
       bottom: 1.1rem;
       left: 1.25rem;
-      z-index: 5;
+      z-index: 7;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,230,170,0.7);
       pointer-events: none;
+      opacity: 0;
+    }
+    #stage.in .chip {
+      animation: textPop 0.7s 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
     @media (max-width: 560px) {
       .slice { display: none; }
-      .panini { inset: 14% 8% 22%; }
+      .panini { inset: 14% 8% 24%; }
+      .orb { font-size: 1.2rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .panini, .slice, .plate, .steam span, .panini::after, .glow { animation: none !important; }
-      #stage.in .panini, #stage.in .slice, #stage.in .plate { opacity: 1; filter: none; }
-      .slice-a { transform: rotate(-10deg); }
-      .slice-b { transform: rotate(9deg); }
-      .panini { transform: none; }
+      .panini, .slice, .plate, .steam span, .panini::after, .glow, .shock, .drip, .orb, .haze,
+      .label .title span, .label .kicker, .chip { animation: none !important; }
+      #stage.in .panini, #stage.in .slice, #stage.in .plate, #stage.in .label .title span,
+      #stage.in .label .kicker, #stage.in .chip, #stage.in .orb { opacity: 1; filter: none; transform: none; }
     }
   </style>
 </head>
 <body>
   <div id="stage">
+    <canvas id="fx"></canvas>
     <div class="label">
       <div class="kicker">Fresh off the press</div>
-      <p class="title">Loaded<br>panini</p>
+      <p class="title">
+        <span style="--d:0.2s">Loaded</span><br>
+        <span style="--d:0.38s">panini</span>
+      </p>
     </div>
     <div class="hint" id="hint">Hover to tilt</div>
-    <div class="chip">Real grill marks · melted fill · click to rebuild</div>
+    <div class="chip">Slam-in · steam · sparks · click to rebuild</div>
     <div class="world">
       <div class="rig" id="rig">
         <div class="glow" aria-hidden="true"></div>
-        <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="shock" aria-hidden="true"></div>
+        <div class="steam" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <div class="haze" aria-hidden="true"></div>
         <div class="plate" aria-hidden="true"></div>
+        <div class="orbit" aria-hidden="true">
+          <span class="orb" style="--d:0.8s; --x:10%; --y:30%">🔥</span>
+          <span class="orb" style="--d:1.0s; --x:86%; --y:28%">🧀</span>
+          <span class="orb" style="--d:1.15s; --x:12%; --y:70%">🌶️</span>
+          <span class="orb" style="--d:1.3s; --x:84%; --y:68%">✨</span>
+          <span class="orb" style="--d:1.4s; --x:48%; --y:8%">🧈</span>
+        </div>
         <div class="slice slice-a" aria-hidden="true"></div>
         <div class="slice slice-b" aria-hidden="true"></div>
-        <div class="panini" role="img" aria-label="Realistic grilled panini"></div>
+        <div class="panini" role="img" aria-label="Realistic grilled panini">
+          <i class="drip"></i><i class="drip"></i><i class="drip"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -303,26 +470,83 @@ def bite_show_html() -> str:
       const stage = document.getElementById("stage");
       const rig = document.getElementById("rig");
       const hint = document.getElementById("hint");
+      const canvas = document.getElementById("fx");
+      const ctx = canvas.getContext("2d");
       let hover = false, mx = 0, my = 0;
+      let particles = [];
+      let w = 0, h = 0;
 
-      const fit = () => {
+      const resize = () => {
+        w = stage.clientWidth;
+        h = stage.clientHeight;
+        canvas.width = Math.floor(w * (window.devicePixelRatio || 1));
+        canvas.height = Math.floor(h * (window.devicePixelRatio || 1));
+        const dpr = window.devicePixelRatio || 1;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         try {
           if (window.frameElement) {
-            window.frameElement.style.height = Math.max(400, stage.clientHeight) + "px";
+            window.frameElement.style.height = Math.max(420, h) + "px";
           }
         } catch (_) {}
       };
-      new ResizeObserver(fit).observe(stage);
-      fit();
+      new ResizeObserver(resize).observe(stage);
+      resize();
+
+      const burst = (count = 48, power = 1) => {
+        const cx = w * 0.5;
+        const cy = h * 0.52;
+        for (let i = 0; i < count; i++) {
+          const a = Math.random() * Math.PI * 2;
+          const sp = (2.2 + Math.random() * 5.5) * power;
+          particles.push({
+            x: cx + (Math.random() - 0.5) * 40,
+            y: cy + (Math.random() - 0.5) * 20,
+            vx: Math.cos(a) * sp,
+            vy: Math.sin(a) * sp - 1.5,
+            life: 1,
+            decay: 0.012 + Math.random() * 0.02,
+            size: 2 + Math.random() * 4,
+            color: Math.random() > 0.45
+              ? `hsla(${28 + Math.random() * 28}, 95%, ${55 + Math.random() * 20}%, `
+              : `hsla(${45 + Math.random() * 15}, 90%, ${65 + Math.random() * 15}%, `,
+            spin: (Math.random() - 0.5) * 0.4,
+            rot: Math.random() * Math.PI,
+          });
+        }
+      };
+
+      const crumbRain = () => {
+        for (let i = 0; i < 18; i++) {
+          particles.push({
+            x: w * (0.25 + Math.random() * 0.5),
+            y: h * 0.15,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: 1 + Math.random() * 2.5,
+            life: 1,
+            decay: 0.008 + Math.random() * 0.01,
+            size: 2 + Math.random() * 3,
+            color: `hsla(${30 + Math.random() * 20}, 80%, ${50 + Math.random() * 20}%, `,
+            spin: (Math.random() - 0.5) * 0.3,
+            rot: 0,
+          });
+        }
+      };
 
       new IntersectionObserver((entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) stage.classList.add("in"); });
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            stage.classList.add("in");
+            setTimeout(() => burst(56, 1.15), 700);
+            setTimeout(crumbRain, 900);
+          }
+        });
       }, { threshold: 0.25 }).observe(stage);
 
       stage.addEventListener("pointerenter", () => {
         hover = true;
         stage.classList.add("hot");
         hint.textContent = "Move to orbit";
+        burst(14, 0.55);
       });
       stage.addEventListener("pointerleave", () => {
         hover = false;
@@ -334,23 +558,58 @@ def bite_show_html() -> str:
         const r = stage.getBoundingClientRect();
         mx = ((e.clientX - r.left) / r.width) * 2 - 1;
         my = ((e.clientY - r.top) / r.height) * 2 - 1;
+        if (Math.random() > 0.82) {
+          particles.push({
+            x: e.clientX - r.left,
+            y: e.clientY - r.top,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: -1 - Math.random(),
+            life: 1,
+            decay: 0.03,
+            size: 1.5 + Math.random() * 2,
+            color: `hsla(${35 + Math.random() * 25}, 95%, 60%, `,
+            spin: 0.2,
+            rot: 0,
+          });
+        }
       });
       stage.addEventListener("click", () => {
-        stage.classList.remove("in");
+        stage.classList.remove("in", "boom");
         void stage.offsetWidth;
-        stage.classList.add("in");
+        stage.classList.add("in", "boom");
+        burst(72, 1.35);
+        setTimeout(crumbRain, 200);
+        setTimeout(() => stage.classList.remove("boom"), 900);
       });
 
       let t = 0;
       const tick = () => {
         t += 0.016;
-        const idleY = Math.sin(t * 0.85) * 3;
-        const idleX = Math.cos(t * 0.65) * 2.5;
-        const rx = 12 + (hover ? my * -16 : idleY * 0.25);
-        const ry = -16 + (hover ? mx * 26 : idleX * 0.35);
-        const rz = hover ? mx * -5 : 0;
-        const ty = hover ? my * -6 : idleY;
-        rig.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${ty}px)`;
+        const idleY = Math.sin(t * 0.9) * 3.5;
+        const idleX = Math.cos(t * 0.7) * 2.8;
+        const rx = 12 + (hover ? my * -18 : idleY * 0.3);
+        const ry = -16 + (hover ? mx * 30 : idleX * 0.4);
+        const rz = hover ? mx * -6 : Math.sin(t * 0.5) * 0.8;
+        const ty = hover ? my * -8 : idleY;
+        const sc = hover ? 1.03 : 1;
+        rig.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${ty}px) scale(${sc})`;
+
+        ctx.clearRect(0, 0, w, h);
+        particles = particles.filter((p) => p.life > 0);
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.08;
+          p.vx *= 0.99;
+          p.rot += p.spin;
+          p.life -= p.decay;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color + Math.max(p.life, 0).toFixed(3) + ")";
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+          ctx.restore();
+        }
         requestAnimationFrame(tick);
       };
       tick();
@@ -1250,13 +1509,13 @@ show_html(
     """
     <p class="ft-section">The loaded panini</p>
     <p class="ft-lead">
-      Scroll in for a pressed panini with real grill marks — hover to tilt it in 3D, click to rebuild.
+      Scroll in for the slam — steam, sparks, sauce drips, and orbiting toppings. Hover to tilt, click to rebuild the drop.
     </p>
     """
 )
 components.html(
     bite_show_html(),
-    height=400,
+    height=440,
     scrolling=False,
 )
 
