@@ -235,11 +235,11 @@ show_html(
         cooked fresh at the vend and served with a smile across Bath.
       </p>
     </div>
-    <p class="ft-scroll-hint">↓ Scroll the advert</p>
+    <p class="ft-scroll-hint">↓ Drive the truck · scroll the advert</p>
     """
 )
 
-# --- Scroll-triggered advert panels ---
+# --- Interactive truck + scroll ads ---
 components.html(
     """
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -251,11 +251,181 @@ components.html(
         color: #1c1917;
         width: 100%;
       }
+
+      .truck-zone {
+        margin: 0.4rem 0 1.4rem;
+        padding: 1rem 1rem 1.1rem;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #fff1f2 0%, #fecdd3 55%, #fda4af 100%);
+        border: 2px solid rgba(244, 63, 94, 0.35);
+        box-shadow: 0 12px 28px rgba(225, 29, 72, 0.12);
+        user-select: none;
+      }
+      .truck-hint {
+        text-align: center;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #9f1239;
+        margin: 0 0 0.7rem;
+        letter-spacing: -0.02em;
+      }
+      .road {
+        position: relative;
+        height: 120px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #57534e 0%, #292524 100%);
+        overflow: hidden;
+        cursor: grab;
+      }
+      .road:active { cursor: grabbing; }
+      .road-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 4px;
+        background: repeating-linear-gradient(
+          90deg,
+          #fde047 0 28px,
+          transparent 28px 48px
+        );
+        transform: translateY(-50%);
+        opacity: 0.85;
+      }
+      .truck {
+        position: absolute;
+        bottom: 14px;
+        left: 8%;
+        width: 150px;
+        cursor: pointer;
+        transform-origin: center bottom;
+        transition: filter 0.2s ease;
+        touch-action: none;
+      }
+      .truck:hover { filter: drop-shadow(0 8px 14px rgba(0,0,0,0.35)); }
+      .truck.driving .wheel {
+        animation: spinWheel 0.35s linear infinite;
+      }
+      .truck.driving .truck-flip {
+        animation: bounceDrive 0.45s ease-in-out infinite;
+      }
+      .truck-flip {
+        position: relative;
+        width: 150px;
+        height: 58px;
+        transform-origin: center bottom;
+      }
+      .cab {
+        position: absolute;
+        left: 0;
+        bottom: 18px;
+        width: 48px;
+        height: 36px;
+        background: #e11d48;
+        border-radius: 8px 10px 4px 4px;
+        border: 2px solid #881337;
+      }
+      .cab-window {
+        position: absolute;
+        top: 6px;
+        left: 8px;
+        width: 22px;
+        height: 14px;
+        background: #e0f2fe;
+        border-radius: 3px;
+        border: 1px solid #881337;
+      }
+      .box {
+        position: absolute;
+        left: 44px;
+        bottom: 18px;
+        width: 92px;
+        height: 42px;
+        background: linear-gradient(135deg, #fb7185, #f43f5e);
+        border-radius: 6px 10px 6px 4px;
+        border: 2px solid #881337;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff1f2;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-align: center;
+        line-height: 1.1;
+        padding: 0 4px;
+      }
+      .wheel {
+        position: absolute;
+        bottom: 2px;
+        width: 22px;
+        height: 22px;
+        background: #1c1917;
+        border-radius: 50%;
+        border: 3px solid #a8a29e;
+        box-sizing: border-box;
+      }
+      .wheel::after {
+        content: "";
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        background: #78716c;
+      }
+      .wheel-f { left: 14px; }
+      .wheel-b { right: 18px; }
+      .honk {
+        position: absolute;
+        top: -8px;
+        left: 10px;
+        font-size: 0.85rem;
+        opacity: 0;
+        transform: translateY(4px);
+        pointer-events: none;
+      }
+      .truck.beep .honk {
+        animation: honkPop 0.7s ease forwards;
+      }
+      @keyframes spinWheel {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes bounceDrive {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+      }
+      @keyframes honkPop {
+        0% { opacity: 0; transform: translateY(6px) scale(0.8); }
+        30% { opacity: 1; transform: translateY(-2px) scale(1.15); }
+        100% { opacity: 0; transform: translateY(-14px) scale(1); }
+      }
+      .truck-btns {
+        display: flex;
+        gap: 0.55rem;
+        justify-content: center;
+        margin-top: 0.75rem;
+      }
+      .truck-btns button {
+        font-family: "Outfit", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border-radius: 999px;
+        border: 2px solid #be123c;
+        background: rgba(255, 241, 242, 0.9);
+        color: #9f1239;
+        padding: 0.4rem 0.9rem;
+        cursor: pointer;
+      }
+      .truck-btns button:hover {
+        background: #fde047;
+        transform: scale(1.05);
+      }
+
       .track {
         display: flex;
         flex-direction: column;
-        gap: 4.5rem;
-        padding: 1.5rem 0.2rem 2rem;
+        gap: 1.75rem;
+        padding: 0.6rem 0.2rem 1.2rem;
         width: 100%;
         box-sizing: border-box;
       }
@@ -278,7 +448,7 @@ components.html(
         flex-direction: column;
         gap: 0.45rem;
         justify-content: center;
-        min-height: 150px;
+        min-height: 120px;
         border: 2px solid rgba(255, 255, 255, 0.35);
         box-shadow: 0 18px 42px rgba(136, 19, 55, 0.22);
         transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -361,6 +531,27 @@ components.html(
       }
     </style>
 
+    <div class="truck-zone">
+      <p class="truck-hint">Click the truck to drive · drag it along the road · honk for fun</p>
+      <div class="road" id="road">
+        <div class="road-line"></div>
+        <div class="truck" id="truck" title="Click to drive">
+          <div class="truck-flip" id="truckFlip">
+            <div class="honk">🔊 beep!</div>
+            <div class="cab"><div class="cab-window"></div></div>
+            <div class="box">LOADED<br>BITES</div>
+            <div class="wheel wheel-f"></div>
+            <div class="wheel wheel-b"></div>
+          </div>
+        </div>
+      </div>
+      <div class="truck-btns">
+        <button type="button" id="driveBtn">Drive / Stop</button>
+        <button type="button" id="honkBtn">Honk</button>
+        <button type="button" id="resetBtn">Reset</button>
+      </div>
+    </div>
+
     <div class="track">
       <div class="bit bit-1">
         <div class="bit-inner">
@@ -390,17 +581,102 @@ components.html(
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("in");
-            }
+            if (entry.isIntersecting) entry.target.classList.add("in");
           });
         },
         { threshold: 0.3 }
       );
       bits.forEach((bit) => io.observe(bit));
+
+      const road = document.getElementById("road");
+      const truck = document.getElementById("truck");
+      const truckFlip = document.getElementById("truckFlip");
+      const driveBtn = document.getElementById("driveBtn");
+      const honkBtn = document.getElementById("honkBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      let driving = false;
+      let dir = 1;
+      let x = road.clientWidth * 0.08;
+      let raf = null;
+      let dragging = false;
+      let dragOffset = 0;
+      let moved = false;
+
+      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+      function face() {
+        truckFlip.style.transform = dir < 0 ? "scaleX(-1)" : "scaleX(1)";
+      }
+      function place() {
+        const maxX = road.clientWidth - truck.offsetWidth - 8;
+        x = clamp(x, 8, maxX);
+        truck.style.left = x + "px";
+      }
+      place();
+      face();
+
+      function tick() {
+        if (!driving) return;
+        const maxX = road.clientWidth - truck.offsetWidth - 8;
+        x += dir * 2.4;
+        if (x >= maxX) { x = maxX; dir = -1; face(); }
+        if (x <= 8) { x = 8; dir = 1; face(); }
+        truck.style.left = x + "px";
+        raf = requestAnimationFrame(tick);
+      }
+
+      function setDriving(on) {
+        driving = on;
+        truck.classList.toggle("driving", on);
+        if (on) {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(tick);
+        } else {
+          cancelAnimationFrame(raf);
+          face();
+        }
+      }
+
+      function honk() {
+        truck.classList.remove("beep");
+        void truck.offsetWidth;
+        truck.classList.add("beep");
+      }
+
+      truck.addEventListener("click", () => {
+        if (moved) { moved = false; return; }
+        setDriving(!driving);
+      });
+      driveBtn.addEventListener("click", () => setDriving(!driving));
+      honkBtn.addEventListener("click", honk);
+      resetBtn.addEventListener("click", () => {
+        setDriving(false);
+        dir = 1;
+        x = road.clientWidth * 0.08;
+        face();
+        place();
+      });
+
+      truck.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        moved = false;
+        setDriving(false);
+        dragOffset = e.clientX - truck.getBoundingClientRect().left;
+        truck.setPointerCapture(e.pointerId);
+      });
+      truck.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        moved = true;
+        const roadRect = road.getBoundingClientRect();
+        x = e.clientX - roadRect.left - dragOffset;
+        place();
+      });
+      truck.addEventListener("pointerup", () => { dragging = false; });
+      truck.addEventListener("pointercancel", () => { dragging = false; });
+      window.addEventListener("resize", place);
     </script>
     """,
-    height=920,
+    height=980,
     scrolling=False,
 )
 
