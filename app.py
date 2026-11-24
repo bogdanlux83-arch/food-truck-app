@@ -14,7 +14,7 @@ def bite_show_html() -> str:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -32,587 +32,369 @@ def bite_show_html() -> str:
       overflow: hidden;
       border: 1px solid rgba(232, 106, 23, 0.28);
       background:
-        radial-gradient(ellipse 70% 55% at 50% 78%, rgba(0,0,0,0.4), transparent 60%),
-        radial-gradient(circle at 20% 20%, rgba(232,106,23,0.18), transparent 40%),
-        linear-gradient(160deg, #140e0a 0%, #27180f 45%, #3d2414 100%);
-      box-shadow: 0 20px 50px rgba(40, 20, 8, 0.28);
-      cursor: grab;
-      transform: translateY(48px) scale(0.94);
-      opacity: 0;
-      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+        radial-gradient(ellipse 80% 60% at 50% 72%, rgba(255,160,60,0.16), transparent 55%),
+        linear-gradient(165deg, #1a120c 0%, #2c1b12 50%, #3a2416 100%);
+      cursor: pointer;
     }
-    #stage.in { opacity: 1; transform: translateY(0) scale(1); }
-    #stage:active { cursor: grabbing; }
-    #stage.hot {
-      box-shadow: 0 32px 70px rgba(232,106,23,0.42), 0 0 0 1px rgba(255,180,80,0.25) inset;
-    }
-
-    canvas#fx {
+    canvas { display: block; width: 100%; height: 100%; }
+    .hud {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      left: 1.2rem;
+      top: 1.05rem;
+      z-index: 2;
       pointer-events: none;
-      z-index: 6;
+      color: #fff6e4;
     }
-
-    .label {
-      position: absolute;
-      left: 1.25rem;
-      top: 1.15rem;
-      z-index: 7;
-      pointer-events: none;
-      color: #fff8e8;
-    }
-    .label .kicker {
+    .hud .kicker {
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(255,230,170,0.75);
-      opacity: 0;
-      transform: translateY(10px);
+      color: rgba(255, 220, 160, 0.75);
     }
-    #stage.in .label .kicker {
-      animation: textPop 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) forwards;
-    }
-    .label .title {
-      margin: 0.25rem 0 0;
+    .hud h2 {
+      margin: 0.2rem 0 0;
       font-family: Syne, sans-serif;
-      font-size: clamp(1.45rem, 3.2vw, 2.1rem);
+      font-size: clamp(1.4rem, 3vw, 2rem);
       font-weight: 800;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
-      line-height: 0.92;
+      line-height: 0.95;
     }
-    .label .title span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(120%) rotateX(-50deg);
-      filter: blur(8px);
-    }
-    #stage.in .label .title span {
-      animation: wordSlam 0.85s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
-      animation-delay: var(--d);
-    }
-    @keyframes wordSlam {
-      to { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
-    }
-    @keyframes textPop {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .hint {
       position: absolute;
-      right: 1.25rem;
-      top: 1.25rem;
-      z-index: 7;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,230,170,0.45);
-      pointer-events: none;
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
-    #stage.hot .hint {
-      color: rgba(255,230,170,0.9);
-      transform: scale(1.06);
-    }
-
-    .world {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-    }
-
-    .rig {
-      position: relative;
-      width: min(460px, 84vw);
-      height: min(320px, 62vw);
-      transform-style: preserve-3d;
-      transform: rotateX(12deg) rotateY(-16deg);
-    }
-
-    .shock {
-      position: absolute;
-      left: 50%;
-      top: 52%;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,180,80,0.7);
-      transform: translate(-50%, -50%) scale(0.2);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 5;
-    }
-    #stage.in .shock,
-    #stage.boom .shock {
-      animation: shockwave 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
-    }
-    #stage.boom .shock { animation-delay: 0s; }
-    @keyframes shockwave {
-      0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(6.5); border-width: 0; }
-    }
-
-    .plate {
-      position: absolute;
-      left: 50%;
-      bottom: 3%;
-      width: 84%;
-      height: 22%;
-      transform: translateX(-50%) rotateX(72deg);
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.22), rgba(255,255,255,0.03) 55%, transparent 70%);
-      box-shadow: 0 30px 40px rgba(0,0,0,0.5);
-      opacity: 0;
-    }
-    #stage.in .plate {
-      animation: fadeUp 0.85s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
-    }
-
-    .panini {
-      position: absolute;
-      inset: 12% 9% 22%;
-      border-radius: 18px;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      box-shadow:
-        0 28px 50px rgba(0,0,0,0.55),
-        0 2px 0 rgba(255,200,120,0.15) inset;
-      opacity: 0;
-      transform: translateY(-120%) rotate(-8deg) scale(0.7);
-      background:
-        #111
-        url("https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1400&q=85")
-        center 42% / cover no-repeat;
+      right: 1.2rem;
+      bottom: 1.05rem;
       z-index: 2;
-    }
-    #stage.in .panini {
-      animation: paniniSlam 1.15s 0.25s cubic-bezier(0.18, 1.4, 0.3, 1) forwards;
-    }
-    #stage.hot .panini {
-      filter: saturate(1.12) contrast(1.05) brightness(1.05);
-      box-shadow:
-        0 32px 60px rgba(0,0,0,0.6),
-        0 0 40px rgba(255,140,40,0.25),
-        0 2px 0 rgba(255,200,120,0.2) inset;
-    }
-    @keyframes paniniSlam {
-      0% { opacity: 0; transform: translateY(-130%) rotate(-12deg) scale(0.65); filter: blur(10px); }
-      55% { opacity: 1; filter: blur(0); transform: translateY(8%) rotate(2deg) scale(1.04); }
-      75% { transform: translateY(-3%) rotate(-1deg) scale(0.99); }
-      100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); filter: blur(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateX(-50%) rotateX(72deg) scale(0.75); }
-      to { opacity: 1; transform: translateX(-50%) rotateX(72deg) scale(1); }
-    }
-
-    .panini::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(255,200,120,0.14), transparent 30%),
-        linear-gradient(120deg, transparent 40%, rgba(255,140,40,0.14), transparent 70%);
-      pointer-events: none;
-      mix-blend-mode: soft-light;
-    }
-    .panini::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.28) 48%, transparent 62%);
-      transform: translateX(-130%);
-      animation: sheen 2.8s 1.1s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes sheen {
-      0%, 100% { transform: translateX(-130%); }
-      40%, 55% { transform: translateX(130%); }
-    }
-
-    .drip {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-      background: linear-gradient(180deg, #f0b429, #e86a17);
-      left: 58%;
-      top: 68%;
-      opacity: 0;
-      z-index: 3;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
-    }
-    #stage.in .drip {
-      animation: sauceDrip 2.2s 1.1s ease-in infinite;
-    }
-    .drip:nth-child(2) { left: 46%; animation-delay: 1.45s !important; width: 8px; height: 8px; }
-    .drip:nth-child(3) { left: 63%; animation-delay: 1.8s !important; width: 7px; height: 7px; }
-    @keyframes sauceDrip {
-      0% { opacity: 0; transform: translateY(0) scaleY(0.6); }
-      15% { opacity: 1; }
-      70% { opacity: 0.9; transform: translateY(42px) scaleY(1.6); }
-      100% { opacity: 0; transform: translateY(70px) scaleY(0.4); }
-    }
-
-    .slice {
-      position: absolute;
-      width: 34%;
-      aspect-ratio: 1 / 1.05;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.45);
-      background:
-        url("https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=900&q=85")
-        center / cover no-repeat;
-      opacity: 0;
-      z-index: 3;
-    }
-    .slice-a {
-      left: -6%;
-      top: 10%;
-      --rest: rotate(-12deg) translateY(0) translateZ(36px) scale(1);
-      transform: rotate(-28deg) translate(-40px, 60px) scale(0.7);
-    }
-    .slice-b {
-      right: -6%;
-      top: 20%;
-      --rest: rotate(11deg) translateY(0) translateZ(24px) scale(1);
-      transform: rotate(28deg) translate(40px, 70px) scale(0.7);
-      background-position: 65% center;
-    }
-    #stage.in .slice-a {
-      animation: sliceFly 1.05s 0.55s cubic-bezier(0.22,1.25,0.36,1) forwards;
-    }
-    #stage.in .slice-b {
-      animation: sliceFly 1.05s 0.7s cubic-bezier(0.22,1.25,0.36,1) forwards;
-    }
-    @keyframes sliceFly {
-      0% { opacity: 0; filter: blur(8px); }
-      100% { opacity: 1; filter: blur(0); transform: var(--rest); }
-    }
-
-    .orbit {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 4;
-    }
-    .orb {
-      position: absolute;
-      font-size: 1.55rem;
-      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.35));
-      opacity: 0;
-      offset-path: path("M 80,160 C 40,40 420,40 380,160 C 420,280 40,280 80,160");
-      offset-rotate: 0deg;
-    }
-    #stage.in .orb {
-      animation: orbitSpin 8s linear infinite, orbIn 0.6s ease forwards;
-      animation-delay: var(--d), var(--d);
-    }
-    @keyframes orbIn { to { opacity: 0.95; } }
-    @keyframes orbitSpin {
-      from { offset-distance: 0%; }
-      to { offset-distance: 100%; }
-    }
-    /* fallback if offset-path unsupported */
-    @supports not (offset-path: path("M0,0")) {
-      .orb { left: var(--x); top: var(--y); animation: floaty 4.5s ease-in-out infinite, orbIn 0.6s ease forwards !important; }
-      @keyframes floaty {
-        0%, 100% { transform: translateY(0) rotate(-8deg) scale(1); }
-        50% { transform: translateY(-18px) rotate(10deg) scale(1.08); }
-      }
-    }
-
-    .steam {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 180px;
-      height: 110px;
-      transform: translateX(-50%);
-      pointer-events: none;
-      opacity: 0;
-      z-index: 4;
-    }
-    #stage.in .steam { opacity: 1; }
-    .steam span {
-      position: absolute;
-      bottom: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(255,240,210,0.5);
-      filter: blur(9px);
-      animation: steamUp 2.2s ease-in-out infinite;
-    }
-    .steam span:nth-child(1) { left: 14%; }
-    .steam span:nth-child(2) { left: 38%; width: 32px; height: 32px; animation-delay: 0.35s; }
-    .steam span:nth-child(3) { left: 58%; animation-delay: 0.7s; }
-    .steam span:nth-child(4) { left: 74%; width: 20px; height: 20px; animation-delay: 1s; }
-    @keyframes steamUp {
-      0% { transform: translateY(16px) scale(0.5); opacity: 0; }
-      25% { opacity: 0.75; }
-      100% { transform: translateY(-90px) scale(1.7); opacity: 0; }
-    }
-
-    .haze {
-      position: absolute;
-      inset: 8% 12% 18%;
-      border-radius: 24px;
-      pointer-events: none;
-      z-index: 3;
-      background: linear-gradient(180deg, transparent, rgba(255,180,80,0.08), transparent);
-      mix-blend-mode: screen;
-      opacity: 0;
-      animation: none;
-    }
-    #stage.in .haze {
-      opacity: 1;
-      animation: hazeWave 3s ease-in-out infinite;
-    }
-    @keyframes hazeWave {
-      0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.35; }
-      50% { transform: translateY(-8px) scaleY(1.08); opacity: 0.7; }
-    }
-
-    .glow {
-      position: absolute;
-      inset: 16% 12% 18%;
-      border-radius: 40%;
-      background: radial-gradient(circle, rgba(255,160,60,0.4), transparent 65%);
-      filter: blur(20px);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 0;
-      transition: opacity 0.35s ease;
-    }
-    #stage.hot .glow { opacity: 1; animation: pulse 1.15s ease-in-out infinite; }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.55; }
-      50% { transform: scale(1.12); opacity: 1; }
-    }
-
-    .chip {
-      position: absolute;
-      bottom: 1.1rem;
-      left: 1.25rem;
-      z-index: 7;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,230,170,0.7);
+      color: rgba(255, 220, 160, 0.72);
       pointer-events: none;
-      opacity: 0;
-    }
-    #stage.in .chip {
-      animation: textPop 0.7s 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
-    }
-
-    @media (max-width: 560px) {
-      .slice { display: none; }
-      .panini { inset: 14% 8% 24%; }
-      .orb { font-size: 1.2rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .panini, .slice, .plate, .steam span, .panini::after, .glow, .shock, .drip, .orb, .haze,
-      .label .title span, .label .kicker, .chip { animation: none !important; }
-      #stage.in .panini, #stage.in .slice, #stage.in .plate, #stage.in .label .title span,
-      #stage.in .label .kicker, #stage.in .chip, #stage.in .orb { opacity: 1; filter: none; transform: none; }
     }
   </style>
 </head>
 <body>
   <div id="stage">
-    <canvas id="fx"></canvas>
-    <div class="label">
-      <div class="kicker">Fresh off the press</div>
-      <p class="title">
-        <span style="--d:0.2s">Loaded</span><br>
-        <span style="--d:0.38s">panini</span>
-      </p>
+    <canvas id="c"></canvas>
+    <div class="hud">
+      <div class="kicker">Click the panini</div>
+      <h2>Take a bite</h2>
     </div>
-    <div class="hint" id="hint">Hover to tilt</div>
-    <div class="chip">Slam-in · steam · sparks · click to rebuild</div>
-    <div class="world">
-      <div class="rig" id="rig">
-        <div class="glow" aria-hidden="true"></div>
-        <div class="shock" aria-hidden="true"></div>
-        <div class="steam" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-        <div class="haze" aria-hidden="true"></div>
-        <div class="plate" aria-hidden="true"></div>
-        <div class="orbit" aria-hidden="true">
-          <span class="orb" style="--d:0.8s; --x:10%; --y:30%">🔥</span>
-          <span class="orb" style="--d:1.0s; --x:86%; --y:28%">🧀</span>
-          <span class="orb" style="--d:1.15s; --x:12%; --y:70%">🌶️</span>
-          <span class="orb" style="--d:1.3s; --x:84%; --y:68%">✨</span>
-          <span class="orb" style="--d:1.4s; --x:48%; --y:8%">🧈</span>
-        </div>
-        <div class="slice slice-a" aria-hidden="true"></div>
-        <div class="slice slice-b" aria-hidden="true"></div>
-        <div class="panini" role="img" aria-label="Realistic grilled panini">
-          <i class="drip"></i><i class="drip"></i><i class="drip"></i>
-        </div>
-      </div>
-    </div>
+    <div class="hint" id="hint">4 bites left</div>
   </div>
   <script>
     (() => {
       const stage = document.getElementById("stage");
-      const rig = document.getElementById("rig");
-      const hint = document.getElementById("hint");
-      const canvas = document.getElementById("fx");
+      const canvas = document.getElementById("c");
       const ctx = canvas.getContext("2d");
-      let hover = false, mx = 0, my = 0;
-      let particles = [];
-      let w = 0, h = 0;
+      const hint = document.getElementById("hint");
+      const MAX = 4;
+      const bites = [];
+      const crumbs = [];
+      const steam = [];
+      let w = 0, h = 0, dpr = 1, t = 0, hover = false;
 
-      const resize = () => {
-        w = stage.clientWidth;
-        h = stage.clientHeight;
-        canvas.width = Math.floor(w * (window.devicePixelRatio || 1));
-        canvas.height = Math.floor(h * (window.devicePixelRatio || 1));
-        const dpr = window.devicePixelRatio || 1;
+      const rand = (a, b) => a + Math.random() * (b - a);
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = stage.clientWidth || 640;
+        h = stage.clientHeight || 440;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         try {
-          if (window.frameElement) {
-            window.frameElement.style.height = Math.max(420, h) + "px";
-          }
+          if (window.frameElement) window.frameElement.style.height = Math.max(420, Math.round(h)) + "px";
         } catch (_) {}
-      };
+      }
       new ResizeObserver(resize).observe(stage);
       resize();
 
-      const burst = (count = 48, power = 1) => {
-        const cx = w * 0.5;
-        const cy = h * 0.52;
+      function layout() {
+        const pw = Math.min(w * 0.62, 460);
+        const ph = pw * 0.58;
+        return { cx: w * 0.5, cy: h * 0.54, pw, ph, r: ph * 0.38 };
+      }
+
+      function paniniPath(x, y, pw, ph, r) {
+        ctx.beginPath();
+        ctx.roundRect(x - pw / 2, y - ph / 2, pw, ph, r);
+      }
+
+      function insidePanini(px, py, L) {
+        const dx = Math.abs(px - L.cx);
+        const dy = Math.abs(py - L.cy);
+        const hw = L.pw / 2 - L.r;
+        const hh = L.ph / 2 - L.r;
+        if (dx <= hw && dy <= L.ph / 2) return true;
+        if (dy <= hh && dx <= L.pw / 2) return true;
+        const cx = L.cx + Math.sign(px - L.cx || 1) * hw;
+        const cy = L.cy + Math.sign(py - L.cy || 1) * hh;
+        if (dx > hw && dy > hh) {
+          const ox = px - (L.cx + Math.sign(px - L.cx) * hw);
+          const oy = py - (L.cy + Math.sign(py - L.cy) * hh);
+          return ox * ox + oy * oy <= L.r * L.r;
+        }
+        return dx <= L.pw / 2 && dy <= L.ph / 2;
+      }
+
+      function noiseSpecks(x, y, pw, ph, count, color, s0, s1) {
+        ctx.fillStyle = color;
         for (let i = 0; i < count; i++) {
-          const a = Math.random() * Math.PI * 2;
-          const sp = (2.2 + Math.random() * 5.5) * power;
-          particles.push({
-            x: cx + (Math.random() - 0.5) * 40,
-            y: cy + (Math.random() - 0.5) * 20,
-            vx: Math.cos(a) * sp,
-            vy: Math.sin(a) * sp - 1.5,
-            life: 1,
-            decay: 0.012 + Math.random() * 0.02,
-            size: 2 + Math.random() * 4,
-            color: Math.random() > 0.45
-              ? `hsla(${28 + Math.random() * 28}, 95%, ${55 + Math.random() * 20}%, `
-              : `hsla(${45 + Math.random() * 15}, 90%, ${65 + Math.random() * 15}%, `,
-            spin: (Math.random() - 0.5) * 0.4,
-            rot: Math.random() * Math.PI,
-          });
+          const sx = x - pw / 2 + ((i * 97) % 1000) / 1000 * pw;
+          const sy = y - ph / 2 + ((i * 57) % 1000) / 1000 * ph * 0.72;
+          ctx.beginPath();
+          ctx.ellipse(sx, sy, s0, s1, (i % 7) * 0.4, 0, Math.PI * 2);
+          ctx.fill();
         }
-      };
+      }
 
-      const crumbRain = () => {
-        for (let i = 0; i < 18; i++) {
-          particles.push({
-            x: w * (0.25 + Math.random() * 0.5),
-            y: h * 0.15,
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: 1 + Math.random() * 2.5,
-            life: 1,
-            decay: 0.008 + Math.random() * 0.01,
-            size: 2 + Math.random() * 3,
-            color: `hsla(${30 + Math.random() * 20}, 80%, ${50 + Math.random() * 20}%, `,
-            spin: (Math.random() - 0.5) * 0.3,
-            rot: 0,
-          });
-        }
-      };
+      function drawBiteInterior(b) {
+        const r = b.r * b.grow;
+        if (r < 1) return;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        ctx.clip();
 
-      new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            stage.classList.add("in");
-            setTimeout(() => burst(56, 1.15), 700);
-            setTimeout(crumbRain, 900);
-          }
+        const g = ctx.createRadialGradient(b.x - r * 0.15, b.y - r * 0.2, r * 0.05, b.x, b.y, r);
+        g.addColorStop(0, "#1a0c08");
+        g.addColorStop(0.42, "#3a1c10");
+        g.addColorStop(0.58, "#6b2e18");
+        g.addColorStop(0.68, "#e2b23a");
+        g.addColorStop(0.76, "#c4452d");
+        g.addColorStop(0.84, "#7d9a45");
+        g.addColorStop(0.92, "#f0d7a2");
+        g.addColorStop(1, "#c9842e");
+        ctx.fillStyle = g;
+        ctx.fillRect(b.x - r, b.y - r, r * 2, r * 2);
+
+        ctx.fillStyle = "rgba(90,40,16,0.35)";
+        b.pores.forEach((p) => {
+          ctx.beginPath();
+          ctx.ellipse(b.x + p.x * r, b.y + p.y * r, p.s * r, p.s * r * 0.75, p.a, 0, Math.PI * 2);
+          ctx.fill();
         });
-      }, { threshold: 0.25 }).observe(stage);
 
-      stage.addEventListener("pointerenter", () => {
-        hover = true;
-        stage.classList.add("hot");
-        hint.textContent = "Move to orbit";
-        burst(14, 0.55);
-      });
-      stage.addEventListener("pointerleave", () => {
-        hover = false;
-        stage.classList.remove("hot");
-        hint.textContent = "Hover to tilt";
-        mx = 0; my = 0;
-      });
-      stage.addEventListener("pointermove", (e) => {
-        const r = stage.getBoundingClientRect();
-        mx = ((e.clientX - r.left) / r.width) * 2 - 1;
-        my = ((e.clientY - r.top) / r.height) * 2 - 1;
-        if (Math.random() > 0.82) {
-          particles.push({
-            x: e.clientX - r.left,
-            y: e.clientY - r.top,
-            vx: (Math.random() - 0.5) * 1.2,
-            vy: -1 - Math.random(),
+        ctx.strokeStyle = "rgba(0,0,0,0.35)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r * 0.97, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.strokeStyle = "rgba(255,220,160,0.35)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(b.x - r * 0.15, b.y - r * 0.2, r * 0.72, Math.PI * 1.1, Math.PI * 1.7);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawPanini(L) {
+        const { cx, cy, pw, ph, r } = L;
+        const bob = Math.sin(t * 1.3) * 3;
+
+        ctx.save();
+        ctx.translate(0, bob);
+        ctx.shadowColor = "rgba(0,0,0,0.45)";
+        ctx.shadowBlur = 28;
+        ctx.shadowOffsetY = 18;
+        ctx.fillStyle = "rgba(0,0,0,0.35)";
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + ph * 0.42, pw * 0.42, ph * 0.12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = "transparent";
+
+        paniniPath(cx, cy + 10, pw, ph, r);
+        const side = ctx.createLinearGradient(cx, cy - ph / 2, cx, cy + ph / 2 + 10);
+        side.addColorStop(0, "#a86b28");
+        side.addColorStop(0.55, "#6a3a18");
+        side.addColorStop(1, "#3d2112");
+        ctx.fillStyle = side;
+        ctx.fill();
+
+        ctx.save();
+        paniniPath(cx, cy + 10, pw * 0.96, ph * 0.92, r * 0.9);
+        ctx.clip();
+        const bands = [
+          ["#f4e0b0", 0.78],
+          ["#6f9a3c", 0.84],
+          ["#f0c14b", 0.89],
+          ["#c44732", 0.935],
+          ["#8a4a28", 0.99],
+        ];
+        bands.forEach(([color, at]) => {
+          ctx.fillStyle = color;
+          ctx.fillRect(cx - pw / 2, cy - ph / 2 + ph * at, pw, ph * 0.08);
+        });
+        ctx.restore();
+
+        paniniPath(cx, cy, pw, ph, r);
+        const top = ctx.createLinearGradient(cx - pw / 2, cy - ph / 2, cx + pw / 2, cy + ph / 2);
+        top.addColorStop(0, "#f6c56a");
+        top.addColorStop(0.35, "#e39a3a");
+        top.addColorStop(0.7, "#d4842c");
+        top.addColorStop(1, "#b86a22");
+        ctx.fillStyle = top;
+        ctx.fill();
+
+        ctx.save();
+        paniniPath(cx, cy, pw, ph, r);
+        ctx.clip();
+
+        ctx.strokeStyle = "rgba(90, 40, 12, 0.55)";
+        ctx.lineWidth = Math.max(7, pw * 0.028);
+        ctx.lineCap = "round";
+        const gap = pw * 0.11;
+        for (let x = cx - pw * 0.55; x < cx + pw * 0.7; x += gap) {
+          ctx.beginPath();
+          ctx.moveTo(x, cy - ph * 0.7);
+          ctx.lineTo(x + ph * 0.55, cy + ph * 0.7);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(255, 210, 140, 0.18)";
+        ctx.lineWidth = Math.max(2, pw * 0.008);
+        for (let x = cx - pw * 0.5; x < cx + pw * 0.65; x += gap) {
+          ctx.beginPath();
+          ctx.moveTo(x + 3, cy - ph * 0.7);
+          ctx.lineTo(x + ph * 0.55 + 3, cy + ph * 0.7);
+          ctx.stroke();
+        }
+
+        noiseSpecks(cx, cy, pw, ph, 80, "rgba(120,60,20,0.18)", 1.2, 0.7);
+        noiseSpecks(cx, cy, pw, ph, 26, "rgba(255,236,190,0.35)", 1.6, 0.9);
+
+        const shine = ctx.createLinearGradient(cx - pw * 0.2, cy - ph * 0.45, cx + pw * 0.15, cy);
+        shine.addColorStop(0, "rgba(255,255,255,0.28)");
+        shine.addColorStop(0.45, "rgba(255,255,255,0.05)");
+        shine.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = shine;
+        ctx.fillRect(cx - pw / 2, cy - ph / 2, pw, ph * 0.55);
+
+        bites.forEach(drawBiteInterior);
+        ctx.restore();
+
+        ctx.save();
+        paniniPath(cx, cy, pw, ph, r);
+        ctx.clip();
+        ctx.strokeStyle = "rgba(90,42,14,0.55)";
+        ctx.lineWidth = 10;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.restore();
+      }
+
+      function burst(x, y) {
+        for (let i = 0; i < 22; i++) {
+          const a = rand(0, Math.PI * 2);
+          const sp = rand(1.2, 4.8);
+          crumbs.push({
+            x, y,
+            vx: Math.cos(a) * sp,
+            vy: Math.sin(a) * sp - 1.4,
             life: 1,
-            decay: 0.03,
-            size: 1.5 + Math.random() * 2,
-            color: `hsla(${35 + Math.random() * 25}, 95%, 60%, `,
-            spin: 0.2,
-            rot: 0,
+            decay: rand(0.012, 0.028),
+            size: rand(1.5, 3.6),
+            color: Math.random() > 0.5 ? "#e7b15a" : "#f4e2bc",
           });
         }
-      });
-      stage.addEventListener("click", () => {
-        stage.classList.remove("in", "boom");
-        void stage.offsetWidth;
-        stage.classList.add("in", "boom");
-        burst(72, 1.35);
-        setTimeout(crumbRain, 200);
-        setTimeout(() => stage.classList.remove("boom"), 900);
-      });
+      }
 
-      let t = 0;
-      const tick = () => {
-        t += 0.016;
-        const idleY = Math.sin(t * 0.9) * 3.5;
-        const idleX = Math.cos(t * 0.7) * 2.8;
-        const rx = 12 + (hover ? my * -18 : idleY * 0.3);
-        const ry = -16 + (hover ? mx * 30 : idleX * 0.4);
-        const rz = hover ? mx * -6 : Math.sin(t * 0.5) * 0.8;
-        const ty = hover ? my * -8 : idleY;
-        const sc = hover ? 1.03 : 1;
-        rig.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translateY(${ty}px) scale(${sc})`;
-
-        ctx.clearRect(0, 0, w, h);
-        particles = particles.filter((p) => p.life > 0);
-        for (const p of particles) {
+      function drawCrumbs() {
+        crumbs.forEach((p) => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.08;
-          p.vx *= 0.99;
-          p.rot += p.spin;
+          p.vy += 0.12;
           p.life -= p.decay;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.fillStyle = p.color + Math.max(p.life, 0).toFixed(3) + ")";
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
-          ctx.restore();
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.ellipse(p.x, p.y, p.size, p.size * 0.65, 0.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        });
+        for (let i = crumbs.length - 1; i >= 0; i--) if (crumbs[i].life <= 0) crumbs.splice(i, 1);
+      }
+
+      function drawSteam() {
+        if (steam.length < 14 && Math.random() > 0.45) {
+          const L = layout();
+          steam.push({
+            x: L.cx + rand(-L.pw * 0.22, L.pw * 0.22),
+            y: L.cy - L.ph * 0.35,
+            r: rand(6, 14),
+            vy: rand(0.35, 0.8),
+            life: 1,
+          });
         }
-        requestAnimationFrame(tick);
-      };
-      tick();
+        steam.forEach((s) => {
+          s.y -= s.vy;
+          s.life -= 0.008;
+          s.r += 0.08;
+          ctx.fillStyle = "rgba(255,236,210," + (0.18 * Math.max(s.life, 0)).toFixed(3) + ")";
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        for (let i = steam.length - 1; i >= 0; i--) if (steam[i].life <= 0) steam.splice(i, 1);
+      }
+
+      function frame() {
+        t += 0.016;
+        ctx.clearRect(0, 0, w, h);
+        drawSteam();
+        const L = layout();
+        if (hover) {
+          ctx.save();
+          ctx.translate(L.cx, L.cy);
+          ctx.scale(1.025, 1.025);
+          ctx.translate(-L.cx, -L.cy);
+          drawPanini(L);
+          ctx.restore();
+        } else {
+          drawPanini(L);
+        }
+        bites.forEach((b) => {
+          if (b.grow < 1) b.grow += (1 - b.grow) * 0.18;
+        });
+        drawCrumbs();
+        requestAnimationFrame(frame);
+      }
+      frame();
+
+      stage.addEventListener("pointerenter", () => { hover = true; });
+      stage.addEventListener("pointerleave", () => { hover = false; });
+      stage.addEventListener("pointerdown", (e) => {
+        if (bites.length >= MAX) {
+          hint.textContent = "That's the last bite";
+          return;
+        }
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) * (w / rect.width);
+        const y = (e.clientY - rect.top) * (h / rect.height);
+        const L = layout();
+        const bob = Math.sin(t * 1.3) * 3;
+        const py = y - bob;
+        if (!insidePanini(x, py, L)) return;
+        const pores = Array.from({ length: 10 }, () => ({
+          x: rand(-0.45, 0.45),
+          y: rand(-0.45, 0.45),
+          s: rand(0.04, 0.09),
+          a: rand(0, Math.PI),
+        }));
+        bites.push({ x, y: py, r: rand(L.pw * 0.11, L.pw * 0.16), grow: 0.15, pores });
+        burst(x, py);
+        const left = MAX - bites.length;
+        hint.textContent = left === 0 ? "That's the last bite" : left + (left === 1 ? " bite left" : " bites left");
+      });
     })();
   </script>
 </body>
@@ -1509,13 +1291,13 @@ show_html(
     """
     <p class="ft-section">The loaded panini</p>
     <p class="ft-lead">
-      Scroll in for the slam — steam, sparks, sauce drips, and orbiting toppings. Hover to tilt, click to rebuild the drop.
+      A pressed panini you can actually bite — click it, up to four times, and watch each bite open the filling.
     </p>
     """
 )
 components.html(
     bite_show_html(),
-    height=440,
+    height=460,
     scrolling=False,
 )
 
