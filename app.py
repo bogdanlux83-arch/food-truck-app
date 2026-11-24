@@ -41,11 +41,7 @@ show_html(
       }
 
       .stApp {
-        background:
-          radial-gradient(900px 500px at 12% -5%, #fda4af 0%, transparent 55%),
-          radial-gradient(800px 480px at 88% 8%, #fb7185 0%, transparent 50%),
-          radial-gradient(700px 420px at 50% 105%, #fecdd3 0%, transparent 52%),
-          #ffe4e6;
+        background: #9f1239;
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
