@@ -617,6 +617,420 @@ def bite_show_html() -> str:
 </html>
 '''
 
+
+def dome_show_html() -> str:
+    """Igloo.inc-style cursor-reactive ice dome (Three.js)."""
+    return '''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    #wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.35);
+      background:
+        radial-gradient(ellipse 55% 40% at 50% 62%, rgba(255,255,255,0.55), transparent 55%),
+        linear-gradient(180deg, #9ea4b0 0%, #b6bac5 42%, #8e94a0 100%);
+      box-shadow:
+        0 28px 60px rgba(40, 48, 70, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        1px 0 0 rgba(255,80,80,0.12),
+        -1px 0 0 rgba(80,180,255,0.12);
+      cursor: crosshair;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    .hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      color: #111;
+    }
+    .hud-tl {
+      position: absolute;
+      top: 1.1rem;
+      left: 1.2rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.75;
+    }
+    .hud-tr {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.2rem;
+      text-align: right;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.7;
+      max-width: 11rem;
+      line-height: 1.45;
+    }
+    .hud-br {
+      position: absolute;
+      bottom: 1.15rem;
+      right: 1.2rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.72;
+    }
+    .hud-bl {
+      position: absolute;
+      bottom: 1.15rem;
+      left: 1.2rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.72;
+    }
+    .hud-bl em { font-style: normal; color: #c45a12; }
+    .corner {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid rgba(17,17,17,0.55);
+      pointer-events: none;
+    }
+    .c-tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+    .c-tr { top: 10px; right: 10px; border-left: 0; border-bottom: 0; }
+    .c-bl { bottom: 10px; left: 10px; border-right: 0; border-top: 0; }
+    .c-br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+    #nodes {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hint {
+      position: absolute;
+      left: 50%;
+      top: 14%;
+      transform: translateX(-50%);
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2.4vw, 1.55rem);
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.88);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+      z-index: 2;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div class="corner c-tl"></div>
+    <div class="corner c-tr"></div>
+    <div class="corner c-bl"></div>
+    <div class="corner c-br"></div>
+    <div class="hint">Move cursor · lift blocks</div>
+    <div class="hud">
+      <div class="hud-tl">////// DOME_NODE_01</div>
+      <div class="hud-tr">LoadedBites GLA<br>cursor-reactive ice</div>
+      <div class="hud-bl">STATUS <em>LIVE</em></div>
+      <div class="hud-br">[COOKED] [LOADED]</div>
+    </div>
+    <svg id="nodes" aria-hidden="true"></svg>
+    <canvas id="c"></canvas>
+  </div>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+
+    const wrap = document.getElementById("wrap");
+    const canvas = document.getElementById("c");
+    const nodesSvg = document.getElementById("nodes");
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
+    camera.position.set(0, 2.35, 7.4);
+    camera.lookAt(0, 0.85, 0);
+
+    scene.add(new THREE.AmbientLight(0xc8cdd8, 0.55));
+    const hemi = new THREE.HemisphereLight(0xe8ebf2, 0x6a7080, 0.85);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffffff, 1.05);
+    key.position.set(4.5, 8, 3.5);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xb8d4ff, 0.45);
+    rim.position.set(-5, 3, -4);
+    scene.add(rim);
+    const core = new THREE.PointLight(0xff9a3c, 3.2, 8, 1.6);
+    core.position.set(0, 0.55, 0);
+    scene.add(core);
+    const core2 = new THREE.PointLight(0xffe8c0, 1.4, 5, 2);
+    core2.position.set(0, 1.1, 0.2);
+    scene.add(core2);
+
+    // Ground frost disc
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(5.2, 64),
+      new THREE.MeshStandardMaterial({
+        color: 0x9aa1ad,
+        roughness: 0.92,
+        metalness: 0.05,
+      })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.02;
+    scene.add(ground);
+
+    const R = 2.05;
+    const blocks = [];
+    const geo = new THREE.BoxGeometry(1, 1, 1);
+    const matBase = {
+      color: 0xaeb6c4,
+      roughness: 0.28,
+      metalness: 0.18,
+      emissive: 0xffffff,
+      emissiveIntensity: 0,
+      transparent: true,
+      opacity: 0.92,
+    };
+
+    function addBlock(x, y, z, sx, sy, sz, canMove) {
+      const mat = new THREE.MeshStandardMaterial({ ...matBase });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.scale.set(sx, sy, sz);
+      mesh.position.set(x, y, z);
+      // Face outward slightly
+      mesh.lookAt(x * 1.4, y, z * 1.4);
+      mesh.rotation.x *= 0.15;
+      const base = mesh.position.clone();
+      const radial = new THREE.Vector3(x, y * 0.35, z).normalize();
+      if (radial.lengthSq() < 0.01) radial.set(0, 1, 0);
+      const phase = Math.random() * Math.PI * 2;
+      const amp = 0.04 + Math.random() * 0.06;
+      blocks.push({
+        mesh,
+        base,
+        radial,
+        phase,
+        amp,
+        canMove,
+        target: 0,
+        vel: 0,
+        smooth: 0,
+        rotAmp: (Math.random() - 0.5) * 0.12,
+      });
+      scene.add(mesh);
+    }
+
+    // Build hemispherical igloo of ice bricks
+    const rings = [
+      { y: 0.22, r: R * 0.98, n: 18, h: 0.38, d: 0.42, w: 0.55, move: false },
+      { y: 0.58, r: R * 0.96, n: 17, h: 0.36, d: 0.4, w: 0.52, move: false },
+      { y: 0.94, r: R * 0.9, n: 15, h: 0.34, d: 0.38, w: 0.5, move: true },
+      { y: 1.28, r: R * 0.8, n: 13, h: 0.32, d: 0.36, w: 0.48, move: true },
+      { y: 1.58, r: R * 0.66, n: 11, h: 0.3, d: 0.34, w: 0.46, move: true },
+      { y: 1.84, r: R * 0.48, n: 9, h: 0.28, d: 0.32, w: 0.44, move: true },
+      { y: 2.04, r: R * 0.28, n: 6, h: 0.26, d: 0.3, w: 0.4, move: true },
+    ];
+    rings.forEach((ring, ri) => {
+      for (let i = 0; i < ring.n; i++) {
+        // Door gap on front of lower rings
+        const a0 = (i / ring.n) * Math.PI * 2 + ri * 0.12;
+        if (ri < 2) {
+          const front = Math.atan2(Math.sin(a0), Math.cos(a0));
+          if (Math.abs(front) < 0.42) continue;
+        }
+        const x = Math.cos(a0) * ring.r;
+        const z = Math.sin(a0) * ring.r;
+        const jitter = (Math.random() - 0.5) * 0.04;
+        addBlock(
+          x + jitter,
+          ring.y + (Math.random() - 0.5) * 0.03,
+          z + jitter,
+          ring.w * (0.9 + Math.random() * 0.2),
+          ring.h * (0.9 + Math.random() * 0.15),
+          ring.d * (0.9 + Math.random() * 0.2),
+          ring.move
+        );
+      }
+    });
+    // Cap blocks
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      addBlock(Math.cos(a) * 0.12, 2.22, Math.sin(a) * 0.12, 0.36, 0.22, 0.36, true);
+    }
+    addBlock(0, 2.38, 0, 0.42, 0.24, 0.42, true);
+
+    // Inner warm glow orb
+    const glow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 24, 16),
+      new THREE.MeshBasicMaterial({
+        color: 0xffb060,
+        transparent: true,
+        opacity: 0.55,
+        depthWrite: false,
+      })
+    );
+    glow.position.set(0, 0.7, 0);
+    scene.add(glow);
+
+    // HUD node overlay
+    const hudPts = [
+      { x: 0.22, y: 0.28, n: "31" },
+      { x: 0.72, y: 0.24, n: "29" },
+      { x: 0.48, y: 0.38, n: "20" },
+      { x: 0.34, y: 0.52, n: "14" },
+      { x: 0.66, y: 0.48, n: "08" },
+    ];
+    function drawNodes() {
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      let lines = "";
+      for (let i = 0; i < hudPts.length - 1; i++) {
+        const a = hudPts[i], b = hudPts[i + 1];
+        lines += `<line x1="${a.x * w}" y1="${a.y * h}" x2="${b.x * w}" y2="${b.y * h}" stroke="rgba(17,17,17,0.28)" stroke-width="1"/>`;
+      }
+      const dots = hudPts.map((p) => `
+        <g transform="translate(${p.x * w},${p.y * h})">
+          <circle r="2.2" fill="rgba(17,17,17,0.55)"/>
+          <text x="6" y="3" font-size="9" font-family="IBM Plex Mono, monospace" fill="rgba(17,17,17,0.55)">${p.n}</text>
+        </g>`).join("");
+      nodesSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+      nodesSvg.innerHTML = lines + dots;
+    }
+
+    const mouse = new THREE.Vector2(999, 999);
+    const follow = new THREE.Vector3(0, 1.4, 2.2);
+    const followTarget = new THREE.Vector3(0, 1.4, 2.2);
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const raycaster = new THREE.Raycaster();
+    const hit = new THREE.Vector3();
+    // Interaction plane through igloo center, facing camera
+    plane.setFromNormalAndCoplanarPoint(
+      new THREE.Vector3(0, 0.15, 1).normalize(),
+      new THREE.Vector3(0, 1.1, 0)
+    );
+
+    function onPointer(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      if (raycaster.ray.intersectPlane(plane, hit)) {
+        followTarget.copy(hit);
+      }
+    }
+    function onLeave() {
+      followTarget.set(0, 1.2, 2.5);
+    }
+    wrap.addEventListener("pointermove", onPointer);
+    wrap.addEventListener("pointerleave", onLeave);
+    wrap.addEventListener("pointerdown", () => {
+      blocks.forEach((b) => {
+        if (!b.canMove) return;
+        b.target = Math.max(b.target, 0.55 + Math.random() * 0.85);
+      });
+    });
+
+    function resize() {
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / Math.max(h, 1);
+      camera.updateProjectionMatrix();
+      drawNodes();
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      follow.lerp(followTarget, 0.08);
+
+      // Pulse core light
+      core.intensity = 2.6 + Math.sin(t * 2.2) * 0.55;
+      glow.material.opacity = 0.42 + Math.sin(t * 2.2) * 0.12;
+      glow.scale.setScalar(1 + Math.sin(t * 1.6) * 0.06);
+
+      blocks.forEach((b) => {
+        let push = 0;
+        if (b.canMove) {
+          const dist = b.base.distanceTo(follow);
+          if (dist < 1.05) push = 1;
+          else if (dist < 2.85) push = 1 - (dist - 1.05) / 1.8;
+          push = Math.max(0, push);
+        }
+        const idle = b.canMove ? (0.5 + 0.5 * Math.sin(t * 1.35 + b.phase + b.base.x * 0.8)) * b.amp * 2.2 : 0;
+        const desired = Math.max(idle, push * (0.55 + b.amp * 4));
+        // Double smoothing (igloo-like lag)
+        b.vel += (desired - b.target) * 0.12;
+        b.vel *= 0.82;
+        b.target += b.vel;
+        b.smooth += (b.target - b.smooth) * 0.16;
+
+        const disp = b.radial.clone().multiplyScalar(b.smooth * 1.35);
+        b.mesh.position.copy(b.base).add(disp);
+        b.mesh.rotation.z = b.smooth * b.rotAmp;
+        b.mesh.rotation.x = b.smooth * b.rotAmp * 0.6;
+        b.mesh.material.emissiveIntensity = Math.min(1.4, b.smooth * 1.8);
+        b.mesh.material.color.setRGB(
+          0.68 + b.smooth * 0.28,
+          0.72 + b.smooth * 0.22,
+          0.78 + b.smooth * 0.18
+        );
+      });
+
+      // Subtle camera drift toward follow
+      camera.position.x += (follow.x * 0.08 - camera.position.x + 0) * 0.04;
+      camera.position.y += (2.35 + follow.y * 0.04 - camera.position.y) * 0.04;
+      camera.lookAt(0, 0.9, 0);
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
+'''
+
+
 st.set_page_config(
     page_title="LoadedBites GLA",
     page_icon="🔥",
@@ -1326,22 +1740,7 @@ show_html(
         We craft generous, carefully prepared bites that bring lively energy to Bath’s streets.
       </p>
     </div>
-    <div class="ft-hero ft-frame">
-      <span class="ft-corners-bl"></span><span class="ft-corners-br"></span>
-      <div class="ft-hero-glass">
-        <div class="ft-tag">VENDOR_NODE · BATH_UK</div>
-        <p class="ft-brand">LoadedBites GLA</p>
-        <p class="ft-sub">
-          Refined street dining — cooked to order, properly loaded, served fresh across Bath.
-        </p>
-        <div class="ft-points">
-          <span>[COOKED]</span>
-          <span>[LOADED]</span>
-          <span>[BATH]</span>
-        </div>
-      </div>
-    </div>
-    <p class="ft-scroll-hint"><span class="ft-arrow">↓</span> Scroll down to discover</p>
+    <p class="ft-scroll-hint"><span class="ft-arrow">↓</span> Move the cursor on the dome · scroll to discover</p>
     <div class="ft-marquee" aria-hidden="true">
       <div class="ft-marquee-track">
         <span>Loaded bites <i>•</i> Hot sauce <i>•</i> Melted cheese <i>•</i> Bath streets <i>•</i> Cooked to order <i>•</i> Properly loaded <i>•</i></span>
@@ -1349,6 +1748,13 @@ show_html(
       </div>
     </div>
     """
+)
+
+# --- Igloo.inc-style interactive ice dome ---
+components.html(
+    dome_show_html(),
+    height=560,
+    scrolling=False,
 )
 
 # --- Three glass feature boxes ---
