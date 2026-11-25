@@ -670,11 +670,11 @@ show_html(
         z-index: 0;
         pointer-events: none;
         background:
-          url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=2400&q=80")
-          center center / cover no-repeat;
+          url("https://images.pexels.com/photos/2788792/pexels-photo-2788792.jpeg?auto=compress&cs=tinysrgb&w=2400")
+          center 35% / cover no-repeat;
         transform: scale(1.1);
-        filter: blur(var(--ft-sky-blur, 18px)) saturate(1.05) brightness(1.08) sepia(0.18) hue-rotate(-8deg);
-        opacity: 0.28;
+        filter: blur(var(--ft-sky-blur, 14px)) saturate(1.15) brightness(0.95) sepia(0.22) hue-rotate(-12deg);
+        opacity: 0.34;
         will-change: filter, opacity;
       }
       .ft-sky-tint {
@@ -683,9 +683,9 @@ show_html(
         z-index: 0;
         pointer-events: none;
         background:
-          linear-gradient(180deg, rgba(251,243,228,0.7) 0%, rgba(251,243,228,0.9) 55%, #fbf3e4 100%),
-          radial-gradient(900px 480px at 85% 8%, rgba(240,180,41,0.22), transparent 55%),
-          radial-gradient(700px 420px at 10% 40%, rgba(232,106,23,0.12), transparent 50%);
+          linear-gradient(180deg, rgba(251,243,228,0.55) 0%, rgba(251,243,228,0.82) 50%, #fbf3e4 100%),
+          radial-gradient(900px 480px at 80% 10%, rgba(240,180,41,0.28), transparent 55%),
+          radial-gradient(700px 420px at 15% 55%, rgba(232,106,23,0.18), transparent 50%);
       }
       ::selection {
         background: var(--ft-orange);
@@ -885,9 +885,9 @@ show_html(
         width: 100%;
         box-sizing: border-box;
         background:
-          linear-gradient(180deg, rgba(232,106,23,0.12) 0%, rgba(28,20,14,0.5) 100%),
-          url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=2400&q=80")
-          center 40% / cover no-repeat;
+          linear-gradient(180deg, rgba(232,106,23,0.18) 0%, rgba(28,20,14,0.55) 100%),
+          url("https://images.pexels.com/photos/2788792/pexels-photo-2788792.jpeg?auto=compress&cs=tinysrgb&w=2400")
+          center 42% / cover no-repeat;
         border: 0;
         box-shadow: 0 30px 70px rgba(120, 55, 10, 0.16);
         animation: ftHeroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
@@ -1216,7 +1216,7 @@ show_html(
     </div>
     <div class="ft-hero">
       <div class="ft-hero-glass">
-        <div class="ft-tag">Bath · United Kingdom</div>
+        <div class="ft-tag">Cozy street vendor · Bath</div>
         <p class="ft-brand">LoadedBites GLA</p>
         <p class="ft-sub">
           Refined street dining — cooked to order, properly loaded, served fresh across Bath.
@@ -1274,8 +1274,8 @@ components.html(
         border: 1px solid rgba(255, 210, 140, 0.55);
         background:
           linear-gradient(165deg, rgba(255,230,170,0.55), rgba(232,106,23,0.18)),
-          url("https://images.unsplash.com/photo-1729232766572-6e3ec9650311?auto=format&fit=crop&w=1200&q=70")
-          center / cover no-repeat;
+          url("https://images.pexels.com/photos/14494034/pexels-photo-14494034.jpeg?auto=compress&cs=tinysrgb&w=1200")
+          center 40% / cover no-repeat;
         box-shadow:
           0 16px 36px rgba(120, 55, 10, 0.12),
           inset 0 1px 0 rgba(255, 240, 200, 0.75);
