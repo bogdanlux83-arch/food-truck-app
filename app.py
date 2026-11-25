@@ -189,8 +189,8 @@ def bite_show_html() -> str:
       transform: translateY(-120%) rotate(-8deg) scale(0.7);
       background:
         #111
-        url("https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1400&q=85")
-        center 42% / cover no-repeat;
+        url("https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=1400&q=85")
+        center 40% / cover no-repeat;
       z-index: 2;
     }
     #stage.in .panini {
@@ -270,7 +270,7 @@ def bite_show_html() -> str:
       overflow: hidden;
       box-shadow: 0 16px 32px rgba(0,0,0,0.45);
       background:
-        url("https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=900&q=85")
+        url("https://images.pexels.com/photos/1893556/pexels-photo-1893556.jpeg?auto=compress&cs=tinysrgb&w=900")
         center / cover no-repeat;
       opacity: 0;
       z-index: 3;
@@ -433,10 +433,10 @@ def bite_show_html() -> str:
   <div id="stage">
     <canvas id="fx"></canvas>
     <div class="label">
-      <div class="kicker">Fresh off the press</div>
+      <div class="kicker">Properly loaded</div>
       <p class="title">
         <span style="--d:0.2s">Loaded</span><br>
-        <span style="--d:0.38s">panini</span>
+        <span style="--d:0.38s">fries</span>
       </p>
     </div>
     <div class="hint" id="hint">Hover to tilt</div>
@@ -449,15 +449,15 @@ def bite_show_html() -> str:
         <div class="haze" aria-hidden="true"></div>
         <div class="plate" aria-hidden="true"></div>
         <div class="orbit" aria-hidden="true">
-          <span class="orb" style="--d:0.8s; --x:10%; --y:30%">🔥</span>
+          <span class="orb" style="--d:0.8s; --x:10%; --y:30%">🍟</span>
           <span class="orb" style="--d:1.0s; --x:86%; --y:28%">🧀</span>
-          <span class="orb" style="--d:1.15s; --x:12%; --y:70%">🌶️</span>
+          <span class="orb" style="--d:1.15s; --x:12%; --y:70%">🥓</span>
           <span class="orb" style="--d:1.3s; --x:84%; --y:68%">✨</span>
-          <span class="orb" style="--d:1.4s; --x:48%; --y:8%">🧈</span>
+          <span class="orb" style="--d:1.4s; --x:48%; --y:8%">🧂</span>
         </div>
         <div class="slice slice-a" aria-hidden="true"></div>
         <div class="slice slice-b" aria-hidden="true"></div>
-        <div class="panini" role="img" aria-label="Realistic grilled panini">
+        <div class="panini fries" role="img" aria-label="Loaded fries">
           <i class="drip"></i><i class="drip"></i><i class="drip"></i>
         </div>
       </div>
@@ -1505,9 +1505,9 @@ components.html(
 # --- TikTok-style loaded bite build (hover tilt, scroll assemble) ---
 show_html(
     """
-    <p class="ft-section">The loaded panini</p>
+    <p class="ft-section">The loaded fries</p>
     <p class="ft-lead">
-      Scroll in for the slam — steam, sparks, sauce drips, and orbiting toppings. Hover to tilt, click to rebuild the drop.
+      Scroll in for the slam — loaded fries, steam, sparks, and orbiting toppings. Hover to tilt, click to rebuild the drop.
     </p>
     """
 )
